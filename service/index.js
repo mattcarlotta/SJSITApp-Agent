@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 import "middlewares";
 import mailer from "@sendgrid/mail";
-import moment from "moment";
 import isEmpty from "lodash/isEmpty";
 import { scheduleJob } from "node-schedule";
 import { Event, Mail } from "models";
@@ -95,6 +94,6 @@ const pollEvents = async () => {
 };
 
 scheduleJob("*/30 * * * * *", async function() {
-  // await pollEmails();
-  await pollEvents();
+  await pollEmails();
+  // await pollEvents();
 });

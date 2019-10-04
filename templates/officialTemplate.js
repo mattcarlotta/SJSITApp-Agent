@@ -3,7 +3,7 @@ export default message => `
     <body>
       <div style="overflow: hidden;">
         <div style="width: 100%; background-color: #FDFDFD; border-collapse: separate !important; border-spacing: 0">
-          <div style="font-size: 16px; padding: 30px; vertical-align: top; display: block; width: 675px; max-width: 675px; margin: 0 auto;">
+          <div style="font-size: 16px; padding: 30px; vertical-align: top; display: block; max-width: 675px; margin: 0 auto;">
             <div style="margin-bottom: 30px; margin-top: 15px;">
               <p style="color: #2E323B;">
                 <img style="margin-right:15px;" src="https://i.imgur.com/pcu86US.png" height="30px" alt="saplogo.png"></img>
