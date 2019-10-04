@@ -19,9 +19,9 @@
     "pre-commit": "npm run lint --silent && npm run test",
     "start": "better-npm-run start",
     "lint": "lint-staged",
-    "test": "npm run test:back",
-    "test:cov": "better-npm-run test:backcov",
-    "test:watch": "better-npm-run test:backwatch"
+    "test": "npm run test",
+    "test:cov": "better-npm-run test:cov",
+    "test:watch": "better-npm-run test:watch"
   },
   "betterScripts": {
     "db:drop": {
