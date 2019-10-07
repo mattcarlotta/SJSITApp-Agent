@@ -1,5 +1,5 @@
-export default message => `
-  <html>
+export default message =>
+  `<html>
     <body>
       <div style="overflow: hidden;">
         <div style="width: 100%; background-color: #FDFDFD; border-collapse: separate !important; border-spacing: 0">
@@ -20,5 +20,4 @@ export default message => `
         </div>
       </div>
     </body>
-  </html>
-  `;
+  </html>`;
