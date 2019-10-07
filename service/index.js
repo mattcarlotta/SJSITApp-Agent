@@ -45,8 +45,10 @@ const pollEmails = async () => {
           await Mail.updateOne({ _id }, { status: "sent" });
         })
         .catch(async error => {
-          const { message } = error;
-          await Mail.updateOne({ _id }, { status: `failed - ${message}` });
+          await Mail.updateOne(
+            { _id },
+            { status: `failed - ${error.message}` },
+          );
         });
     }
   }
