@@ -52,7 +52,7 @@
       }
     },
     "dev": {
-      "command": "node ./app.js",
+      "command": "nodemon ./app.js",
       "env": {
         "CLIENT": "http://localhost:3000",
         "DATABASE": "sjsitapp-dev-db",
