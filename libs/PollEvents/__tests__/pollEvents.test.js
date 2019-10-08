@@ -1,0 +1,81 @@
+import moment from "moment";
+import { pollEvents } from "libs";
+import { eventLogger } from "loggers";
+import { Event, Mail } from "models";
+import { endOfDay, startOfDay } from "shared/helpers";
+import { scheduleReminder } from "templates";
+
+describe("Poll Events Service", () => {
+  let db;
+  beforeAll(() => {
+    db = connectDatabase();
+  });
+
+  afterAll(async () => {
+    await db.close();
+  });
+
+  it("handles polling Events documents", async () => {
+    const mailSpy = jest.spyOn(Mail, "insertMany");
+    const startDay = startOfDay();
+    const endDay = endOfDay();
+
+    const events = await Event.find(
+      {
+        eventDate: {
+          $gte: startDay,
+          $lte: endDay,
+        },
+        sentEmailReminders: false,
+      },
+      {
+        eventDate: 1,
+        eventType: 1,
+        location: 1,
+        notes: 1,
+        opponent: 1,
+        schedule: 1,
+        team: 1,
+        uniform: 1,
+      },
+      { sort: { eventDate: 1 } },
+    )
+      .populate({
+        path: "schedule.employeeIds",
+        select: "_id firstName lastName email",
+      })
+      .lean();
+
+    await pollEvents();
+
+    const {
+      _id, eventDate, schedule, ...rest
+    } = events[0];
+    const { title } = schedule[0];
+    const { firstName, lastName, email } = schedule[0].employeeIds[0];
+    const eventDateToString = moment(eventDate).format(
+      "MMMM Do, YYYY @ h:mm a",
+    );
+
+    expect(mailSpy).toHaveBeenCalledTimes(1);
+    expect(mailSpy).toHaveBeenCalledWith(
+      expect.arrayContaining([
+        expect.objectContaining({
+          sendTo: `${firstName} ${lastName} <${email}>`,
+          sendFrom: "San Jose Sharks Ice Team <noreply@sjsiceteam.com>",
+          subject: `Event Reminder for ${eventDateToString}`,
+          message: scheduleReminder({
+            callTime: title,
+            eventDate: eventDateToString,
+            ...rest,
+          }),
+        }),
+      ]),
+    );
+
+    const updatedEvent = await Event.findOne({ _id });
+    expect(updatedEvent.sentEmailReminders).toBeTruthy();
+
+    expect(console.log).toHaveBeenCalledWith(eventLogger([1]));
+  });
+});

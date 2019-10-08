@@ -1,11 +1,9 @@
-import chalk from "chalk";
 import moment from "moment";
 import isEmpty from "lodash/isEmpty";
+import { eventLogger } from "loggers";
 import { Event, Mail } from "models";
 import { scheduleReminder } from "templates";
 import { endOfDay, startOfDay } from "shared/helpers";
-
-const { log } = console;
 
 export default async () => {
   const startDay = startOfDay();
@@ -38,10 +36,13 @@ export default async () => {
     .lean();
 
   const emailReminders = [];
+  /* istanbul ignore next */
   if (!isEmpty(events)) {
     const eventIds = events.map(({ _id }) => _id);
 
-    events.forEach(({ _id, schedule, eventDate, ...rest }) => {
+    events.forEach(({
+      _id, schedule, eventDate, ...rest
+    }) => {
       schedule.forEach(({ employeeIds, title }) => {
         if (!isEmpty(employeeIds)) {
           employeeIds.forEach(({ firstName, lastName, email }) => {
@@ -63,6 +64,7 @@ export default async () => {
       });
     });
 
+    /* istanbul ignore next */
     if (!isEmpty(emailReminders)) await Mail.insertMany(emailReminders);
     await Event.updateMany(
       {
@@ -72,11 +74,5 @@ export default async () => {
     );
   }
 
-  log(
-    `${chalk.rgb(7, 54, 66).bgRgb(38, 139, 210)(" I ")} ${chalk.rgb(
-      255,
-      255,
-      255,
-    )(`Processed Events... ${emailReminders.length}`)}`,
-  );
+  console.log(eventLogger(emailReminders));
 };

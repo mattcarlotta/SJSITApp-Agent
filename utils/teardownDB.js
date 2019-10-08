@@ -1,5 +1,5 @@
-/* eslint-disable */
 import { connectDatabase } from "database";
+
 const { DROPDB } = process.env;
 
 /**
@@ -36,4 +36,3 @@ const teardownDB = async () => {
 if (DROPDB) teardownDB();
 
 export default teardownDB;
-/* eslint-enable no-console */

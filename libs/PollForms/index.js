@@ -1,12 +1,10 @@
-import chalk from "chalk";
 import isEmpty from "lodash/isEmpty";
+import { formLogger } from "loggers";
 import { Form, Mail, User } from "models";
 import { apFormNotification } from "templates";
 import { createDate, endOfDay, startOfDay } from "shared/helpers";
 
 const { CLIENT } = process.env;
-
-const { log } = console;
 
 export default async () => {
   const startDay = startOfDay();
@@ -46,7 +44,9 @@ export default async () => {
       const memberEmails = members.map(({ email }) => email);
 
       const formReminders = forms.map(
-        ({ _id, expirationDate, endMonth, startMonth }) => {
+        ({
+          _id, expirationDate, endMonth, startMonth,
+        }) => {
           const format = "MM/DD/YYYY";
           const endOfMonth = createDate(endMonth).format(format);
           const startOfMonth = createDate(startMonth).format(format);
@@ -80,11 +80,5 @@ export default async () => {
     }
   }
 
-  log(
-    `${chalk.rgb(7, 54, 66).bgRgb(38, 139, 210)(" I ")} ${chalk.rgb(
-      255,
-      255,
-      255,
-    )(`Processed Forms... ${forms.length}`)}`,
-  );
+  console.log(formLogger(forms));
 };

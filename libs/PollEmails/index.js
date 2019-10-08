@@ -1,11 +1,9 @@
-import chalk from "chalk";
 import mailer from "@sendgrid/mail";
 import isEmpty from "lodash/isEmpty";
+import { mailLogger } from "loggers";
 import { Mail } from "models";
 import { officialTemplate } from "templates";
 import { endOfDay, startOfDay } from "shared/helpers";
-
-const { log } = console;
 
 export default async () => {
   const startDay = startOfDay();
@@ -24,10 +22,13 @@ export default async () => {
     { $sort: { sendDate: -1 } },
   ]);
 
+  /* istanbul ignore next */
   if (!isEmpty(emails)) {
-    for (let i = 0; i < emails.length; i++) {
+    for (let i = 0; i < emails.length; i += i) {
       const existingMail = emails[i];
-      const { _id, message, sendFrom, sendTo, subject } = existingMail;
+      const {
+        _id, message, sendFrom, sendTo, subject,
+      } = existingMail;
 
       await mailer
         .send({
@@ -48,11 +49,5 @@ export default async () => {
     }
   }
 
-  log(
-    `${chalk.rgb(7, 54, 66).bgRgb(38, 139, 210)(" I ")} ${chalk.rgb(
-      255,
-      255,
-      255,
-    )(`Processed Mail... ${emails.length}`)}\n`,
-  );
+  console.log(mailLogger(emails));
 };

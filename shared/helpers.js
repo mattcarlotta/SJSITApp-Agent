@@ -9,15 +9,26 @@ import moment from "moment";
 const createDate = date => moment(date || Date.now());
 
 /**
+ * Helper function to generate a schedule based upon calltimes.
+ *
+ * @function createSchedule
+ * @param callTimes - an array of dates
+ * @returns {object}
+ */
+const createSchedule = callTimes => callTimes.map(time => ({
+  _id: time,
+  employeeIds: [],
+}));
+
+/**
  * Helper function to convert a Date to an ISO Date.
  *
  * @function
  * @returns {Date}
  */
-const convertDateToISO = date =>
-  moment(date)
-    .utcOffset(-7)
-    .toISOString(true);
+const convertDateToISO = date => moment(date)
+  .utcOffset(-7)
+  .toISOString(true);
 
 /**
  * Helper function to create a current date.
@@ -25,10 +36,28 @@ const convertDateToISO = date =>
  * @function
  * @returns {Date}
  */
-const endOfDay = () =>
-  moment()
-    .endOf("day")
+const endOfDay = () => moment()
+  .endOf("day")
+  .toDate();
+
+/**
+ * Helper function to generate a date range.
+ *
+ * @function getMonthDateRange
+ * @param date
+ * @returns {object}
+ */
+const getMonthDateRange = date => {
+  const newDate = date || Date.now();
+  const startOfMonth = moment(newDate)
+    .startOf("month")
     .toDate();
+  const endOfMonth = moment(newDate)
+    .endOf("month")
+    .toDate();
+
+  return { startOfMonth, endOfMonth };
+};
 
 /**
  * Helper function to create a current date.
@@ -36,9 +65,15 @@ const endOfDay = () =>
  * @function
  * @returns {Date}
  */
-const startOfDay = () =>
-  moment()
-    .startOf("day")
-    .toDate();
+const startOfDay = () => moment()
+  .startOf("day")
+  .toDate();
 
-export { convertDateToISO, createDate, endOfDay, startOfDay };
+export {
+  convertDateToISO,
+  createDate,
+  createSchedule,
+  endOfDay,
+  getMonthDateRange,
+  startOfDay,
+};

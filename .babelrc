@@ -17,6 +17,7 @@
           "env": "./env",
           "database": "./database",
           "libs": "./libs",
+          "loggers": "./loggers",
           "models": "./models",
           "middlewares": "./middlewares",
           "shared": "./shared",

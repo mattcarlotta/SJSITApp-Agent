@@ -3,7 +3,6 @@
 import bluebird from "bluebird";
 import mongoose from "mongoose";
 import chalk from "chalk";
-const { log } = console;
 
 const { DATABASE, NODE_ENV } = process.env;
 const inTesting = NODE_ENV === "testing";
@@ -29,7 +28,7 @@ if (!inTesting) {
   mongoose.connection.on(
     "connected",
     () =>
-      log(
+      console.log(
         `\n${chalk.rgb(7, 54, 66).bgRgb(38, 139, 210)(" I ")} ${chalk.blue(
           `Connected to ${DATABASE}`,
         )}\n`,
@@ -39,7 +38,7 @@ if (!inTesting) {
   mongoose.connection.on(
     "disconnected",
     () =>
-      log(
+      console.log(
         `\n${chalk.rgb(7, 54, 66).bgRgb(38, 139, 210)(" I ")} ${chalk.rgb(
           34,
           155,
@@ -51,7 +50,7 @@ if (!inTesting) {
   mongoose.connection.on(
     "error",
     () =>
-      log(
+      console.log(
         `\n${chalk.rgb(7, 54, 66).bgRgb(38, 139, 210)(" I ")} ${chalk.red(
           `Connection error to ${DATABASE}`,
         )}`,
@@ -60,7 +59,7 @@ if (!inTesting) {
 
   process.on("SIGINT", () => {
     mongoose.connection.close(() => {
-      log(
+      console.log(
         `${chalk.rgb(7, 54, 66).bgRgb(38, 139, 210)(" I ")} ${chalk.magenta(
           `Connection was manully terminated from ${DATABASE}`,
         )}`,

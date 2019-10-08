@@ -8,7 +8,7 @@
     "^.+\\.(js)$": "babel-jest"
   },
   "moduleFileExtensions": ["js", "json"],
-  "testPathIgnorePatterns": ["<rootDir>/client/", "<rootDir>/node_modules/"],
+  "testPathIgnorePatterns": ["<rootDir>/node_modules/"],
   "globalSetup": "<rootDir>/utils/globalSetup.js",
   "globalTeardown": "<rootDir>/utils/globalTeardown.js"
 }
