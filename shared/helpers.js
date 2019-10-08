@@ -1,6 +1,14 @@
 import moment from "moment";
 
 /**
+ * Helper function to create a current date.
+ *
+ * @function
+ * @returns {Date}
+ */
+const createDate = date => moment(date || Date.now());
+
+/**
  * Helper function to convert a Date to an ISO Date.
  *
  * @function
@@ -33,4 +41,4 @@ const startOfDay = () =>
     .startOf("day")
     .toDate();
 
-export { convertDateToISO, endOfDay, startOfDay };
+export { convertDateToISO, createDate, endOfDay, startOfDay };

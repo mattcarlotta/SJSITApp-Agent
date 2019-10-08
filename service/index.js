@@ -2,8 +2,7 @@ import "middlewares";
 import chalk from "chalk";
 import moment from "moment";
 import { scheduleJob } from "node-schedule";
-import pollEmails from "./pollEmails";
-import pollEvents from "./pollEvents";
+import { pollEmails, pollEvents, pollForms } from "libs";
 
 const { log } = console;
 
@@ -20,6 +19,7 @@ scheduleJob("*/30 * * * * *", async function() {
     )}`,
   );
 
+  await pollForms();
   await pollEvents();
   await pollEmails();
 });

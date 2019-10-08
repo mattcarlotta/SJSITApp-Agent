@@ -16,6 +16,7 @@
         "alias": {
           "env": "./env",
           "database": "./database",
+          "libs": "./libs",
           "models": "./models",
           "middlewares": "./middlewares",
           "shared": "./shared",

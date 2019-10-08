@@ -1,5 +1,4 @@
 import { Schema, model } from "mongoose";
-import { createSchedule } from "shared/helpers";
 
 const eventSchema = new Schema({
   eventType: { type: String, default: "Game", required: true },
@@ -30,12 +29,7 @@ const eventSchema = new Schema({
   callTimes: { type: Array, of: Date, required: true },
   uniform: { type: String, default: "Teal Jersey" },
   notes: String,
-  sentEmailReminders: { type: Boolean, default: false }
-});
-
-eventSchema.pre("save", function(next) {
-  this.schedule = createSchedule(this.callTimes);
-  next();
+  sentEmailReminders: { type: Boolean, default: false },
 });
 
 export default model("Event", eventSchema);
