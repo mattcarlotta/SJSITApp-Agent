@@ -65,13 +65,15 @@ export default async () => {
     });
 
     /* istanbul ignore next */
-    if (!isEmpty(emailReminders)) await Mail.insertMany(emailReminders);
-    await Event.updateMany(
-      {
-        _id: { $in: eventIds },
-      },
-      { $set: { sentEmailReminders: true } },
-    );
+    if (!isEmpty(emailReminders)) {
+      await Mail.insertMany(emailReminders);
+      await Event.updateMany(
+        {
+          _id: { $in: eventIds },
+        },
+        { $set: { sentEmailReminders: true } },
+      );
+    }
   }
 
   console.log(eventLogger(emailReminders));
