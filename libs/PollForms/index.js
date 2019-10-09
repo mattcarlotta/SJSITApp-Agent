@@ -26,6 +26,7 @@ export default async () => {
     { sort: { startMonth: 1 } },
   ).lean();
 
+  /* istanbul ignore next */
   if (!isEmpty(forms)) {
     const members = await User.aggregate([
       { $match: { role: { $ne: "admin" } } },
@@ -40,6 +41,7 @@ export default async () => {
       },
     ]);
 
+    /* istanbul ignore next */
     if (!isEmpty(members)) {
       const memberEmails = members.map(({ email }) => email);
 
@@ -68,15 +70,17 @@ export default async () => {
         },
       );
 
-      if (!isEmpty(formReminders)) await Mail.insertMany(formReminders);
-
-      const formIds = forms.map(({ _id }) => _id);
-      await Form.updateMany(
-        {
-          _id: { $in: formIds },
-        },
-        { $set: { sentEmails: true } },
-      );
+      /* istanbul ignore next */
+      if (!isEmpty(formReminders)) {
+        await Mail.insertMany(formReminders);
+        const formIds = forms.map(({ _id }) => _id);
+        await Form.updateMany(
+          {
+            _id: { $in: formIds },
+          },
+          { $set: { sentEmails: true } },
+        );
+      }
     }
   }
 

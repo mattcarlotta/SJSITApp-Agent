@@ -24,7 +24,7 @@ const seedDB = async () => {
       password,
       firstName: "Matt",
       lastName: "Carlotta",
-      role: "admin",
+      role: "employee",
       token: "akqVlA.Zp2lWRQ/bBm3XRbHWW$ejYSZfIT4tZKtfFVIRca7ZZJvKuYhl7B6lijdr",
     };
 
@@ -43,6 +43,7 @@ const seedDB = async () => {
       seasonId: "20192020",
       eventDate: currentTime.format(),
       sentEmailReminders: false,
+      notes: "Test notes.",
       schedule: [
         {
           _id: currentTime.format(),

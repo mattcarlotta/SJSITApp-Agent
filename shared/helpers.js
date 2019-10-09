@@ -9,18 +9,6 @@ import moment from "moment";
 const createDate = date => moment(date || Date.now());
 
 /**
- * Helper function to generate a schedule based upon calltimes.
- *
- * @function createSchedule
- * @param callTimes - an array of dates
- * @returns {object}
- */
-const createSchedule = callTimes => callTimes.map(time => ({
-  _id: time,
-  employeeIds: [],
-}));
-
-/**
  * Helper function to convert a Date to an ISO Date.
  *
  * @function
@@ -72,7 +60,6 @@ const startOfDay = () => moment()
 export {
   convertDateToISO,
   createDate,
-  createSchedule,
   endOfDay,
   getMonthDateRange,
   startOfDay,
