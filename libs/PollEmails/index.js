@@ -30,22 +30,17 @@ export default async () => {
         _id, message, sendFrom, sendTo, subject,
       } = existingMail;
 
-      await mailer
-        .send({
+      try {
+        await mailer.send({
           to: sendTo,
           from: sendFrom,
           subject,
           html: officialTemplate(message),
-        })
-        .then(async () => {
-          await Mail.updateOne({ _id }, { status: "sent" });
-        })
-        .catch(async error => {
-          await Mail.updateOne(
-            { _id },
-            { status: `failed - ${error.message}` },
-          );
         });
+        await Mail.updateOne({ _id }, { status: "sent" });
+      } catch (err) {
+        await Mail.updateOne({ _id }, { status: `failed - ${err.message}` });
+      }
     }
   }
 
