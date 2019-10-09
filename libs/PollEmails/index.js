@@ -24,7 +24,7 @@ export default async () => {
 
   /* istanbul ignore next */
   if (!isEmpty(emails)) {
-    for (let i = 0; i < emails.length; i += i) {
+    for (let i = 0; i < emails.length; i += 1) {
       const existingMail = emails[i];
       const {
         _id, message, sendFrom, sendTo, subject,
