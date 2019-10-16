@@ -48,24 +48,16 @@ export default async () => {
       existingEvents.forEach(({
         _id, schedule, eventDate, ...rest
       }) => {
-        schedule.forEach(({ employeeIds, title }) => {
+        schedule.forEach(({ employeeIds, title: callTime }) => {
           if (!isEmpty(employeeIds)) {
-            employeeIds.forEach(
-              ({
-                _id: memberId, firstName, lastName, email,
-              }) => {
-                scheduledEvents.push({
-                  email: `${firstName} ${lastName} <${email}>`,
-                  callTime:
-                    !isEmpty(employeeIds)
-                    && employeeIds.filter(({ _id: id }) => id.equals(memberId))
-                      ? title
-                      : "",
-                  eventDate: moment(eventDate).format("MMMM Do YYYY, h:mm a"),
-                  ...rest,
-                });
-              },
-            );
+            employeeIds.forEach(({ firstName, lastName, email }) => {
+              scheduledEvents.push({
+                email: `${firstName} ${lastName} <${email}>`,
+                callTime,
+                eventDate: moment(eventDate).format("MMMM Do YYYY, h:mm a"),
+                ...rest,
+              });
+            });
           }
         });
       });
