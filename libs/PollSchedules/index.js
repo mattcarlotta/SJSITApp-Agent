@@ -8,6 +8,9 @@ import { groupByEmail } from "shared/helpers";
 export default async () => {
   let sortedSchedules = [];
   const nextMonth = moment().add(1, "months");
+  // const nextMonth = moment()
+  //   .startOf("month")
+  //   .toDate();
 
   const existingForm = await Form.findOne({
     startMonth: nextMonth,
