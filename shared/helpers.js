@@ -48,6 +48,24 @@ const getMonthDateRange = date => {
 };
 
 /**
+ * Helper function to group objects into a sorted array of events by email.
+ *
+ * @function groupByEmail
+ * @param data - array of events
+ * @returns {object}
+ */
+const groupByEmail = data => data
+  .reduce((acc, currentValue) => {
+    if (!acc.some(email => email === currentValue.email)) acc.push(currentValue.email);
+
+    return acc;
+  }, [])
+  .map(email => ({
+    email,
+    events: data.filter(event => event.email === email),
+  }));
+
+/**
  * Helper function to create a current date.
  *
  * @function
@@ -62,5 +80,6 @@ export {
   createDate,
   endOfDay,
   getMonthDateRange,
+  groupByEmail,
   startOfDay,
 };

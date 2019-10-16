@@ -1,6 +1,8 @@
 import "middlewares";
 import { scheduleJob } from "node-schedule";
-import { pollEmails, pollEvents, pollForms } from "libs";
+import {
+  pollEmails, pollEvents, pollForms, pollSchedules,
+} from "libs";
 import { initiatedLogger } from "loggers";
 
 //= ===========================================================//
@@ -13,4 +15,8 @@ scheduleJob("*/30 * * * * *", async () => {
   await pollForms();
   await pollEvents();
   await pollEmails();
+});
+
+scheduleJob("59 7 25 * *", async () => {
+  await pollSchedules();
 });

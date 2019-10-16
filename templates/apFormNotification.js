@@ -1,10 +1,11 @@
-export default ({ _id, CLIENT, expirationDate, endMonth, startMonth }) =>
-  `<h1 style="background-color: #006d75;margin: 0px;text-align:center;font-size: 40px;color: #ffffff;">
+export default ({
+  _id, CLIENT, expirationDate, endMonth, startMonth,
+}) => `<h1 style="text-align: center;font-size: 40px;color: #eeeeee;margin: 0;background-color: #0d747c;">
     A/P Form Notification
   </h1>
-  <h2 style="background-color: #ffffff;font-size: 20px;text-align: center;color: #006d75;">
+  <p style="font-size: 18px;text-align: center;margin: 0;padding-bottom: 10px;color: #eeeeee;background-color: #0d747c;">
     A new A/P form has been created for ${startMonth} - ${endMonth}.
-  </h2>
+  </p>
   <p style="font-size: 16px;text-align: start;background-color: #ffffff;color: rgb(0, 0, 0);">
     To view the A/P form, please click the <strong>button below</strong> or you may view the A/P form by navigating to <a href="${CLIENT}/employee/forms/viewall" rel="noopener noreferrer" target="_blank">View Forms</a> and locating form id#: <strong>${_id}</strong>.
   </p>
