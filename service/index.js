@@ -17,6 +17,10 @@ scheduleJob("*/30 * * * * *", async () => {
   await pollEmails();
 });
 
+// scheduleJob("*/5 * * * * *", async () => {
+//   await pollSchedules();
+// });
+
 scheduleJob("59 7 25 * *", async () => {
   await pollSchedules();
 });

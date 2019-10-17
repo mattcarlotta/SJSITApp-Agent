@@ -27,7 +27,7 @@ const eventSchema = new Schema({
   team: { type: String, required: true },
   opponent: String,
   callTimes: { type: Array, of: Date, required: true },
-  uniform: { type: String, default: "Teal Jersey" },
+  uniform: { type: String, default: "Sharks Teal Jersey" },
   notes: String,
   sentEmailReminders: { type: Boolean, default: false },
 });

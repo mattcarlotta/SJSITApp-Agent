@@ -5,6 +5,10 @@ import { Mail } from "models";
 import { endOfDay, startOfDay } from "shared/helpers";
 import { officialTemplate } from "templates";
 
+jest.mock("@sendgrid/mail");
+mailer.send.mockImplementationOnce(props => Promise.resolve(props));
+mailer.send.mockImplementationOnce(() => Promise.reject(new Error("Unauthorized")));
+
 describe("Poll Email Service", () => {
   let db;
   beforeAll(() => {
@@ -16,10 +20,6 @@ describe("Poll Email Service", () => {
   });
 
   it("handles polling Mail documents", async () => {
-    const mailingservice = mailer.send
-      .mockImplementationOnce(props => Promise.resolve(props))
-      .mockImplementationOnce(() => Promise.reject(new Error("Unauthorized")));
-
     const startDay = startOfDay();
     const endDay = endOfDay();
 
@@ -41,7 +41,7 @@ describe("Poll Email Service", () => {
     const goodEmail = await Mail.findOne({ subject: "Testing" });
     expect(goodEmail.status).toEqual("sent");
 
-    expect(mailingservice).toHaveBeenCalledWith({
+    expect(mailer.send.mock.calls[0]).toContainEqual({
       to: [...goodEmail.sendTo],
       from: goodEmail.sendFrom,
       subject: goodEmail.subject,
@@ -50,6 +50,6 @@ describe("Poll Email Service", () => {
 
     const badEmail = await Mail.findOne({ subject: "Testing 2" });
     expect(badEmail.status).toEqual("failed - Unauthorized");
-    expect(console.log).toHaveBeenCalledWith(mailLogger(emails));
+    expect(console.log.mock.calls[0]).toContain(mailLogger(emails));
   });
 });

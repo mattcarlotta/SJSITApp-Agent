@@ -7,16 +7,22 @@ import { groupByEmail } from "shared/helpers";
 
 export default async () => {
   let sortedSchedules = [];
-  const nextMonth = moment().add(1, "months");
-  // const nextMonth = moment()
-  //   .startOf("month")
-  //   .toDate();
+  const scheduledEvents = [];
+  try {
+    const nextMonth = moment()
+      .add(1, "months")
+      .startOf("month")
+      .format();
 
-  const existingForm = await Form.findOne({
-    startMonth: nextMonth,
-  });
+    // const nextMonth = moment()
+    //   .startOf("month")
+    //   .toDate();
 
-  if (existingForm) {
+    const existingForm = await Form.findOne({
+      startMonth: { $eq: nextMonth },
+    });
+    if (!existingForm) throw "Unable to locate a form for next month.";
+
     const existingEvents = await Event.find(
       {
         eventDate: {
@@ -41,47 +47,44 @@ export default async () => {
         select: "_id firstName lastName email",
       })
       .lean();
+    if (isEmpty(existingEvents)) throw "No events were found for next month.";
 
-    const scheduledEvents = [];
-    /* istanbul ignore next */
-    if (!isEmpty(existingEvents)) {
-      existingEvents.forEach(({
-        _id, schedule, eventDate, ...rest
-      }) => {
-        schedule.forEach(({ employeeIds, title: callTime }) => {
-          if (!isEmpty(employeeIds)) {
-            employeeIds.forEach(({ firstName, lastName, email }) => {
-              scheduledEvents.push({
-                email: `${firstName} ${lastName} <${email}>`,
-                callTime,
-                eventDate: moment(eventDate).format("MMMM Do YYYY, h:mm a"),
-                ...rest,
-              });
+    existingEvents.forEach(({
+      _id, schedule, eventDate, ...rest
+    }) => {
+      schedule.forEach(({ employeeIds, title: callTime }) => {
+        if (!isEmpty(employeeIds)) {
+          employeeIds.forEach(({ firstName, lastName, email }) => {
+            scheduledEvents.push({
+              email: `${firstName} ${lastName} <${email}>`,
+              callTime,
+              eventDate: moment(eventDate).format("MMMM Do YYYY, h:mm a"),
+              ...rest,
             });
-          }
-        });
+          });
+        }
       });
+    });
 
-      if (!isEmpty(scheduledEvents)) {
-        sortedSchedules = groupByEmail(scheduledEvents);
+    if (isEmpty(scheduledEvents)) throw "No scheduled events were found for next month.";
 
-        const emails = sortedSchedules.map(({ email, events }) => ({
-          sendTo: [email],
-          sendFrom: "San Jose Sharks Ice Team <noreply@sjsiceteam.com>",
-          subject: `Upcoming Schedule for ${moment(
-            existingForm.startMonth,
-          ).format("MM/DD/YYYY")} - ${moment(existingForm.endMonth).format(
-            "MM/DD/YYYY",
-          )}`,
-          message: upcomingSchedule({
-            events,
-          }),
-        }));
+    sortedSchedules = groupByEmail(scheduledEvents);
 
-        await Mail.insertMany(emails);
-      }
-    }
+    const emails = sortedSchedules.map(({ email, events }) => ({
+      sendTo: [email],
+      sendFrom: "San Jose Sharks Ice Team <noreply@sjsiceteam.com>",
+      subject: `Upcoming Schedule for ${moment(existingForm.startMonth).format(
+        "MM/DD/YYYY",
+      )} - ${moment(existingForm.endMonth).format("MM/DD/YYYY")}`,
+      message: upcomingSchedule({
+        events,
+      }),
+    }));
+
+    await Mail.insertMany(emails);
+  } catch (err) {
+    console.log(err.toString());
+  } finally {
+    console.log(scheduleLogger(sortedSchedules));
   }
-
-  console.log(scheduleLogger(sortedSchedules));
 };

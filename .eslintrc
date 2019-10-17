@@ -32,15 +32,13 @@
       "babel-module": {
         "alias": {
           "env": "./env",
-          "controllers": "./controllers",
           "database": "./database",
+          "libs": "./libs",
+          "loggers": "./loggers",
           "models": "./models",
           "middlewares": "./middlewares",
-          "routes": "./routes",
           "shared": "./shared",
-          "seeds": "./seeds",
-          "services": "./services",
-          "server": "./server",
+          "templates": "./templates",
           "utils": "./utils"
         }
       }

@@ -37,6 +37,7 @@ export default async () => {
           subject,
           html: officialTemplate(message),
         });
+
         await Mail.updateOne({ _id }, { status: "sent" });
       } catch (err) {
         await Mail.updateOne({ _id }, { status: `failed - ${err.message}` });
