@@ -2,7 +2,7 @@ import moment from "moment";
 import { pollEvents } from "libs";
 import { eventLogger } from "loggers";
 import { Event, Mail } from "models";
-import { endOfDay, startOfDay } from "shared/helpers";
+import { endOfTomorrow, startOfDay } from "shared/helpers";
 import { scheduleReminder } from "templates";
 
 describe("Poll Events Service", () => {
@@ -18,7 +18,7 @@ describe("Poll Events Service", () => {
   it("handles polling Events documents", async () => {
     const mailSpy = jest.spyOn(Mail, "insertMany");
     const startDay = startOfDay();
-    const endDay = endOfDay();
+    const endDay = endOfTomorrow();
 
     const events = await Event.find(
       {

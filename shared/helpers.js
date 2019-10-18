@@ -3,7 +3,7 @@ import moment from "moment";
 /**
  * Helper function to create a current date.
  *
- * @function
+ * @function createDate
  * @returns {Date}
  */
 const createDate = date => moment(date || Date.now());
@@ -11,7 +11,7 @@ const createDate = date => moment(date || Date.now());
 /**
  * Helper function to convert a Date to an ISO Date.
  *
- * @function
+ * @function convertDateToISO
  * @returns {Date}
  */
 const convertDateToISO = date => moment(date)
@@ -21,10 +21,21 @@ const convertDateToISO = date => moment(date)
 /**
  * Helper function to create a current date.
  *
- * @function
+ * @function endOfDay
  * @returns {Date}
  */
 const endOfDay = () => moment()
+  .endOf("day")
+  .toDate();
+
+/**
+ * Helper function to create a current date.
+ *
+ * @function endOfTomorrow
+ * @returns {Date}
+ */
+const endOfTomorrow = () => moment()
+  .add(1, "day")
   .endOf("day")
   .toDate();
 
@@ -101,6 +112,7 @@ export {
   convertDateToISO,
   createDate,
   endOfDay,
+  endOfTomorrow,
   getEndOfNextMonth,
   getMonthDateRange,
   getStartOfNextMonth,
