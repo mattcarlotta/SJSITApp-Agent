@@ -6,14 +6,11 @@ import { scheduleReminder } from "templates";
 import { endOfDay, startOfDay } from "shared/helpers";
 
 export default async () => {
-  const startDay = startOfDay();
-  const endDay = endOfDay();
-
   const events = await Event.find(
     {
       eventDate: {
-        $gte: startDay,
-        $lte: endDay,
+        $gte: startOfDay(),
+        $lte: endOfDay(),
       },
       sentEmailReminders: false,
     },

@@ -1,8 +1,14 @@
+import moment from "moment";
 import { connectDatabase } from "database";
 import {
   Event, Form, Mail, User,
 } from "models";
-import { createDate, getMonthDateRange } from "shared/helpers";
+import {
+  createDate,
+  getEndOfNextMonth,
+  getMonthDateRange,
+  getStartOfNextMonth,
+} from "shared/helpers";
 import { admin, password } from "env";
 
 const { SEED } = process.env;
@@ -39,7 +45,7 @@ const seedDB = async () => {
       eventType: "Game",
       location: "Test Location",
       callTimes: [currentTime.format()],
-      uniform: "Teal Jersey",
+      uniform: "Sharks Teal Jersey",
       seasonId: "20192020",
       eventDate: currentTime.format(),
       sentEmailReminders: false,
@@ -53,13 +59,35 @@ const seedDB = async () => {
       ],
     };
 
-    await Event.create(newEvent);
+    const nextMonthDate = moment().add(1, "month");
+
+    const newEvent2 = {
+      team: "San Jose Barracuda",
+      opponent: "San Diego Gulls",
+      eventType: "Game",
+      location: "Test Location",
+      callTimes: [nextMonthDate.format()],
+      uniform: "Barracuda Jacket",
+      seasonId: "20192020",
+      eventDate: nextMonthDate.format(),
+      sentEmailReminders: false,
+      notes: "Test notes.",
+      schedule: [
+        {
+          _id: nextMonthDate.format(),
+          title: nextMonthDate.format("hh:mm a"),
+          employeeIds: [adminAccount._id],
+        },
+      ],
+    };
+
+    await Event.insertMany([newEvent, newEvent2]);
 
     const { startOfMonth, endOfMonth } = getMonthDateRange();
 
     const newForm = {
       expirationDate: createDate()
-        .add(7, "days")
+        .add(14, "days")
         .format(),
       startMonth: startOfMonth,
       endMonth: endOfMonth,
@@ -69,7 +97,25 @@ const seedDB = async () => {
       seasonId: "20192020",
     };
 
-    await Form.create(newForm);
+    const newForm2 = {
+      expirationDate: moment()
+        .add(1, "month")
+        .startOf("month")
+        .add(14, "days")
+        .endOf("day")
+        .format(),
+      startMonth: getStartOfNextMonth(),
+      endMonth: getEndOfNextMonth(),
+      sendEmailNotificationsDate: moment()
+        .add(1, "month")
+        .startOf("month")
+        .format(),
+      sentEmails: false,
+      notes: "Form 2",
+      seasonId: "20192020",
+    };
+
+    await Form.insertMany([newForm, newForm2]);
 
     const newMail1 = {
       sendTo: administrator.email,

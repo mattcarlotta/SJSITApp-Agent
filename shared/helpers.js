@@ -29,6 +29,17 @@ const endOfDay = () => moment()
   .toDate();
 
 /**
+ * Helper function to create a next end month date.
+ *
+ * @function getEndOfNextMonth
+ * @returns {Date}
+ */
+const getEndOfNextMonth = () => moment()
+  .add(1, "month")
+  .endOf("month")
+  .format();
+
+/**
  * Helper function to generate a date range.
  *
  * @function getMonthDateRange
@@ -46,6 +57,17 @@ const getMonthDateRange = date => {
 
   return { startOfMonth, endOfMonth };
 };
+
+/**
+ * Helper function to create a next start month date.
+ *
+ * @function getStartOfNextMonth
+ * @returns {Date}
+ */
+const getStartOfNextMonth = () => moment()
+  .add(1, "months")
+  .startOf("month")
+  .format();
 
 /**
  * Helper function to group objects into a sorted array of events by email.
@@ -79,7 +101,9 @@ export {
   convertDateToISO,
   createDate,
   endOfDay,
+  getEndOfNextMonth,
   getMonthDateRange,
+  getStartOfNextMonth,
   groupByEmail,
   startOfDay,
 };

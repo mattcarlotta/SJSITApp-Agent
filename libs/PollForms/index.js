@@ -7,14 +7,11 @@ import { createDate, endOfDay, startOfDay } from "shared/helpers";
 const { CLIENT } = process.env;
 
 export default async () => {
-  const startDay = startOfDay();
-  const endDay = endOfDay();
-
   const forms = await Form.find(
     {
       sendEmailNotificationsDate: {
-        $gte: startDay,
-        $lte: endDay,
+        $gte: startOfDay(),
+        $lte: endOfDay(),
       },
       sentEmails: false,
     },

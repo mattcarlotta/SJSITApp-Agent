@@ -6,15 +6,12 @@ import { officialTemplate } from "templates";
 import { endOfDay, startOfDay } from "shared/helpers";
 
 export default async () => {
-  const startDay = startOfDay();
-  const endDay = endOfDay();
-
   const emails = await Mail.aggregate([
     {
       $match: {
         sendDate: {
-          $gte: startDay,
-          $lte: endDay,
+          $gte: startOfDay(),
+          $lte: endOfDay(),
         },
         status: "unsent",
       },
