@@ -4,7 +4,6 @@ import { mailLogger } from "loggers";
 import { Mail } from "models";
 import { endOfDay, startOfDay } from "shared/helpers";
 
-jest.mock("@sendgrid/mail");
 mailer.send.mockImplementationOnce(props => Promise.resolve(props));
 mailer.send.mockImplementationOnce(() => Promise.reject(new Error("Unauthorized")));
 
@@ -37,8 +36,8 @@ describe("Poll Email Service", () => {
 
     await pollEmails();
 
-    const goodEmail = await Mail.findOne({ subject: "Testing" });
-    expect(goodEmail.status).toEqual("sent");
+    const sentEmail = await Mail.find({ status: "sent" }).limit(1);
+    expect(sentEmail).toBeTruthy();
 
     expect(mailer.send.mock.calls[0]).toContainEqual({
       to: expect.any(Array),
@@ -47,10 +46,10 @@ describe("Poll Email Service", () => {
       html: expect.any(String),
     });
 
-    const badEmail = await Mail.findOne({
+    const failedEmail = await Mail.findOne({
       status: { $regex: "failed", $options: "i" },
     });
-    expect(badEmail.status).toEqual("failed - Unauthorized");
+    expect(failedEmail.status).toEqual("failed - Unauthorized");
     expect(console.log.mock.calls[0]).toContain(mailLogger(emails));
   });
 });

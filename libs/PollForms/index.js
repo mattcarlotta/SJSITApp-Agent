@@ -19,6 +19,7 @@ export default async () => {
       startMonth: 1,
       endMonth: 1,
       expirationDate: 1,
+      notes: 1,
     },
     { sort: { startMonth: 1 } },
   ).lean();
@@ -44,7 +45,7 @@ export default async () => {
 
       const formReminders = forms.map(
         ({
-          _id, expirationDate, endMonth, startMonth,
+          _id, expirationDate, endMonth, startMonth, notes,
         }) => {
           const format = "MM/DD/YYYY";
           const endOfMonth = createDate(endMonth).format(format);
@@ -62,6 +63,7 @@ export default async () => {
               ),
               endMonth: endOfMonth,
               startMonth: startOfMonth,
+              notes,
             }),
           };
         },

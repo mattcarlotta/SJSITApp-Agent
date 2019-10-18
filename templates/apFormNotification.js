@@ -1,5 +1,10 @@
 export default ({
-  _id, CLIENT, expirationDate, endMonth, startMonth,
+  _id,
+  CLIENT,
+  expirationDate,
+  endMonth,
+  startMonth,
+  notes,
 }) => `<h1 style="text-align: center;font-size: 40px;color: #eeeeee;margin: 0;background-color: #0d747c;">
     A/P Form Notification
   </h1>
@@ -7,8 +12,15 @@ export default ({
     A new A/P form has been created for ${startMonth} - ${endMonth}.
   </p>
   <p style="font-size: 16px;text-align: start;background-color: #ffffff;color: rgb(0, 0, 0);">
-    To view the A/P form, please click the <strong>button below</strong> or you may view the A/P form by navigating to <a href="${CLIENT}/employee/forms/viewall" rel="noopener noreferrer" target="_blank">View Forms</a> and locating form id#: <strong>${_id}</strong>.
+    To view the A/P form, please click the <strong>button below</strong> or you may view the A/P form by navigating to <a href="${CLIENT}/employee/forms/viewall" rel="noopener noreferrer" target="_blank">View Forms</a> and locating form id#: <strong style="background:#ebebeb;padding: 5px;border: 1px solid #bbb;">${_id}</strong>.
   </p>
+  ${notes
+    && `<p style="font-size: 16px;text-align: start;background-color: #ffffff;color: rgb(0, 0, 0);">
+      <strong>Form Notes</strong>:
+      <i>
+        ${notes}
+      </i>
+    </p>`}
   <p style="font-size: 16px;text-align: start;background-color: #ffffff;color: rgb(0, 0, 0);">
     Please note, that you will have until <strong style="color: red;">${expirationDate}</strong> to submit and/or edit your availability. After the expiration date, the A/P form will no longer be accessible.
   </p>

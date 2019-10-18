@@ -33,6 +33,7 @@ describe("Poll Forms Service", () => {
         startMonth: 1,
         endMonth: 1,
         expirationDate: 1,
+        notes: 1,
       },
       { sort: { startMonth: 1 } },
     ).lean();
@@ -55,7 +56,7 @@ describe("Poll Forms Service", () => {
     const memberEmails = members.map(({ email }) => email);
 
     const {
-      _id, endMonth, expirationDate, startMonth,
+      _id, endMonth, expirationDate, startMonth, notes,
     } = forms[0];
     const format = "MM/DD/YYYY";
     const endOfMonth = createDate(endMonth).format(format);
@@ -76,6 +77,7 @@ describe("Poll Forms Service", () => {
             ),
             endMonth: endOfMonth,
             startMonth: startOfMonth,
+            notes,
           }),
         }),
       ]),
