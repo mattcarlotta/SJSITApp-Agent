@@ -81,7 +81,31 @@ const seedDB = async () => {
       ],
     };
 
-    await Event.insertMany([newEvent, newEvent2]);
+    const nextMonthDate1 = moment()
+      .add(1, "month")
+      .add(1, "day");
+
+    const newEvent3 = {
+      team: "San Jose Sharks",
+      opponent: "Las Vegas Golden Knights",
+      eventType: "Game",
+      location: "Test Location",
+      callTimes: [nextMonthDate1.format()],
+      uniform: "Barracuda Jacket",
+      seasonId: "20192020",
+      eventDate: nextMonthDate1.format(),
+      sentEmailReminders: false,
+      notes: "Test notes.",
+      schedule: [
+        {
+          _id: nextMonthDate1.format(),
+          title: nextMonthDate1.format("hh:mm a"),
+          employeeIds: [],
+        },
+      ],
+    };
+
+    await Event.insertMany([newEvent, newEvent2, newEvent3]);
 
     const { startOfMonth, endOfMonth } = getMonthDateRange();
 

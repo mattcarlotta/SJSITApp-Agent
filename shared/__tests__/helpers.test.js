@@ -1,5 +1,30 @@
 import moment from "moment";
-import { createDate, getMonthDateRange } from "shared/helpers";
+import { createDate, getMonthDateRange, groupByEmail } from "shared/helpers";
+
+const scheduledEvents = [
+  {
+    email: "Matt Carlotta <carlotta.matt@gmail.com>",
+    callTime: "08:00 pm",
+    eventDate: "November 17th 2019, 8:00 pm",
+    eventType: "Game",
+    location: "Test Location",
+    uniform: "Barracuda Jacket",
+    team: "San Jose Barracuda",
+    opponent: "San Diego Gulls",
+    notes: "Test notes.",
+  },
+  {
+    email: "Matt Carlotta <carlotta.matt@gmail.com>",
+    callTime: "07:00 pm",
+    eventDate: "November 18th 2019, 7:30 pm",
+    eventType: "Game",
+    location: "Test Location",
+    uniform: "Sharks Teal Jersey",
+    team: "San Jose Sharks",
+    opponent: "Anaheim Ducks",
+    notes: "",
+  },
+];
 
 describe("Helper Functions", () => {
   it("returns a current date or specified date", () => {
@@ -44,6 +69,29 @@ describe("Helper Functions", () => {
       moment(currentDate)
         .endOf("month")
         .toDate(),
+    );
+  });
+
+  it("groups all objects by email", () => {
+    const groupedData = groupByEmail(scheduledEvents);
+    expect(groupedData).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          email: expect.any(String),
+          events: expect.arrayContaining([
+            expect.objectContaining({
+              callTime: expect.any(String),
+              eventDate: expect.any(String),
+              eventType: expect.any(String),
+              location: expect.any(String),
+              uniform: expect.any(String),
+              team: expect.any(String),
+              opponent: expect.any(String),
+              notes: expect.any(String),
+            }),
+          ]),
+        }),
+      ]),
     );
   });
 });
