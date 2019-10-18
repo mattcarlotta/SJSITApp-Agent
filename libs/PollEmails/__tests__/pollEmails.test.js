@@ -47,7 +47,9 @@ describe("Poll Email Service", () => {
       html: expect.any(String),
     });
 
-    const badEmail = await Mail.findOne({ subject: "Testing 2" });
+    const badEmail = await Mail.findOne({
+      status: { $regex: "failed", $options: "i" },
+    });
     expect(badEmail.status).toEqual("failed - Unauthorized");
     expect(console.log.mock.calls[0]).toContain(mailLogger(emails));
   });
