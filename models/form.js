@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { convertDateToISO } from "shared/helpers";
+import moment from "moment";
 
 // monthly form
 const formSchema = new Schema({
@@ -9,7 +9,9 @@ const formSchema = new Schema({
   seasonId: { type: String, required: true },
   sendEmailNotificationsDate: {
     type: Date,
-    default: convertDateToISO(Date.now()),
+    default: moment(Date.now())
+      .utcOffset(-7)
+      .toISOString(true),
   },
   sentEmails: { type: Boolean, default: false },
   notes: String,

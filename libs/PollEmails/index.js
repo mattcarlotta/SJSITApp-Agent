@@ -5,6 +5,8 @@ import { Mail } from "models";
 import { officialTemplate } from "templates";
 import { endOfDay } from "shared/helpers";
 
+const { IMAGEAPI } = process.env;
+
 export default async () => {
   const emails = await Mail.aggregate([
     {
@@ -32,7 +34,7 @@ export default async () => {
           to: sendTo,
           from: sendFrom,
           subject,
-          html: officialTemplate(message),
+          html: officialTemplate(IMAGEAPI, message),
         });
 
         await Mail.updateOne({ _id }, { status: "sent" });
