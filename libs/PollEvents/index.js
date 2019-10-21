@@ -3,13 +3,12 @@ import isEmpty from "lodash/isEmpty";
 import { eventLogger } from "loggers";
 import { Event, Mail } from "models";
 import { scheduleReminder } from "templates";
-import { endOfTomorrow, startOfDay } from "shared/helpers";
+import { endOfTomorrow } from "shared/helpers";
 
 export default async () => {
   const events = await Event.find(
     {
       eventDate: {
-        $gte: startOfDay(),
         $lte: endOfTomorrow(),
       },
       sentEmailReminders: false,

@@ -3,14 +3,14 @@ import isEmpty from "lodash/isEmpty";
 import { mailLogger } from "loggers";
 import { Mail } from "models";
 import { officialTemplate } from "templates";
-import { endOfDay, startOfDay } from "shared/helpers";
+import { endOfDay } from "shared/helpers";
 
 export default async () => {
   const emails = await Mail.aggregate([
     {
       $match: {
         sendDate: {
-          $gte: startOfDay(),
+          // $gte: startOfDay(),
           $lte: endOfDay(),
         },
         status: "unsent",

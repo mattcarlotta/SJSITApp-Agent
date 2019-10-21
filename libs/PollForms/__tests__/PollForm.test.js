@@ -1,7 +1,7 @@
 import { pollForms } from "libs";
 import { formLogger } from "loggers";
 import { Form, Mail, User } from "models";
-import { createDate, endOfDay, startOfDay } from "shared/helpers";
+import { createDate, endOfDay } from "shared/helpers";
 import { apFormNotification } from "templates";
 
 const { CLIENT } = process.env;
@@ -18,13 +18,11 @@ describe("Poll Forms Service", () => {
 
   it("handles polling Form documents", async () => {
     const mailSpy = jest.spyOn(Mail, "insertMany");
-    const startDay = startOfDay();
     const endDay = endOfDay();
 
     const forms = await Form.find(
       {
         sendEmailNotificationsDate: {
-          $gte: startDay,
           $lte: endDay,
         },
         sentEmails: false,

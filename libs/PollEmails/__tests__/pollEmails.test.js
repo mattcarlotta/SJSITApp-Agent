@@ -2,7 +2,7 @@ import mailer from "@sendgrid/mail";
 import { pollEmails } from "libs";
 import { mailLogger } from "loggers";
 import { Mail } from "models";
-import { endOfDay, startOfDay } from "shared/helpers";
+import { endOfDay } from "shared/helpers";
 
 mailer.send.mockImplementationOnce(props => Promise.resolve(props));
 mailer.send.mockImplementationOnce(() => Promise.reject(new Error("Unauthorized")));
@@ -18,14 +18,12 @@ describe("Poll Email Service", () => {
   });
 
   it("handles polling Mail documents", async () => {
-    const startDay = startOfDay();
     const endDay = endOfDay();
 
     const emails = await Mail.aggregate([
       {
         $match: {
           sendDate: {
-            $gte: startDay,
             $lte: endDay,
           },
           status: "unsent",

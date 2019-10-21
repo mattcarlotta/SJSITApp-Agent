@@ -2,7 +2,7 @@ import isEmpty from "lodash/isEmpty";
 import { formLogger } from "loggers";
 import { Form, Mail, User } from "models";
 import { apFormNotification } from "templates";
-import { createDate, endOfDay, startOfDay } from "shared/helpers";
+import { createDate, endOfDay } from "shared/helpers";
 
 const { CLIENT } = process.env;
 
@@ -10,7 +10,6 @@ export default async () => {
   const forms = await Form.find(
     {
       sendEmailNotificationsDate: {
-        $gte: startOfDay(),
         $lte: endOfDay(),
       },
       sentEmails: false,
