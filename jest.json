@@ -9,6 +9,6 @@
   },
   "moduleFileExtensions": ["js", "json"],
   "testPathIgnorePatterns": ["<rootDir>/node_modules/"],
-  "globalSetup": "<rootDir>/utils/globalSetup.js",
-  "globalTeardown": "<rootDir>/utils/globalTeardown.js"
+  "globalSetup": "<rootDir>/utils/seedDB.js",
+  "globalTeardown": "<rootDir>/utils/teardownDB.js"
 }

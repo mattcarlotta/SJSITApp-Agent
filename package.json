@@ -24,7 +24,7 @@
   },
   "betterScripts": {
     "db:drop": {
-      "command": "node ./utils/globalTeardown.js",
+      "command": "babel-node ./utils/teardownDB.js",
       "env": {
         "DATABASE": "sjsitapp-test-db",
         "NODE_ENV": "development",
@@ -32,7 +32,7 @@
       }
     },
     "db:seed": {
-      "command": "node ./utils/globalSetup.js",
+      "command": "babel-node ./utils/seedDB.js",
       "env": {
         "DATABASE": "sjsitapp-test-db",
         "NODE_ENV": "development",
@@ -40,7 +40,7 @@
       }
     },
     "dev": {
-      "command": "nodemon ./app.js",
+      "command": "nodemon --exec babel-node ./app.js",
       "env": {
         "CLIENT": "http://localhost:3000",
         "DATABASE": "sjsitapp-dev-db",
@@ -48,7 +48,7 @@
       }
     },
     "start": {
-      "command": "node app.js",
+      "command": "babel-node app.js",
       "env": {
         "CLIENT": "http://example.com",
         "DATABASE": "sjsitapp-prod-db",
@@ -94,8 +94,8 @@
   },
   "dependencies": {
     "@babel/core": "^7.6.4",
+    "@babel/node": "^7.6.3",
     "@babel/preset-env": "^7.6.3",
-    "@babel/register": "^7.6.0",
     "@sendgrid/mail": "^6.4.0",
     "babel-plugin-module-resolver": "^3.2.0",
     "better-npm-run": "^0.1.1",
