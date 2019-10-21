@@ -18,7 +18,7 @@
     "pre-commit": "npm run lint --silent && npm run test",
     "start": "better-npm-run start",
     "lint": "lint-staged",
-    "test": "DATABASE=sjsitapp-test-db NODE_ENV=testing DROPDB=true jest --config ./jest.json --passWithNoTests",
+    "test": "better-npm-run test",
     "test:cov": "better-npm-run test:cov",
     "test:watch": "better-npm-run test:watch"
   },
