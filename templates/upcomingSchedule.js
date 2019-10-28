@@ -1,7 +1,9 @@
-export default ({ events }) => `<h1 style="text-align: center;font-size: 40px;color: #eeeeee;margin: 0;background-color: #0d747c">
+export default ({
+  events,
+}) => `<h1 style="text-align: center;font-size: 40px;color: #eeeeee;margin: 0;background-color: #025f6d">
     Upcoming Schedule
   </h1>
-  <p style="font-size: 18px;text-align: center;margin: 0;padding-bottom: 10px;color: #eeeeee;background-color: #0d747c;">
+  <p style="font-size: 18px;text-align: center;margin: 0;padding-bottom: 10px;color: #eeeeee;background-color: #025f6d;">
     You&#39;re scheduled to work the following events:.
   </p>
   ${events
@@ -24,7 +26,7 @@ export default ({ events }) => `<h1 style="text-align: center;font-size: 40px;co
       <li style="color: #000000;margin: 5px 0px;">
         <span style="margin-right: 5px;">
           <strong>Event</strong>:&nbsp;${team}${opponent
-          && `<span>
+        && `<span>
         vs.&nbsp;${opponent}
       </span>`}
         </span>

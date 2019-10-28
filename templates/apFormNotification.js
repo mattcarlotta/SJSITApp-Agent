@@ -5,14 +5,14 @@ export default ({
   endMonth,
   startMonth,
   notes,
-}) => `<h1 style="text-align: center;font-size: 40px;color: #eeeeee;margin: 0;background-color: #0d747c;">
+}) => `<h1 style="text-align: center;font-size: 40px;color: #eeeeee;margin: 0;background-color: #025f6d;">
     A/P Form Notification
   </h1>
-  <p style="font-size: 18px;text-align: center;margin: 0;padding-bottom: 10px;color: #eeeeee;background-color: #0d747c;">
+  <p style="font-size: 18px;text-align: center;margin: 0;padding-bottom: 10px;color: #eeeeee;background-color: #025f6d;">
     A new A/P form has been created for ${startMonth} - ${endMonth}.
   </p>
   <p style="font-size: 16px;text-align: start;background-color: #ffffff;color: rgb(0, 0, 0);">
-    To view the A/P form, please click the <strong>button below</strong> or you may view the A/P form by navigating to <a href="${CLIENT}/employee/forms/viewall" rel="noopener noreferrer" target="_blank">View Forms</a> and locating form id#: <strong style="background:#ebebeb;padding: 5px;border: 1px solid #bbb;">${_id}</strong>.
+    To view the A/P form, please click the <strong>button below</strong> or you may view the A/P form by navigating to the <a href="${CLIENT}/employee/dashboard" rel="noopener noreferrer" target="_blank">Dashboard</a> page, locating the <strong>Forms</strong> tab and clicking on the <strong>Sharks & Barracuda A/P Form</strong> button.
   </p>
   ${notes
     && `<p style="font-size: 16px;text-align: start;background-color: #ffffff;color: rgb(0, 0, 0);">
