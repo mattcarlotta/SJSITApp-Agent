@@ -3,7 +3,7 @@ import { pollEvents } from "libs";
 import { eventLogger } from "loggers";
 import { Event, Mail } from "models";
 import { endOfTomorrow } from "shared/helpers";
-import { scheduleReminder } from "templates";
+import { eventReminder } from "templates";
 
 describe("Poll Events Service", () => {
   let db;
@@ -62,7 +62,7 @@ describe("Poll Events Service", () => {
           sendTo: `${firstName} ${lastName} <${email}>`,
           sendFrom: "San Jose Sharks Ice Team <noreply@sjsiceteam.com>",
           subject: `Event Reminder for ${eventDateToString}`,
-          message: scheduleReminder({
+          message: eventReminder({
             callTime: title,
             eventDate: eventDateToString,
             ...rest,

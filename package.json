@@ -45,7 +45,7 @@
         "CLIENT": "http://localhost:3000",
         "DATABASE": "sjsitapp-dev-db",
         "NODE_ENV": "development",
-        "IMAGEAPI": "http://localhost:4000"
+        "IMAGEAPI": "https://i.mattcarlotta.io"
       }
     },
     "start": {

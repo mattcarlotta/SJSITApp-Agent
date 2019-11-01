@@ -2,7 +2,7 @@ import moment from "moment";
 import isEmpty from "lodash/isEmpty";
 import { eventLogger } from "loggers";
 import { Event, Mail } from "models";
-import { scheduleReminder } from "templates";
+import { eventReminder } from "templates";
 import { endOfTomorrow } from "shared/helpers";
 
 export default async () => {
@@ -49,7 +49,7 @@ export default async () => {
               sendTo: `${firstName} ${lastName} <${email}>`,
               sendFrom: "San Jose Sharks Ice Team <noreply@sjsiceteam.com>",
               subject: `Event Reminder for ${eventDateToString}`,
-              message: scheduleReminder({
+              message: eventReminder({
                 callTime: title,
                 eventDate: eventDateToString,
                 ...rest,

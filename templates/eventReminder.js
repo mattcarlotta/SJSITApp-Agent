@@ -10,7 +10,7 @@ export default ({
 }) => `<h1 style="text-align: center;font-size: 40px;color: #eeeeee;margin: 0;background-color: #025f6d">
     Event Reminder
   </h1>
-  <p style="font-size: 18px;text-align: center;margin: 0;padding-bottom: 10px;color: #eeeeee;background-color: #025f6d;">
+  <p style="font-size: 18px;text-align: center;margin: 0;padding: 0 10px 10px;color: #eeeeee;background-color: #025f6d;">
     You're scheduled to work an upcoming event.
   </p>
   <ul style="border: 1px solid #9e9e9e;background-color: #ebebeb;color: #000000;list-style: none;margin: 0;overflow: auto;font-size: 16px;padding: 10px 10px 15px 10px;">
@@ -22,7 +22,7 @@ export default ({
     <li style="color: #000000;margin: 5px 0px;">
       <span style="margin-right: 5px;">
         <strong>Event</strong>:&nbsp;${team}${opponent
-    && `<span>
+  && `<span>
       vs.&nbsp;${opponent}
     </span>`}
       </span>
