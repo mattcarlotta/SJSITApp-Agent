@@ -9,6 +9,14 @@ import { initiatedLogger } from "loggers";
 // CREATE POLLING SERVICES                                     //
 //= ===========================================================//
 
+// scheduleJob("*/5 * * * * *", async () => {
+//   console.log(initiatedLogger());
+//
+//   await pollForms();
+//   await pollEvents();
+//   await pollEmails();
+// });
+
 scheduleJob("*/30 * * * * *", async () => {
   console.log(initiatedLogger());
 
@@ -19,8 +27,10 @@ scheduleJob("*/30 * * * * *", async () => {
 
 // scheduleJob("*/5 * * * * *", async () => {
 //   await pollSchedules();
+//   await pollEmails();
 // });
 
 scheduleJob("59 7 25 * *", async () => {
   await pollSchedules();
+  await pollEmails();
 });

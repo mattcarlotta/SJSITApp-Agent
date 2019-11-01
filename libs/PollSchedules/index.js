@@ -1,6 +1,6 @@
 import moment from "moment";
 import isEmpty from "lodash/isEmpty";
-import { scheduleLogger } from "loggers";
+import { errorLogger, scheduleLogger } from "loggers";
 import { Event, Form, Mail } from "models";
 import { upcomingSchedule } from "templates";
 import { groupByEmail } from "shared/helpers";
@@ -9,14 +9,14 @@ export default async () => {
   let sortedSchedules = [];
   const scheduledEvents = [];
   try {
-    const nextMonth = moment()
-      .add(1, "months")
-      .startOf("month")
-      .format();
-
     // const nextMonth = moment()
+    //   .add(1, "months")
     //   .startOf("month")
-    //   .toDate();
+    //   .format();
+
+    const nextMonth = moment()
+      .startOf("month")
+      .toDate();
 
     const existingForm = await Form.findOne({
       startMonth: { $eq: nextMonth },
@@ -87,7 +87,7 @@ export default async () => {
     await Mail.insertMany(emails);
   } catch (err) {
     /* istanbul ignore next */
-    console.log(err.toString());
+    console.log(errorLogger(err));
   } finally {
     console.log(scheduleLogger(sortedSchedules));
   }
