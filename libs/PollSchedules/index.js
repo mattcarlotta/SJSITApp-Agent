@@ -9,14 +9,14 @@ export default async () => {
   let sortedSchedules = [];
   const scheduledEvents = [];
   try {
-    // const nextMonth = moment()
-    //   .add(1, "months")
-    //   .startOf("month")
-    //   .format();
-
     const nextMonth = moment()
+      .add(1, "months")
       .startOf("month")
-      .toDate();
+      .format();
+
+    // const nextMonth = moment()
+    //   .startOf("month")
+    //   .toDate();
 
     const existingForm = await Form.findOne({
       startMonth: { $eq: nextMonth },
