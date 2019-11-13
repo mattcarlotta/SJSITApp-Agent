@@ -26,7 +26,7 @@ export default async () => {
   /* istanbul ignore next */
   if (!isEmpty(forms)) {
     const members = await User.aggregate([
-      { $match: { role: { $ne: "admin" } } },
+      { $match: { role: { $eq: "employee" }, status: "active" } },
       { $sort: { lastName: 1 } },
       {
         $project: {

@@ -5,14 +5,14 @@ export default ({
   endMonth,
   startMonth,
   notes,
-}) => `<h1 style="text-align: center;font-size: 40px;color: #eeeeee;margin: 0;background-color: #025f6d;">
+}) => `<h1 style="text-align: center;font-size: 26px;color: #eeeeee;margin: 0;padding: 10px 0;background-color: #025f6d;">
     A/P Form Notification
   </h1>
   <p style="font-size: 18px;text-align: center;margin: 0;padding-bottom: 10px;color: #eeeeee;background-color: #025f6d;">
     A new A/P form has been created for ${startMonth} - ${endMonth}.
   </p>
   <p style="font-size: 16px;text-align: start;background-color: #ffffff;color: rgb(0, 0, 0);">
-    To view the A/P form, please click the <strong>button below</strong> or you may view the A/P form by navigating to the <a href="${CLIENT}/employee/dashboard" rel="noopener noreferrer" target="_blank">Dashboard</a> page, locating the <strong>Forms</strong> tab and clicking on the <strong>Sharks & Barracuda A/P Form</strong> button.
+    To view the A/P form, please click the <strong>button below</strong> or you may view the A/P form by navigating to the <a href="${CLIENT}/employee/dashboard" rel="noopener noreferrer" target="_blank">Dashboard</a> page, locating the <strong>Forms</strong> tab and clicking on the <strong>View</strong> button.
   </p>
   ${notes
     && `<p style="font-size: 16px;text-align: start;background-color: #ffffff;color: rgb(0, 0, 0);">
