@@ -1,4 +1,4 @@
-import moment from "moment";
+import moment from "moment-timezone";
 import isEmpty from "lodash/isEmpty";
 import { errorLogger, scheduleLogger } from "loggers";
 import { Event, Form, Mail } from "models";

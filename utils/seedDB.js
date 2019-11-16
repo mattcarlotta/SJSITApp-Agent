@@ -1,12 +1,14 @@
-import moment from "moment";
+import moment from "moment-timezone";
 import { connectDatabase } from "database";
 import {
-  Event, Form, Mail, User,
+  Event, Form, Mail, Season, User,
 } from "models";
 import {
   createDate,
+  getCurrentYear,
   getEndOfNextMonth,
   getMonthDateRange,
+  getNextYear,
   getStartOfNextMonth,
 } from "shared/helpers";
 import { admin, password } from "env";
@@ -35,6 +37,17 @@ const seedDB = async () => {
     };
 
     await User.create(administrator);
+
+    const currentYear = getCurrentYear();
+    const nextYear = getNextYear();
+
+    const newSeason = {
+      seasonId: `${currentYear.format("YYYY")}${nextYear.format("YYYY")}`,
+      startDate: currentYear.format(),
+      endDate: nextYear.format(),
+    };
+
+    await Season.create(newSeason);
 
     const adminAccount = await User.findOne({ email: administrator.email });
     const currentTime = createDate();

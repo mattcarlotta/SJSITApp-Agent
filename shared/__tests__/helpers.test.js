@@ -1,5 +1,12 @@
-import moment from "moment";
-import { createDate, getMonthDateRange, groupByEmail } from "shared/helpers";
+import moment from "moment-timezone";
+import {
+  createDate,
+  createSchedule,
+  getCurrentYear,
+  getMonthDateRange,
+  getNextYear,
+  groupByEmail,
+} from "shared/helpers";
 
 const scheduledEvents = [
   {
@@ -39,6 +46,26 @@ describe("Helper Functions", () => {
     expect(currentDate).toEqual(todaysDate);
   });
 
+  it("returns a structured array with callTimes for scheduling", () => {
+    const schedule = createSchedule([moment().format()]);
+
+    expect(schedule).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          _id: expect.any(String),
+          employeeIds: expect.any(Array),
+          title: expect.any(String),
+        }),
+      ]),
+    );
+  });
+
+  it("returns a current year Date", () => {
+    const currentYear = getCurrentYear().format("YYYY");
+
+    expect(currentYear).toEqual(expect.any(String));
+  });
+
   it("returns a current month range or specified month range", () => {
     const selectedDate = "2019-09-08T03:30:15.000+00:00";
 
@@ -70,6 +97,12 @@ describe("Helper Functions", () => {
         .endOf("month")
         .toDate(),
     );
+  });
+
+  it("returns a next year Date", () => {
+    const nextYear = getNextYear().format("YYYY");
+
+    expect(nextYear).toEqual(expect.any(String));
   });
 
   it("groups all objects by email", () => {
