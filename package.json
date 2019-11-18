@@ -76,19 +76,19 @@
     "start": {
       "command": "babel-node app.js",
       "env": {
-        "CLIENT": "http://sjsiceteam.com",
+        "CLIENT": "https://sjsiceteam.com",
         "DATABASE": "sjsitapp-prod-db",
         "NODE_ENV": "production",
-        "IMAGEAPI": "http://i.sjsiceteam.com"
+        "IMAGEAPI": "https://i.sjsiceteam.com"
       }
     },
     "staging": {
       "command": "babel-node app.js",
       "env": {
-        "CLIENT": "http://sjsiceteam.com",
+        "CLIENT": "https://sjsiceteam.com",
         "DATABASE": "sjsitapp-staging-db",
         "NODE_ENV": "staging",
-        "IMAGEAPI": "http://i.sjsiceteam.com"
+        "IMAGEAPI": "https://i.sjsiceteam.com"
       }
     },
     "test": {
