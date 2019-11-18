@@ -20,6 +20,7 @@
     "db:seedstage": "better-npm-run db:seedstage",
     "pre-commit": "npm run lint --silent && npm run test",
     "start": "better-npm-run start",
+    "staging": "better-npm-run staging",
     "lint": "lint-staged",
     "test": "better-npm-run test",
     "test:cov": "better-npm-run test:cov",
@@ -78,6 +79,15 @@
         "CLIENT": "http://sjsiceteam.com",
         "DATABASE": "sjsitapp-prod-db",
         "NODE_ENV": "production",
+        "IMAGEAPI": "http://i.sjsiceteam.com"
+      }
+    },
+    "staging": {
+      "command": "babel-node app.js",
+      "env": {
+        "CLIENT": "http://sjsiceteam.com",
+        "DATABASE": "sjsitapp-staging-db",
+        "NODE_ENV": "staging",
         "IMAGEAPI": "http://i.sjsiceteam.com"
       }
     },

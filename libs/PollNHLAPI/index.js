@@ -1,6 +1,6 @@
 import moment from "moment-timezone";
 import get from "lodash/get";
-import { errorLogger, eventLogger, formLogger } from "loggers";
+import { errorLogger, eventLogger, formCountLogger } from "loggers";
 import { Event, Form, Season } from "models";
 import {
   createSchedule,
@@ -125,6 +125,6 @@ export default async () => {
     console.log(errorLogger(err));
   } finally {
     console.log(eventLogger(events));
-    console.log(formLogger(createdForms));
+    console.log(formCountLogger(createdForms));
   }
 };

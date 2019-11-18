@@ -1,5 +1,5 @@
 import { pollNHLAPI } from "libs";
-import { errorLogger, eventLogger, formLogger } from "loggers";
+import { errorLogger, eventLogger, formCountLogger } from "loggers";
 import { Event, Form } from "models";
 import { getEndOfMonth, getStartOfNextNextMonth } from "shared/helpers";
 import data from "../__mocks__/libs.mocks";
@@ -95,6 +95,6 @@ describe("Poll NHL API Service", () => {
     );
 
     expect(console.log.mock.calls[0]).toContain(eventLogger([1]));
-    expect(console.log.mock.calls[1]).toContain(formLogger(1));
+    expect(console.log.mock.calls[1]).toContain(formCountLogger(1));
   });
 });
