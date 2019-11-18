@@ -70,7 +70,7 @@
         "CLIENT": "http://localhost:3000",
         "DATABASE": "sjsitapp-dev-db",
         "NODE_ENV": "development",
-        "IMAGEAPI": "https://i.mattcarlotta.io"
+        "IMAGEAPI": "https://i.sjsiceteam.com"
       }
     },
     "start": {
