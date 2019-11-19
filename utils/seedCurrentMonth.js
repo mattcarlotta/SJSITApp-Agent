@@ -5,6 +5,8 @@ import { Event, Form, Season } from "models";
 import { createSchedule, getStartOfMonth, getEndOfMonth } from "shared/helpers";
 import nhlAPI from "utils/axiosConfig";
 
+moment.tz.setDefault("America/Los_Angeles");
+
 const format = "YYYY-MM-DD";
 
 (async () => {
