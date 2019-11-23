@@ -1,6 +1,6 @@
 import moment from "moment-timezone";
 
-moment.tz;
+moment.tz.setDefault("America/Los_Angeles");
 
 /**
  * Helper function to create a current date.
