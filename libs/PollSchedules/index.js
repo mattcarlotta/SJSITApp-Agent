@@ -60,7 +60,7 @@ export default async () => {
             scheduledEvents.push({
               email: `${firstName} ${lastName} <${email}>`,
               callTime,
-              eventDate: moment(eventDate).format("MMMM Do YYYY, h:mm a"),
+              eventDate: moment(eventDate).tz("America/Los_Angeles").format("MMMM Do YYYY, h:mm a"),
               ...rest,
             });
           });

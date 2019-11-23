@@ -57,7 +57,7 @@ export default async () => {
             message: apFormNotification({
               _id,
               CLIENT,
-              expirationDate: createDate(expirationDate).format(
+              expirationDate: createDate(expirationDate).tz("America/Los_Angeles").format(
                 "MMMM Do YYYY @ hh:mm a",
               ),
               endMonth: endOfMonth,

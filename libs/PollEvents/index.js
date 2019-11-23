@@ -42,7 +42,7 @@ export default async () => {
       schedule.forEach(({ employeeIds, title }) => {
         if (!isEmpty(employeeIds)) {
           employeeIds.forEach(({ firstName, lastName, email }) => {
-            const eventDateToString = moment(eventDate).format(
+            const eventDateToString = moment(eventDate).tz("America/Los_Angeles").format(
               "MMMM Do, YYYY @ h:mm a",
             );
             emailReminders.push({

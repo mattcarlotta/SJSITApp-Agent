@@ -1,5 +1,7 @@
 import moment from "moment-timezone";
 
+moment.tz;
+
 /**
  * Helper function to create a current date.
  *
