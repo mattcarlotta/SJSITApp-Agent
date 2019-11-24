@@ -99,7 +99,9 @@ const format = "YYYY-MM-DD";
         .add(6, "days")
         .endOf("day")
         .format(),
-      sendEmailNotificationsDate: startMonth.format(),
+      sendEmailNotificationsDate: moment()
+        .startOf("month")
+        .format(),
       sentEmails: true,
       notes: "",
     };
@@ -115,7 +117,10 @@ const format = "YYYY-MM-DD";
         .add(6, "days")
         .endOf("day")
         .format(),
-      sendEmailNotificationsDate: startOfNextMonth.format(),
+      sendEmailNotificationsDate: moment()
+        .add(1, "months")
+        .startOf("month")
+        .format(),
       sentEmails: false,
       notes: "",
     };
