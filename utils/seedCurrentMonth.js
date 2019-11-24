@@ -89,11 +89,11 @@ const format = "YYYY-MM-DD";
 
     await Event.insertMany(events);
 
-    // create current months A/P form
+    // next months A/P form for current month
     const currentMonthForm = {
       seasonId,
-      startMonth: startMonth.format(),
-      endMonth: endMonth.format(),
+      startMonth: startMonth.add(1, "months").format(),
+      endMonth: endMonth.add(1, "months").format(),
       expirationDate: moment()
         .startOf("month")
         .add(6, "days")
@@ -107,8 +107,8 @@ const format = "YYYY-MM-DD";
     // create next months A/P form
     const nextMonthForm = {
       seasonId,
-      startMonth: startOfNextMonth.format(),
-      endMonth: endOfNextMonth.format(),
+      startMonth: startOfNextMonth.add(1, "months").format(),
+      endMonth: endOfNextMonth.add(1, "months").format(),
       expirationDate: moment()
         .add(1, "months")
         .startOf("month")
