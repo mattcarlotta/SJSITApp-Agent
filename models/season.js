@@ -3,8 +3,8 @@ import { Schema, model } from "mongoose";
 // current season year
 const seasonSchema = new Schema({
   seasonId: { type: String, unique: true, lowercase: true },
-  startDate: Date,
-  endDate: Date,
+  startDate: { type: Date, required: true },
+  endDate: { type: Date, required: true },
 });
 
 export default model("Season", seasonSchema);

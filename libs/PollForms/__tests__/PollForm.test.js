@@ -39,7 +39,13 @@ describe("Poll Forms Service", () => {
     await pollForms();
 
     const members = await User.aggregate([
-      { $match: { role: { $ne: "admin" } } },
+      {
+        $match: {
+          role: { $ne: "admin" },
+          status: "active",
+          emailReminders: true,
+        },
+      },
       { $sort: { lastName: 1 } },
       {
         $project: {

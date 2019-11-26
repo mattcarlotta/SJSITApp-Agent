@@ -11,16 +11,6 @@ moment.tz.setDefault("America/Los_Angeles");
 const createDate = date => moment(date || Date.now());
 
 /**
- * Helper function to convert a Date to an ISO Date.
- *
- * @function convertDateToISO
- * @returns {Date}
- */
-const convertDateToISO = date => moment(date)
-  .utcOffset(-7)
-  .toISOString(true);
-
-/**
  * Helper function to generate a schedule based upon calltimes.
  *
  * @function createSchedule
@@ -163,12 +153,12 @@ const groupByEmail = data => data
  * @function
  * @returns {Date}
  */
-const startOfDay = () => moment()
-  .startOf("day")
-  .toDate();
+// const startOfDay = () =>
+//   moment()
+//     .startOf("day")
+//     .toDate();
 
 export {
-  convertDateToISO,
   createDate,
   createSchedule,
   endOfDay,
@@ -182,5 +172,5 @@ export {
   getStartOfNextMonth,
   getStartOfNextNextMonth,
   groupByEmail,
-  startOfDay,
+  // startOfDay,
 };

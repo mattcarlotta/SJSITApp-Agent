@@ -23,10 +23,17 @@ export default async () => {
     { sort: { startMonth: 1 } },
   ).lean();
 
+  let formReminders = [];
   /* istanbul ignore next */
   if (!isEmpty(forms)) {
     const members = await User.aggregate([
-      { $match: { role: { $eq: "employee" }, status: "active" } },
+      {
+        $match: {
+          role: { $eq: "employee" },
+          status: "active",
+          emailReminders: true,
+        },
+      },
       { $sort: { lastName: 1 } },
       {
         $project: {
@@ -42,7 +49,7 @@ export default async () => {
     if (!isEmpty(members)) {
       const memberEmails = members.map(({ email }) => email);
 
-      const formReminders = forms.map(
+      formReminders = forms.map(
         ({
           _id, expirationDate, endMonth, startMonth, notes,
         }) => {
@@ -57,9 +64,9 @@ export default async () => {
             message: apFormNotification({
               _id,
               CLIENT,
-              expirationDate: createDate(expirationDate).tz("America/Los_Angeles").format(
-                "MMMM Do YYYY @ hh:mm a",
-              ),
+              expirationDate: createDate(expirationDate)
+                .tz("America/Los_Angeles")
+                .format("MMMM Do YYYY @ hh:mm a"),
               endMonth: endOfMonth,
               startMonth: startOfMonth,
               notes,
@@ -69,18 +76,17 @@ export default async () => {
       );
 
       /* istanbul ignore next */
-      if (!isEmpty(formReminders)) {
-        await Mail.insertMany(formReminders);
-        const formIds = forms.map(({ _id }) => _id);
-        await Form.updateMany(
-          {
-            _id: { $in: formIds },
-          },
-          { $set: { sentEmails: true } },
-        );
-      }
+      if (!isEmpty(formReminders)) await Mail.insertMany(formReminders);
     }
+
+    await Form.updateMany(
+      {
+        _id: { $in: forms.map(({ _id }) => _id) },
+      },
+      { $set: { sentEmails: true } },
+    );
   }
 
-  console.log(formLogger(forms));
+  /* istanbul ignore next */
+  console.log(formLogger(!isEmpty(formReminders) ? formReminders : forms));
 };

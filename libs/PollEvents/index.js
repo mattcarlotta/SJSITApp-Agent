@@ -27,7 +27,7 @@ export default async () => {
   )
     .populate({
       path: "schedule.employeeIds",
-      select: "_id firstName lastName email",
+      select: "_id firstName lastName email emailReminders",
     })
     .lean();
 
@@ -41,21 +41,31 @@ export default async () => {
     }) => {
       schedule.forEach(({ employeeIds, title }) => {
         if (!isEmpty(employeeIds)) {
-          employeeIds.forEach(({ firstName, lastName, email }) => {
-            const eventDateToString = moment(eventDate).tz("America/Los_Angeles").format(
-              "MMMM Do, YYYY @ h:mm a",
-            );
-            emailReminders.push({
-              sendTo: `${firstName} ${lastName} <${email}>`,
-              sendFrom: "San Jose Sharks Ice Team <noreply@sjsiceteam.com>",
-              subject: `Event Reminder for ${eventDateToString}`,
-              message: eventReminder({
-                callTime: title,
-                eventDate: eventDateToString,
-                ...rest,
-              }),
-            });
-          });
+          employeeIds.forEach(
+            ({
+              firstName,
+              lastName,
+              email,
+              emailReminders: sendMemberReminders,
+            }) => {
+              if (sendMemberReminders) {
+                const eventDateToString = moment(eventDate)
+                  .tz("America/Los_Angeles")
+                  .format("MMMM Do, YYYY @ h:mm a");
+
+                emailReminders.push({
+                  sendTo: `${firstName} ${lastName} <${email}>`,
+                  sendFrom: "San Jose Sharks Ice Team <noreply@sjsiceteam.com>",
+                  subject: `Event Reminder for ${eventDateToString}`,
+                  message: eventReminder({
+                    callTime: title,
+                    eventDate: eventDateToString,
+                    ...rest,
+                  }),
+                });
+              }
+            },
+          );
         }
       });
     });
@@ -63,14 +73,16 @@ export default async () => {
     /* istanbul ignore next */
     if (!isEmpty(emailReminders)) {
       await Mail.insertMany(emailReminders);
-      await Event.updateMany(
-        {
-          _id: { $in: eventIds },
-        },
-        { $set: { sentEmailReminders: true } },
-      );
     }
+
+    await Event.updateMany(
+      {
+        _id: { $in: eventIds },
+      },
+      { $set: { sentEmailReminders: true } },
+    );
   }
 
-  console.log(eventLogger(emailReminders));
+  /* istanbul ignore next */
+  console.log(eventLogger(!isEmpty(emailReminders) ? emailReminders : events));
 };

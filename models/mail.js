@@ -1,12 +1,15 @@
+import moment from "moment-timezone";
 import { Schema, model } from "mongoose";
-import { convertDateToISO } from "shared/helpers";
 
 // email
 const mailSchema = new Schema({
   message: { type: String, required: true },
   sendTo: [{ type: String, required: true }],
   sendFrom: { type: String, required: true },
-  sendDate: { type: Date, default: convertDateToISO(Date.now()) },
+  sendDate: {
+    type: Date,
+    default: moment.tz("America/Los_Angeles").toDate(),
+  },
   status: { type: String, default: "unsent" },
   subject: { type: String, required: true },
 });

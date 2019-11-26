@@ -5,6 +5,7 @@ import {
   getCurrentYear,
   getMonthDateRange,
   getNextYear,
+  getStartOfMonth,
   groupByEmail,
 } from "shared/helpers";
 
@@ -64,6 +65,16 @@ describe("Helper Functions", () => {
     const currentYear = getCurrentYear().format("YYYY");
 
     expect(currentYear).toEqual(expect.any(String));
+  });
+
+  it("returns the start of the month", () => {
+    const startMonth = getStartOfMonth().format();
+
+    expect(startMonth).toEqual(
+      moment()
+        .startOf("month")
+        .format(),
+    );
   });
 
   it("returns a current month range or specified month range", () => {

@@ -34,9 +34,21 @@ const seedDB = async () => {
       lastName: "Carlotta",
       role: "employee",
       token: "akqVlA.Zp2lWRQ/bBm3XRbHWW$ejYSZfIT4tZKtfFVIRca7ZZJvKuYhl7B6lijdr",
+      emailReminders: true,
     };
 
-    await User.create(administrator);
+    const noUserReminders = {
+      email: "bobsmith@example.com",
+      password,
+      firstName: "Bob",
+      lastName: "Smith",
+      role: "employee",
+      token:
+        "akqVlsdfd.Zp2lWRQ/bBm3XRbHWW$ejYSZfIT4tZKtfFVIRca7ZZJvKuYhl7B6lijdr",
+      emailReminders: false,
+    };
+
+    await User.insertMany([administrator, noUserReminders]);
 
     const currentYear = getCurrentYear();
     const nextYear = getNextYear();
