@@ -9,7 +9,7 @@ const formSchema = new Schema({
   seasonId: { type: String, required: true },
   sendEmailNotificationsDate: {
     type: Date,
-    default: moment.tz("America/Los_Angeles").toDate(),
+    default: moment.tz("America/Los_Angeles").format(),
   },
   sentEmails: { type: Boolean, default: false },
   notes: String,

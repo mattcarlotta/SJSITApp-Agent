@@ -8,7 +8,7 @@ const mailSchema = new Schema({
   sendFrom: { type: String, required: true },
   sendDate: {
     type: Date,
-    default: moment.tz("America/Los_Angeles").toDate(),
+    default: moment.tz("America/Los_Angeles").format(),
   },
   status: { type: String, default: "unsent" },
   subject: { type: String, required: true },
