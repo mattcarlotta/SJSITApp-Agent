@@ -3,7 +3,7 @@ import isEmpty from "lodash/isEmpty";
 import { eventLogger } from "loggers";
 import { Event, Mail } from "models";
 import { eventReminder } from "templates";
-import { endOfTomorrow } from "shared/helpers";
+import { createDate, endOfTomorrow } from "shared/helpers";
 
 export default async () => {
   const events = await Event.find(
@@ -56,6 +56,7 @@ export default async () => {
                 emailReminders.push({
                   sendTo: `${firstName} ${lastName} <${email}>`,
                   sendFrom: "San Jose Sharks Ice Team <noreply@sjsiceteam.com>",
+                  sendDate: createDate().toDate(),
                   subject: `Event Reminder for ${eventDateToString}`,
                   message: eventReminder({
                     callTime: title,

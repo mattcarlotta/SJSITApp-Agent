@@ -1,5 +1,4 @@
 import { Schema, model } from "mongoose";
-import moment from "moment-timezone";
 
 const userSchema = new Schema({
   email: {
@@ -14,7 +13,7 @@ const userSchema = new Schema({
   password: { type: String, required: true },
   registered: {
     type: Date,
-    default: moment.tz("America/Los_Angeles").format(),
+    required: true,
   },
   token: { type: String, unique: true },
   emailReminders: { type: Boolean, default: true },

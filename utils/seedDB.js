@@ -35,6 +35,7 @@ const seedDB = async () => {
       role: "employee",
       token: "akqVlA.Zp2lWRQ/bBm3XRbHWW$ejYSZfIT4tZKtfFVIRca7ZZJvKuYhl7B6lijdr",
       emailReminders: true,
+      registered: createDate().toDate(),
     };
 
     const noUserReminders = {
@@ -46,6 +47,7 @@ const seedDB = async () => {
       token:
         "akqVlsdfd.Zp2lWRQ/bBm3XRbHWW$ejYSZfIT4tZKtfFVIRca7ZZJvKuYhl7B6lijdr",
       emailReminders: false,
+      registered: createDate().toDate(),
     };
 
     await User.insertMany([administrator, noUserReminders]);

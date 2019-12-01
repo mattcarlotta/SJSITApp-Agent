@@ -1,4 +1,3 @@
-import moment from "moment-timezone";
 import { Schema, model } from "mongoose";
 
 // monthly form
@@ -9,7 +8,7 @@ const formSchema = new Schema({
   seasonId: { type: String, required: true },
   sendEmailNotificationsDate: {
     type: Date,
-    default: moment.tz("America/Los_Angeles").format(),
+    required: true,
   },
   sentEmails: { type: Boolean, default: false },
   notes: String,

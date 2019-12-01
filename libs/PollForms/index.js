@@ -61,6 +61,7 @@ export default async () => {
             sendTo: memberEmails,
             sendFrom: "San Jose Sharks Ice Team <noreply@sjsiceteam.com>",
             subject: `Sharks & Barracuda A/P Form (${startOfMonth} - ${endOfMonth})`,
+            sendDate: createDate().toDate(),
             message: apFormNotification({
               _id,
               CLIENT,

@@ -3,7 +3,7 @@ import isEmpty from "lodash/isEmpty";
 import { errorLogger, scheduleLogger } from "loggers";
 import { Event, Form, Mail } from "models";
 import { upcomingSchedule } from "templates";
-import { groupByEmail } from "shared/helpers";
+import { createDate, groupByEmail } from "shared/helpers";
 
 export default async () => {
   let sortedSchedules = [];
@@ -76,6 +76,7 @@ export default async () => {
     const emails = sortedSchedules.map(({ email, events }) => ({
       sendTo: [email],
       sendFrom: "San Jose Sharks Ice Team <noreply@sjsiceteam.com>",
+      sendDate: createDate().toDate(),
       subject: `Upcoming Schedule for ${moment(existingForm.startMonth).format(
         "MM/DD/YYYY",
       )} - ${moment(existingForm.endMonth).format("MM/DD/YYYY")}`,
