@@ -1,6 +1,6 @@
 {
   "name": "sjsitapp-agent",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "main": "app.js",
   "description": "An application for the San Jose Sharks Ice Team.",
   "repository": "https://github.com/mattcarlotta/SJSITApp-Agent",
@@ -12,6 +12,7 @@
     "npm": ">=3"
   },
   "scripts": {
+    "build": "babel ./ -d build --no-comments --ignore node_modules,**/__tests__,coverage,setupTest.js,**/__mocks__",
     "dev": "better-npm-run dev",
     "db:drop": "better-npm-run db:drop",
     "db:seed": "better-npm-run db:seed",
@@ -74,7 +75,7 @@
       }
     },
     "start": {
-      "command": "babel-node app.js",
+      "command": "node ./build/app.js",
       "env": {
         "CLIENT": "https://sjsiceteam.com",
         "DATABASE": "sjsitapp-prod-db",
@@ -83,7 +84,7 @@
       }
     },
     "staging": {
-      "command": "babel-node app.js",
+      "command": "node ./build/app.js",
       "env": {
         "CLIENT": "https://sjsiceteam.com",
         "DATABASE": "sjsitapp-staging-db",
@@ -147,6 +148,7 @@
     "nodemon": "^2.0.1"
   },
   "devDependencies": {
+    "@babel/cli": "^7.7.4",
     "axios-mock-adapter": "^1.17.0",
     "babel-jest": "^24.9.0",
     "eslint": "^5.14.1",
