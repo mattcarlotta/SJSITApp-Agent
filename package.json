@@ -1,6 +1,6 @@
 {
   "name": "sjsitapp-agent",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "app.js",
   "description": "An application for the San Jose Sharks Ice Team.",
   "repository": "https://github.com/mattcarlotta/SJSITApp-Agent",
@@ -12,7 +12,7 @@
     "npm": ">=3"
   },
   "scripts": {
-    "build": "babel ./ -d build --no-comments --ignore node_modules,**/__tests__,coverage,setupTest.js,**/__mocks__",
+    "build": "babel ./ -d build --no-comments --ignore node_modules,**/__tests__,coverage,setupTests.js,**/__mocks__",
     "dev": "better-npm-run dev",
     "db:drop": "better-npm-run db:drop",
     "db:seed": "better-npm-run db:seed",
