@@ -13,6 +13,9 @@ export default (IMAGEAPI, message) => `<html>
             <div style="background-color: #FFFFFF; border: 1px solid #f0f0f0;">
               <div style="font-size: 16px; padding: 30px; vertical-align: top; display: block;">
                 ${message}
+                <div style="color:#000;font-size:11px;text-align:left;margin-top: 10px;">
+                  This email is sent from the <a href="https://sjsiceteam.com">San Jose Sharks Ice Team</a> in association with <a href="http://www.sapcenter.com">SAP Center at San Jose</a>. If you wish to unsubscribe from these emails, change <a href="https://sjsiceteam.com/employee/settings">your email settings</a> or contact the <a href="mailto:carlotta.matt@gmail.com">Web Administator</a>.
+                </div>
               </div>
             </div>
           </div>
