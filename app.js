@@ -21,7 +21,7 @@ import { initiatedLogger } from "loggers";
 //   await pollEmails();
 // });
 
-scheduleJob("*/5 * * * *", async () => {
+scheduleJob("*/30 * * * * *", async () => {
   console.log(initiatedLogger());
 
   await pollForms();
