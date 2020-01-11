@@ -1,11 +1,11 @@
 import moment from "moment-timezone";
-import { pollSchedules } from "libs";
+import { generateEmployeeSchedules } from "libs";
 import { scheduleLogger } from "loggers";
 import { Event, Mail } from "models";
 import { getEndOfNextMonth, getStartOfNextMonth } from "shared/helpers";
 import { upcomingSchedule } from "templates";
 
-describe("Poll Schedules Service", () => {
+describe("Generate Employee Schedules Service", () => {
   let db;
   beforeAll(() => {
     db = connectDatabase();
@@ -46,7 +46,7 @@ describe("Poll Schedules Service", () => {
       })
       .lean();
 
-    await pollSchedules();
+    await generateEmployeeSchedules();
 
     const events = [
       {

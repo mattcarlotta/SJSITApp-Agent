@@ -1,25 +1,19 @@
 import "middlewares";
 import { scheduleJob } from "node-schedule";
 import {
+  generateStaffSchedule,
+  generateFormReminders,
   pollEmails,
   pollEvents,
   pollForms,
   pollNHLAPI,
-  pollSchedules,
+  generateEmployeeSchedules,
 } from "libs";
 import { initiatedLogger } from "loggers";
 
 //= ===========================================================//
 // CREATE POLLING SERVICES                                     //
 //= ===========================================================//
-
-// scheduleJob("*/5 * * * * *", async () => {
-//   console.log(initiatedLogger());
-//
-//   await pollForms();
-//   await pollEvents();
-//   await pollEmails();
-// });
 
 scheduleJob("*/30 * * * * *", async () => {
   console.log(initiatedLogger());
@@ -29,19 +23,23 @@ scheduleJob("*/30 * * * * *", async () => {
   await pollEmails();
 });
 
-// scheduleJob("*/7 * * * * *", async () => {
-//   await pollSchedules();
-//   await pollEmails();
-// });
+//= ===========================================================//
+// SCHEDULES                                                   //
+//= ===========================================================//
 
-scheduleJob("00 18 15 * *", async () => {
-  await pollSchedules();
-});
+// send out individual schedules to employees on the 15th of every month @ 6pm
+scheduleJob("0 18 15 * *", () => generateEmployeeSchedules());
 
-// scheduleJob("*/5 * * * * *", async () => {
-//   await pollNHLAPI();
-// });
+// send out a master schedule to the staff on the 15th of every month @ 7pm
+scheduleJob("0 19 15 * *", () => generateStaffSchedule());
 
-scheduleJob("59 7 16 * *", async () => {
-  await pollNHLAPI();
-});
+//= ===========================================================//
+// EVENTS & AP FORMS                                           //
+//= ===========================================================//
+
+// send out A/P form reminders to employees on the 5th of every month @ 6pm
+scheduleJob("0 18 5 * *", () => generateFormReminders());
+
+// retrieve next month's events from API and generate next months A/P form
+// on the 16th of every month @ 7:59am
+scheduleJob("59 7 16 * *", () => pollNHLAPI());

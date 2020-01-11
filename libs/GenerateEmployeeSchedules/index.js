@@ -18,9 +18,7 @@ export default async () => {
     //   .startOf("month")
     //   .toDate();
 
-    const existingForm = await Form.findOne({
-      startMonth: { $eq: nextMonth },
-    });
+    const existingForm = await Form.findOne({ startMonth: { $eq: nextMonth } });
     /* istanbul ignore next */
     if (!existingForm) throw "Unable to locate a form for next month.";
 
@@ -60,7 +58,9 @@ export default async () => {
             scheduledEvents.push({
               email: `${firstName} ${lastName} <${email}>`,
               callTime,
-              eventDate: moment(eventDate).tz("America/Los_Angeles").format("MMMM Do YYYY, h:mm a"),
+              eventDate: moment(eventDate)
+                .tz("America/Los_Angeles")
+                .format("MMMM Do YYYY, h:mm a"),
               ...rest,
             });
           });

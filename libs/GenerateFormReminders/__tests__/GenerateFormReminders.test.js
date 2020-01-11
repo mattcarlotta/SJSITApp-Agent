@@ -1,12 +1,12 @@
-import { pollForms } from "libs";
+import { generateFormReminders } from "libs";
 import { formLogger } from "loggers";
 import { Form, Mail, User } from "models";
-import { createDate, endOfDay } from "shared/helpers";
-import { apFormNotification } from "templates";
+import { createDate, getStartOfMonth, getEndOfMonth } from "shared/helpers";
+import { apFormReminder } from "templates";
 
 const { CLIENT } = process.env;
 
-describe("Poll Forms Service", () => {
+describe("Generate A/P Form Reminders Service", () => {
   let db;
   beforeAll(() => {
     db = connectDatabase();
@@ -16,16 +16,13 @@ describe("Poll Forms Service", () => {
     await db.close();
   });
 
-  it("handles polling Form documents", async () => {
-    const mailSpy = jest.spyOn(Mail, "insertMany");
-    const endDay = endOfDay();
+  it("handles polling Form documents for reminders", async () => {
+    const mailSpy = jest.spyOn(Mail, "create");
 
     const forms = await Form.find(
       {
-        sendEmailNotificationsDate: {
-          $lte: endDay,
-        },
-        sentEmails: false,
+        startMonth: { $gte: getStartOfMonth() },
+        endMonth: { $lte: getEndOfMonth() },
       },
       {
         startMonth: 1,
@@ -36,7 +33,7 @@ describe("Poll Forms Service", () => {
       { sort: { startMonth: 1 } },
     ).lean();
 
-    await pollForms();
+    await generateFormReminders();
 
     const members = await User.aggregate([
       {
@@ -72,8 +69,8 @@ describe("Poll Forms Service", () => {
         expect.objectContaining({
           sendTo: memberEmails,
           sendFrom: "San Jose Sharks Ice Team <noreply@sjsiceteam.com>",
-          subject: `Sharks & Barracuda A/P Form (${startOfMonth} - ${endOfMonth})`,
-          message: apFormNotification({
+          subject: `Sharks & Barracuda A/P Form Reminder (${startOfMonth} - ${endOfMonth})`,
+          message: apFormReminder({
             _id,
             CLIENT,
             expirationDate: createDate(expirationDate).format(
@@ -86,9 +83,6 @@ describe("Poll Forms Service", () => {
         }),
       ]),
     );
-
-    const updatedForm = await Form.findOne({ _id });
-    expect(updatedForm.sentEmails).toBeTruthy();
 
     expect(console.log).toHaveBeenCalledWith(formLogger([1]));
   });
