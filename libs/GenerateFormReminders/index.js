@@ -1,16 +1,24 @@
 import isEmpty from "lodash/isEmpty";
+import moment from "moment-timezone";
 import { formLogger } from "loggers";
 import { Form, Mail, User } from "models";
 import { apFormReminder } from "templates";
-import { getEndOfMonth, getStartOfMonth, createDate } from "shared/helpers";
+import { getEndOfMonth, createDate } from "shared/helpers";
 
 const { CLIENT } = process.env;
 
 export default async () => {
+  const startNextMonth = moment()
+    .add(1, "months")
+    .startOf("month")
+    .format();
+
+  const endNextMonth = getEndOfMonth(startNextMonth);
+
   const existingForm = await Form.findOne(
     {
-      startMonth: { $gte: getStartOfMonth() },
-      endMonth: { $lte: getEndOfMonth() },
+      startMonth: { $gte: startNextMonth },
+      endMonth: { $lte: endNextMonth },
     },
     {
       startMonth: 1,
