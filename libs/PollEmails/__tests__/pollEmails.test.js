@@ -1,11 +1,13 @@
 import mailer from "@sendgrid/mail";
-import { pollEmails } from "libs";
-import { mailLogger } from "loggers";
-import { Mail } from "models";
-import { endOfDay } from "shared/helpers";
+import { pollEmails } from "~libs";
+import { mailLogger } from "~loggers";
+import { Mail } from "~models";
+import { endOfDay } from "~shared/helpers";
 
 mailer.send.mockImplementationOnce(props => Promise.resolve(props));
-mailer.send.mockImplementationOnce(() => Promise.reject(new Error("Unauthorized")));
+mailer.send.mockImplementationOnce(() =>
+  Promise.reject(new Error("Unauthorized"))
+);
 
 describe("Poll Email Service", () => {
   let db;
@@ -24,12 +26,12 @@ describe("Poll Email Service", () => {
       {
         $match: {
           sendDate: {
-            $lte: endDay,
+            $lte: endDay
           },
-          status: "unsent",
-        },
+          status: "unsent"
+        }
       },
-      { $sort: { sendDate: -1 } },
+      { $sort: { sendDate: -1 } }
     ]);
 
     await pollEmails();
@@ -41,11 +43,11 @@ describe("Poll Email Service", () => {
       to: expect.any(Array),
       from: expect.any(String),
       subject: expect.any(String),
-      html: expect.any(String),
+      html: expect.any(String)
     });
 
     const failedEmail = await Mail.findOne({
-      status: { $regex: "failed", $options: "i" },
+      status: { $regex: "failed", $options: "i" }
     });
     expect(failedEmail.status).toEqual("failed - Unauthorized");
     expect(console.log.mock.calls[0]).toContain(mailLogger(emails));

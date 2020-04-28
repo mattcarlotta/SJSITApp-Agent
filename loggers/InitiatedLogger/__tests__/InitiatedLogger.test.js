@@ -1,6 +1,6 @@
 import chalk from "chalk";
 import moment from "moment-timezone";
-import { initiatedLogger } from "loggers";
+import { initiatedLogger } from "~loggers";
 
 describe("Initiated Logger", () => {
   it("calls console.log with a timestamped message", () => {
@@ -9,8 +9,8 @@ describe("Initiated Logger", () => {
       `${chalk.rgb(7, 54, 66).bgRgb(38, 139, 210)(" I ")} ${chalk.blue(
         `Polling service was initiated on ${moment()
           .tz("America/Los_Angeles")
-          .format("MMMM Do YYYY @ h:mm:ssa")}.`,
-      )}`,
+          .format("MMMM Do YYYY @ h:mm:ssa")}.`
+      )}`
     );
   });
 });

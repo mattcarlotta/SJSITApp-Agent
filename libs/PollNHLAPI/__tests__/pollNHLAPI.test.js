@@ -1,7 +1,7 @@
-import { pollNHLAPI } from "libs";
-import { errorLogger, eventLogger, formCountLogger } from "loggers";
-import { Event, Form } from "models";
-import { getEndOfMonth, getStartOfNextNextMonth } from "shared/helpers";
+import { pollNHLAPI } from "~libs";
+import { errorLogger, eventLogger, formCountLogger } from "~loggers";
+import { Event, Form } from "~models";
+import { getEndOfMonth, getStartOfNextNextMonth } from "~shared/helpers";
 import data from "../__mocks__/libs.mocks";
 
 const format = "YYYY-MM-DD";
@@ -38,7 +38,7 @@ describe("Poll NHL API Service", () => {
   it("handles unsuccessful polling NHL API", async () => {
     mockAxios
       .onGet(`schedule?teamId=28&startDate=${startMonth}&endDate=${endMonth}`, {
-        data: {},
+        data: {}
       })
       .reply(200);
 
@@ -48,7 +48,7 @@ describe("Poll NHL API Service", () => {
     expect(formSpy).toHaveBeenCalledTimes(0);
 
     expect(console.log.mock.calls[0]).toContain(
-      errorLogger("Unable to retrieve next month's game schedule."),
+      errorLogger("Unable to retrieve next month's game schedule.")
     );
   });
 
@@ -72,14 +72,14 @@ describe("Poll NHL API Service", () => {
             expect.objectContaining({
               _id: expect.any(String),
               employeeIds: expect.any(Array),
-              title: expect.any(String),
-            }),
+              title: expect.any(String)
+            })
           ]),
           seasonId: expect.any(String),
           team: expect.any(String),
-          notes: expect.any(String),
-        }),
-      ]),
+          notes: expect.any(String)
+        })
+      ])
     );
 
     expect(formSpy).toHaveBeenCalledTimes(1);
@@ -90,8 +90,8 @@ describe("Poll NHL API Service", () => {
         endMonth: expect.any(String),
         expirationDate: expect.any(String),
         sendEmailNotificationsDate: expect.any(String),
-        notes: expect.any(String),
-      }),
+        notes: expect.any(String)
+      })
     );
 
     expect(console.log.mock.calls[0]).toContain(eventLogger([1]));

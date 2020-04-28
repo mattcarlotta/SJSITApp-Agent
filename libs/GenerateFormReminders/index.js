@@ -1,9 +1,9 @@
 import isEmpty from "lodash/isEmpty";
 import moment from "moment-timezone";
-import { formLogger } from "loggers";
-import { Form, Mail, User } from "models";
-import { apFormReminder } from "templates";
-import { getEndOfMonth, createDate } from "shared/helpers";
+import { formLogger } from "~loggers";
+import { Form, Mail, User } from "~models";
+import { apFormReminder } from "~templates";
+import { getEndOfMonth, createDate } from "~shared/helpers";
 
 const { CLIENT } = process.env;
 
@@ -18,14 +18,14 @@ export default async () => {
   const existingForm = await Form.findOne(
     {
       startMonth: { $gte: startNextMonth },
-      endMonth: { $lte: endNextMonth },
+      endMonth: { $lte: endNextMonth }
     },
     {
       startMonth: 1,
       endMonth: 1,
-      expirationDate: 1,
+      expirationDate: 1
     },
-    { sort: { startMonth: 1 } },
+    { sort: { startMonth: 1 } }
   ).lean();
 
   const formReminders = [];
@@ -36,26 +36,24 @@ export default async () => {
         $match: {
           role: { $eq: "employee" },
           status: "active",
-          emailReminders: true,
-        },
+          emailReminders: true
+        }
       },
       { $sort: { lastName: 1 } },
       {
         $project: {
           id: 1,
           email: {
-            $concat: ["$firstName", " ", "$lastName", " ", "<", "$email", ">"],
-          },
-        },
-      },
+            $concat: ["$firstName", " ", "$lastName", " ", "<", "$email", ">"]
+          }
+        }
+      }
     ]);
 
     /* istanbul ignore next */
     if (!isEmpty(members)) {
       const memberEmails = members.map(({ email }) => email);
-      const {
-        _id, startMonth, endMonth, expirationDate,
-      } = existingForm;
+      const { _id, startMonth, endMonth, expirationDate } = existingForm;
       const format = "MM/DD/YYYY";
       const endOfMonth = createDate(endMonth).format(format);
       const startOfMonth = createDate(startMonth).format(format);
@@ -72,8 +70,8 @@ export default async () => {
             .tz("America/Los_Angeles")
             .format("MMMM Do YYYY @ hh:mm a"),
           endMonth: endOfMonth,
-          startMonth: startOfMonth,
-        }),
+          startMonth: startOfMonth
+        })
       });
 
       /* istanbul ignore next */

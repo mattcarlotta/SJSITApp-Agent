@@ -1,17 +1,17 @@
 import moment from "moment-timezone";
 import isEmpty from "lodash/isEmpty";
-import { eventLogger } from "loggers";
-import { Event, Mail } from "models";
-import { eventReminder } from "templates";
-import { createDate, endOfTomorrow } from "shared/helpers";
+import { eventLogger } from "~loggers";
+import { Event, Mail } from "~models";
+import { eventReminder } from "~templates";
+import { createDate, endOfTomorrow } from "~shared/helpers";
 
 export default async () => {
   const events = await Event.find(
     {
       eventDate: {
-        $lte: endOfTomorrow(),
+        $lte: endOfTomorrow()
       },
-      sentEmailReminders: false,
+      sentEmailReminders: false
     },
     {
       eventDate: 1,
@@ -21,13 +21,13 @@ export default async () => {
       opponent: 1,
       schedule: 1,
       team: 1,
-      uniform: 1,
+      uniform: 1
     },
-    { sort: { eventDate: 1 } },
+    { sort: { eventDate: 1 } }
   )
     .populate({
       path: "schedule.employeeIds",
-      select: "_id firstName lastName email emailReminders",
+      select: "_id firstName lastName email emailReminders"
     })
     .lean();
 
@@ -36,9 +36,7 @@ export default async () => {
   if (!isEmpty(events)) {
     const eventIds = events.map(({ _id }) => _id);
 
-    events.forEach(({
-      _id, schedule, eventDate, ...rest
-    }) => {
+    events.forEach(({ _id, schedule, eventDate, ...rest }) => {
       schedule.forEach(({ employeeIds, title }) => {
         if (!isEmpty(employeeIds)) {
           employeeIds.forEach(
@@ -46,7 +44,7 @@ export default async () => {
               firstName,
               lastName,
               email,
-              emailReminders: sendMemberReminders,
+              emailReminders: sendMemberReminders
             }) => {
               if (sendMemberReminders) {
                 const eventDateToString = moment(eventDate)
@@ -61,11 +59,11 @@ export default async () => {
                   message: eventReminder({
                     callTime: title,
                     eventDate: eventDateToString,
-                    ...rest,
-                  }),
+                    ...rest
+                  })
                 });
               }
-            },
+            }
           );
         }
       });
@@ -78,9 +76,9 @@ export default async () => {
 
     await Event.updateMany(
       {
-        _id: { $in: eventIds },
+        _id: { $in: eventIds }
       },
-      { $set: { sentEmailReminders: true } },
+      { $set: { sentEmailReminders: true } }
     );
   }
 

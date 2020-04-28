@@ -1,8 +1,8 @@
 import isEmpty from "lodash/isEmpty";
-import { formLogger } from "loggers";
-import { Form, Mail, User } from "models";
-import { apFormNotification } from "templates";
-import { createDate, endOfDay } from "shared/helpers";
+import { formLogger } from "~loggers";
+import { Form, Mail, User } from "~models";
+import { apFormNotification } from "~templates";
+import { createDate, endOfDay } from "~shared/helpers";
 
 const { CLIENT } = process.env;
 
@@ -10,17 +10,17 @@ export default async () => {
   const forms = await Form.find(
     {
       sendEmailNotificationsDate: {
-        $lte: endOfDay(),
+        $lte: endOfDay()
       },
-      sentEmails: false,
+      sentEmails: false
     },
     {
       startMonth: 1,
       endMonth: 1,
       expirationDate: 1,
-      notes: 1,
+      notes: 1
     },
-    { sort: { startMonth: 1 } },
+    { sort: { startMonth: 1 } }
   ).lean();
 
   let formReminders = [];
@@ -31,18 +31,18 @@ export default async () => {
         $match: {
           role: { $eq: "employee" },
           status: "active",
-          emailReminders: true,
-        },
+          emailReminders: true
+        }
       },
       { $sort: { lastName: 1 } },
       {
         $project: {
           id: 1,
           email: {
-            $concat: ["$firstName", " ", "$lastName", " ", "<", "$email", ">"],
-          },
-        },
-      },
+            $concat: ["$firstName", " ", "$lastName", " ", "<", "$email", ">"]
+          }
+        }
+      }
     ]);
 
     /* istanbul ignore next */
@@ -50,9 +50,7 @@ export default async () => {
       const memberEmails = members.map(({ email }) => email);
 
       formReminders = forms.map(
-        ({
-          _id, expirationDate, endMonth, startMonth, notes,
-        }) => {
+        ({ _id, expirationDate, endMonth, startMonth, notes }) => {
           const format = "MM/DD/YYYY";
           const endOfMonth = createDate(endMonth).format(format);
           const startOfMonth = createDate(startMonth).format(format);
@@ -70,10 +68,10 @@ export default async () => {
                 .format("MMMM Do YYYY @ hh:mm a"),
               endMonth: endOfMonth,
               startMonth: startOfMonth,
-              notes,
-            }),
+              notes
+            })
           };
-        },
+        }
       );
 
       /* istanbul ignore next */
@@ -82,9 +80,9 @@ export default async () => {
 
     await Form.updateMany(
       {
-        _id: { $in: forms.map(({ _id }) => _id) },
+        _id: { $in: forms.map(({ _id }) => _id) }
       },
-      { $set: { sentEmails: true } },
+      { $set: { sentEmails: true } }
     );
   }
 
