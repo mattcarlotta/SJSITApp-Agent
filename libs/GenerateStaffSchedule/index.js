@@ -1,11 +1,9 @@
 import moment from "moment-timezone";
 import isEmpty from "lodash/isEmpty";
-import { errorLogger, scheduleLogger } from "loggers";
-import {
-  Event, Form, Mail, User,
-} from "models";
-import { masterSchedule } from "templates";
-import { createDate } from "shared/helpers";
+import { errorLogger, scheduleLogger } from "~loggers";
+import { Event, Form, Mail, User } from "~models";
+import { masterSchedule } from "~templates";
+import { createDate } from "~shared/helpers";
 
 export default async () => {
   const masterScheduleMail = [];
@@ -27,8 +25,8 @@ export default async () => {
       {
         eventDate: {
           $gte: existingForm.startMonth,
-          $lte: existingForm.endMonth,
-        },
+          $lte: existingForm.endMonth
+        }
       },
       {
         eventType: 1,
@@ -38,13 +36,13 @@ export default async () => {
         opponent: 1,
         team: 1,
         uniform: 1,
-        schedule: 1,
+        schedule: 1
       },
-      { sort: { eventDate: 1 } },
+      { sort: { eventDate: 1 } }
     )
       .populate({
         path: "schedule.employeeIds",
-        select: "_id firstName lastName",
+        select: "_id firstName lastName"
       })
       .lean();
     /* istanbul ignore next */
@@ -55,18 +53,18 @@ export default async () => {
         $match: {
           role: { $eq: "staff" },
           status: "active",
-          emailReminders: true,
-        },
+          emailReminders: true
+        }
       },
       { $sort: { lastName: 1 } },
       {
         $project: {
           id: 1,
           email: {
-            $concat: ["$firstName", " ", "$lastName", " ", "<", "$email", ">"],
-          },
-        },
-      },
+            $concat: ["$firstName", " ", "$lastName", " ", "<", "$email", ">"]
+          }
+        }
+      }
     ]);
     /* istanbul ignore next */
     if (isEmpty(staffMembers)) throw "Unable to locate any staff members.";
@@ -81,7 +79,7 @@ export default async () => {
       sendFrom: "San Jose Sharks Ice Team <noreply@sjsiceteam.com>",
       sendDate: createDate().toDate(),
       subject: `Upcoming Schedule for ${startMonth} - ${endMonth}`,
-      message: masterSchedule(events, startMonth, endMonth),
+      message: masterSchedule(events, startMonth, endMonth)
     });
 
     await Mail.insertMany(masterScheduleMail);

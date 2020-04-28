@@ -1,4 +1,4 @@
-import "middlewares";
+import "~middlewares";
 import { scheduleJob } from "node-schedule";
 import {
   generateStaffSchedule,
@@ -7,9 +7,9 @@ import {
   pollEvents,
   pollForms,
   pollNHLAPI,
-  generateEmployeeSchedules,
-} from "libs";
-import { initiatedLogger } from "loggers";
+  generateEmployeeSchedules
+} from "~libs";
+import { initiatedLogger } from "~loggers";
 
 //= ===========================================================//
 // CREATE POLLING SERVICES                                     //

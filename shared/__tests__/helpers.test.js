@@ -6,8 +6,8 @@ import {
   getMonthDateRange,
   getNextYear,
   getStartOfMonth,
-  groupByEmail,
-} from "shared/helpers";
+  groupByEmail
+} from "~shared/helpers";
 
 const scheduledEvents = [
   {
@@ -19,7 +19,7 @@ const scheduledEvents = [
     uniform: "Barracuda Jacket",
     team: "San Jose Barracuda",
     opponent: "San Diego Gulls",
-    notes: "Test notes.",
+    notes: "Test notes."
   },
   {
     email: "Matt Carlotta <carlotta.matt@gmail.com>",
@@ -30,15 +30,15 @@ const scheduledEvents = [
     uniform: "Sharks Teal Jersey",
     team: "San Jose Sharks",
     opponent: "Anaheim Ducks",
-    notes: "",
-  },
+    notes: ""
+  }
 ];
 
 describe("Helper Functions", () => {
   it("returns a current date or specified date", () => {
     const format = "MMMM Do YYYY";
     const selectedDate = createDate("2019-10-08T03:30:15.000+00:00").format(
-      format,
+      format
     );
     const todaysDate = moment(Date.now()).format(format);
     const currentDate = createDate().format(format);
@@ -55,9 +55,9 @@ describe("Helper Functions", () => {
         expect.objectContaining({
           _id: expect.any(String),
           employeeIds: expect.any(Array),
-          title: expect.any(String),
-        }),
-      ]),
+          title: expect.any(String)
+        })
+      ])
     );
   });
 
@@ -73,7 +73,7 @@ describe("Helper Functions", () => {
     expect(startMonth).toEqual(
       moment()
         .startOf("month")
-        .format(),
+        .format()
     );
   });
 
@@ -82,31 +82,31 @@ describe("Helper Functions", () => {
 
     const {
       startOfMonth: selectedStartMonth,
-      endOfMonth: selectedEndMonth,
+      endOfMonth: selectedEndMonth
     } = getMonthDateRange(selectedDate);
 
     expect(selectedStartMonth).toEqual(
-      moment("2019-09-01T07:00:00.000Z").toDate(),
+      moment("2019-09-01T07:00:00.000Z").toDate()
     );
     expect(selectedEndMonth).toEqual(
-      moment("2019-10-01T06:59:59.999Z").toDate(),
+      moment("2019-10-01T06:59:59.999Z").toDate()
     );
 
     const currentDate = Date.now();
     const {
       startOfMonth: currentStartMonth,
-      endOfMonth: currentEndMonth,
+      endOfMonth: currentEndMonth
     } = getMonthDateRange();
 
     expect(currentStartMonth).toEqual(
       moment(currentDate)
         .startOf("month")
-        .toDate(),
+        .toDate()
     );
     expect(currentEndMonth).toEqual(
       moment(currentDate)
         .endOf("month")
-        .toDate(),
+        .toDate()
     );
   });
 
@@ -131,11 +131,11 @@ describe("Helper Functions", () => {
               uniform: expect.any(String),
               team: expect.any(String),
               opponent: expect.any(String),
-              notes: expect.any(String),
-            }),
-          ]),
-        }),
-      ]),
+              notes: expect.any(String)
+            })
+          ])
+        })
+      ])
     );
   });
 });

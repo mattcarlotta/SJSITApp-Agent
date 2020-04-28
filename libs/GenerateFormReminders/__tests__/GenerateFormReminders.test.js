@@ -1,9 +1,9 @@
 import moment from "moment-timezone";
-import { generateFormReminders } from "libs";
-import { formLogger } from "loggers";
-import { Form, Mail, User } from "models";
-import { createDate, getEndOfMonth } from "shared/helpers";
-import { apFormReminder } from "templates";
+import { generateFormReminders } from "~libs";
+import { formLogger } from "~loggers";
+import { Form, Mail, User } from "~models";
+import { createDate, getEndOfMonth } from "~shared/helpers";
+import { apFormReminder } from "~templates";
 
 const { CLIENT } = process.env;
 
@@ -29,15 +29,15 @@ describe("Generate A/P Form Reminders Service", () => {
     const forms = await Form.find(
       {
         startMonth: { $gte: startNextMonth },
-        endMonth: { $lte: endNextMonth },
+        endMonth: { $lte: endNextMonth }
       },
       {
         startMonth: 1,
         endMonth: 1,
         expirationDate: 1,
-        notes: 1,
+        notes: 1
       },
-      { sort: { startMonth: 1 } },
+      { sort: { startMonth: 1 } }
     ).lean();
 
     await generateFormReminders();
@@ -47,25 +47,23 @@ describe("Generate A/P Form Reminders Service", () => {
         $match: {
           role: { $eq: "employee" },
           status: "active",
-          emailReminders: true,
-        },
+          emailReminders: true
+        }
       },
       { $sort: { lastName: 1 } },
       {
         $project: {
           id: 1,
           email: {
-            $concat: ["$firstName", " ", "$lastName", " ", "<", "$email", ">"],
-          },
-        },
-      },
+            $concat: ["$firstName", " ", "$lastName", " ", "<", "$email", ">"]
+          }
+        }
+      }
     ]);
 
     const memberEmails = members.map(({ email }) => email);
 
-    const {
-      _id, endMonth, expirationDate, startMonth, notes,
-    } = forms[0];
+    const { _id, endMonth, expirationDate, startMonth, notes } = forms[0];
     const format = "MM/DD/YYYY";
     const endOfMonth = createDate(endMonth).format(format);
     const startOfMonth = createDate(startMonth).format(format);
@@ -81,14 +79,14 @@ describe("Generate A/P Form Reminders Service", () => {
             _id,
             CLIENT,
             expirationDate: createDate(expirationDate).format(
-              "MMMM Do YYYY @ hh:mm a",
+              "MMMM Do YYYY @ hh:mm a"
             ),
             endMonth: endOfMonth,
             startMonth: startOfMonth,
-            notes,
-          }),
-        }),
-      ]),
+            notes
+          })
+        })
+      ])
     );
 
     expect(console.log).toHaveBeenCalledWith(formLogger([1]));

@@ -1,9 +1,9 @@
 import moment from "moment-timezone";
-import { pollEvents } from "libs";
-import { eventLogger } from "loggers";
-import { Event, Mail } from "models";
-import { endOfTomorrow } from "shared/helpers";
-import { eventReminder } from "templates";
+import { pollEvents } from "~libs";
+import { eventLogger } from "~loggers";
+import { Event, Mail } from "~models";
+import { endOfTomorrow } from "~shared/helpers";
+import { eventReminder } from "~templates";
 
 describe("Poll Events Service", () => {
   let db;
@@ -22,9 +22,9 @@ describe("Poll Events Service", () => {
     const events = await Event.find(
       {
         eventDate: {
-          $lte: endDay,
+          $lte: endDay
         },
-        sentEmailReminders: false,
+        sentEmailReminders: false
       },
       {
         eventDate: 1,
@@ -34,25 +34,23 @@ describe("Poll Events Service", () => {
         opponent: 1,
         schedule: 1,
         team: 1,
-        uniform: 1,
+        uniform: 1
       },
-      { sort: { eventDate: 1 } },
+      { sort: { eventDate: 1 } }
     )
       .populate({
         path: "schedule.employeeIds",
-        select: "_id firstName lastName email",
+        select: "_id firstName lastName email"
       })
       .lean();
 
     await pollEvents();
 
-    const {
-      _id, eventDate, schedule, ...rest
-    } = events[0];
+    const { _id, eventDate, schedule, ...rest } = events[0];
     const { title } = schedule[0];
     const { firstName, lastName, email } = schedule[0].employeeIds[0];
     const eventDateToString = moment(eventDate).format(
-      "MMMM Do, YYYY @ h:mm a",
+      "MMMM Do, YYYY @ h:mm a"
     );
 
     expect(mailSpy).toHaveBeenCalledTimes(1);
@@ -65,10 +63,10 @@ describe("Poll Events Service", () => {
           message: eventReminder({
             callTime: title,
             eventDate: eventDateToString,
-            ...rest,
-          }),
-        }),
-      ]),
+            ...rest
+          })
+        })
+      ])
     );
 
     const updatedEvent = await Event.findOne({ _id });

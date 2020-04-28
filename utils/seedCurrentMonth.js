@@ -1,9 +1,13 @@
 import moment from "moment-timezone";
 import get from "lodash/get";
-import { connectDatabase } from "database";
-import { Event, Form, Season } from "models";
-import { createSchedule, getStartOfMonth, getEndOfMonth } from "shared/helpers";
-import nhlAPI from "utils/axiosConfig";
+import { connectDatabase } from "~database";
+import { Event, Form, Season } from "~models";
+import {
+  createSchedule,
+  getStartOfMonth,
+  getEndOfMonth
+} from "~shared/helpers";
+import nhlAPI from "~utils/axiosConfig";
 
 moment.tz.setDefault("America/Los_Angeles");
 
@@ -29,18 +33,19 @@ const format = "YYYY-MM-DD";
     const existingSeason = await Season.findOne(
       {
         startDate: { $lte: beginOfMonth },
-        endDate: { $gte: beginOfMonth },
+        endDate: { $gte: beginOfMonth }
       },
-      { seasonId: 1 },
+      { seasonId: 1 }
     );
     /* istanbul ignore next */
-    if (!existingSeason) throw "Unable to locate a seasonId associated with that month.";
+    if (!existingSeason)
+      throw "Unable to locate a seasonId associated with that month.";
 
     const { seasonId } = existingSeason;
 
     // fetch Sharks schedule for next month from stats.nhl.com
     const res = await nhlAPI.get(
-      `schedule?teamId=28&startDate=${beginOfMonth}&endDate=${endNextMonth}`,
+      `schedule?teamId=28&startDate=${beginOfMonth}&endDate=${endNextMonth}`
     );
 
     const dates = get(res, ["data", "dates"]);
@@ -50,7 +55,7 @@ const format = "YYYY-MM-DD";
     dates.forEach(({ games }) => {
       // search through data and check to see if Sharks are at home
       const isHomeGame = games.find(
-        ({ teams }) => teams.home.team.name === "San Jose Sharks",
+        ({ teams }) => teams.home.team.name === "San Jose Sharks"
       );
 
       // if they're at home...
@@ -58,7 +63,7 @@ const format = "YYYY-MM-DD";
         const {
           gameDate,
           venue: { name: location },
-          teams,
+          teams
         } = isHomeGame;
 
         // get team and opponent names
@@ -68,9 +73,11 @@ const format = "YYYY-MM-DD";
         const date = moment(gameDate).format("MMMM Do YYYY, hh:mm a");
 
         // generate callTimes based upon the date
-        const callTimes = [120, 105, 90, 75, 30].map(time => moment(date, "MMMM Do YYYY, hh:mm a")
-          .subtract(time, "minutes")
-          .format());
+        const callTimes = [120, 105, 90, 75, 30].map(time =>
+          moment(date, "MMMM Do YYYY, hh:mm a")
+            .subtract(time, "minutes")
+            .format()
+        );
 
         // store results in accumulator
         events.push({
@@ -82,7 +89,7 @@ const format = "YYYY-MM-DD";
           schedule: createSchedule(callTimes),
           seasonId,
           team,
-          notes: "",
+          notes: ""
         });
       }
     });
@@ -103,7 +110,7 @@ const format = "YYYY-MM-DD";
         .startOf("month")
         .format(),
       sentEmails: true,
-      notes: "",
+      notes: ""
     };
 
     // create next months A/P form
@@ -122,17 +129,17 @@ const format = "YYYY-MM-DD";
         .startOf("month")
         .format(),
       sentEmails: false,
-      notes: "",
+      notes: ""
     };
 
     await Form.insertMany([currentMonthForm, nextMonthForm]);
 
     return console.log(
-      "\n\x1b[7m\x1b[32;1m PASS \x1b[0m \x1b[2mutils/\x1b[0m\x1b[1mseeds.js",
+      "\n\x1b[7m\x1b[32;1m PASS \x1b[0m \x1b[2mutils/\x1b[0m\x1b[1mseeds.js"
     );
   } catch (err) {
     return console.log(
-      `\n\x1b[7m\x1b[31;1m FAIL \x1b[0m \x1b[2mutils/\x1b[0m\x1b[31;1mseedDB.js\x1b[0m\x1b[31m\n${err.toString()}\x1b[0m`,
+      `\n\x1b[7m\x1b[31;1m FAIL \x1b[0m \x1b[2mutils/\x1b[0m\x1b[31;1mseedDB.js\x1b[0m\x1b[31m\n${err.toString()}\x1b[0m`
     );
   } finally {
     await db.close();

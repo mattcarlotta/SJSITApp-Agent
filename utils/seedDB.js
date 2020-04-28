@@ -1,19 +1,18 @@
 import moment from "moment-timezone";
-import { connectDatabase } from "database";
-import {
-  Event, Form, Mail, Season, User,
-} from "models";
+import { connectDatabase } from "~database";
+import { Event, Form, Mail, Season, User } from "~models";
 import {
   createDate,
   getCurrentYear,
   getEndOfNextMonth,
   getMonthDateRange,
   getNextYear,
-  getStartOfNextMonth,
-} from "shared/helpers";
-import { admin, password } from "env";
-
+  getStartOfNextMonth
+} from "~shared/helpers";
 const { SEED } = process.env;
+
+const admin = "carlotta.matt@gmail.com";
+const password = "password";
 
 /**
  * Function to seed the testing Mongo database.
@@ -27,6 +26,9 @@ const { SEED } = process.env;
 const seedDB = async () => {
   const db = connectDatabase();
   try {
+    const databaseExists = User.findOne({ email: admin });
+    if (databaseExists) await db.dropDatabase();
+
     const administrator = {
       email: admin,
       password,
@@ -35,7 +37,7 @@ const seedDB = async () => {
       role: "employee",
       token: "akqVlA.Zp2lWRQ/bBm3XRbHWW$ejYSZfIT4tZKtfFVIRca7ZZJvKuYhl7B6lijdr",
       emailReminders: true,
-      registered: createDate().toDate(),
+      registered: createDate().toDate()
     };
 
     const staff = {
@@ -46,7 +48,7 @@ const seedDB = async () => {
       role: "staff",
       token: "akqVlB.Zp2lWRQ/bBv3XRbHWW$ejYSZfIT4tZKtfFVIRca7ZZJvKuYhl7B6lijdr",
       emailReminders: true,
-      registered: createDate().toDate(),
+      registered: createDate().toDate()
     };
 
     const noUserReminders = {
@@ -58,7 +60,7 @@ const seedDB = async () => {
       token:
         "akqVlsdfd.Zp2lWRQ/bBm3XRbHWW$ejYSZfIT4tZKtfFVIRca7ZZJvKuYhl7B6lijdr",
       emailReminders: false,
-      registered: createDate().toDate(),
+      registered: createDate().toDate()
     };
 
     await User.insertMany([administrator, staff, noUserReminders]);
@@ -69,7 +71,7 @@ const seedDB = async () => {
     const newSeason = {
       seasonId: `${currentYear.format("YYYY")}${nextYear.format("YYYY")}`,
       startDate: currentYear.format(),
-      endDate: nextYear.format(),
+      endDate: nextYear.format()
     };
 
     await Season.create(newSeason);
@@ -92,9 +94,9 @@ const seedDB = async () => {
         {
           _id: currentTime.format(),
           title: currentTime.format("hh:mm a"),
-          employeeIds: [adminAccount._id],
-        },
-      ],
+          employeeIds: [adminAccount._id]
+        }
+      ]
     };
 
     const nextMonthDate = moment().add(1, "month");
@@ -114,9 +116,9 @@ const seedDB = async () => {
         {
           _id: nextMonthDate.format(),
           title: nextMonthDate.format("hh:mm a"),
-          employeeIds: [adminAccount._id],
-        },
-      ],
+          employeeIds: [adminAccount._id]
+        }
+      ]
     };
 
     const nextMonthDate1 = moment()
@@ -138,9 +140,9 @@ const seedDB = async () => {
         {
           _id: nextMonthDate1.format(),
           title: nextMonthDate1.format("hh:mm a"),
-          employeeIds: [],
-        },
-      ],
+          employeeIds: []
+        }
+      ]
     };
 
     await Event.insertMany([newEvent, newEvent2, newEvent3]);
@@ -156,7 +158,7 @@ const seedDB = async () => {
       sendEmailNotificationsDate: currentTime.format(),
       sentEmails: false,
       notes: "Form 1",
-      seasonId: "20192020",
+      seasonId: "20192020"
     };
 
     const newForm2 = {
@@ -174,7 +176,7 @@ const seedDB = async () => {
         .format(),
       sentEmails: false,
       notes: "Form 2",
-      seasonId: "20192020",
+      seasonId: "20192020"
     };
 
     await Form.insertMany([newForm, newForm2]);
@@ -185,7 +187,7 @@ const seedDB = async () => {
       sendFrom: "San Jose Sharks Ice Team <testing@sjsiceteam.com>",
       status: "unsent",
       subject: "Testing",
-      message: "<p>Testing</p>",
+      message: "<p>Testing</p>"
     };
 
     const newMail2 = {
@@ -194,7 +196,7 @@ const seedDB = async () => {
       sendFrom: "San Jose Sharks Ice Team <testing@sjsiceteam.com>",
       status: "unsent",
       subject: "Testing 2",
-      message: "<p>Testing</p>",
+      message: "<p>Testing</p>"
     };
 
     await Mail.insertMany([newMail1, newMail2]);
@@ -202,11 +204,11 @@ const seedDB = async () => {
     await db.close();
 
     return console.log(
-      "\n\x1b[7m\x1b[32;1m PASS \x1b[0m \x1b[2mutils/\x1b[0m\x1b[1mseedDB.js",
+      "\n\x1b[7m\x1b[32;1m PASS \x1b[0m \x1b[2mutils/\x1b[0m\x1b[1mseedDB.js"
     );
   } catch (err) {
     return console.log(
-      `\n\x1b[7m\x1b[31;1m FAIL \x1b[0m \x1b[2mutils/\x1b[0m\x1b[31;1mseedDB.js\x1b[0m\x1b[31m\n${err.toString()}\x1b[0m`,
+      `\n\x1b[7m\x1b[31;1m FAIL \x1b[0m \x1b[2mutils/\x1b[0m\x1b[31;1mseedDB.js\x1b[0m\x1b[31m\n${err.toString()}\x1b[0m`
     );
   } finally {
     if (SEED) {

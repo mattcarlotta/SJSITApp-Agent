@@ -1,9 +1,9 @@
 import moment from "moment-timezone";
 import isEmpty from "lodash/isEmpty";
-import { errorLogger, scheduleLogger } from "loggers";
-import { Event, Form, Mail } from "models";
-import { upcomingSchedule } from "templates";
-import { createDate, groupByEmail } from "shared/helpers";
+import { errorLogger, scheduleLogger } from "~loggers";
+import { Event, Form, Mail } from "~models";
+import { upcomingSchedule } from "~templates";
+import { createDate, groupByEmail } from "~shared/helpers";
 
 export default async () => {
   let sortedSchedules = [];
@@ -26,8 +26,8 @@ export default async () => {
       {
         eventDate: {
           $gte: existingForm.startMonth,
-          $lte: existingForm.endMonth,
-        },
+          $lte: existingForm.endMonth
+        }
       },
       {
         eventDate: 1,
@@ -37,21 +37,19 @@ export default async () => {
         opponent: 1,
         schedule: 1,
         team: 1,
-        uniform: 1,
+        uniform: 1
       },
-      { sort: { eventDate: 1 } },
+      { sort: { eventDate: 1 } }
     )
       .populate({
         path: "schedule.employeeIds",
-        select: "_id firstName lastName email",
+        select: "_id firstName lastName email"
       })
       .lean();
     /* istanbul ignore next */
     if (isEmpty(existingEvents)) throw "No events were found for next month.";
 
-    existingEvents.forEach(({
-      _id, schedule, eventDate, ...rest
-    }) => {
+    existingEvents.forEach(({ _id, schedule, eventDate, ...rest }) => {
       schedule.forEach(({ employeeIds, title: callTime }) => {
         if (!isEmpty(employeeIds)) {
           employeeIds.forEach(({ firstName, lastName, email }) => {
@@ -61,7 +59,7 @@ export default async () => {
               eventDate: moment(eventDate)
                 .tz("America/Los_Angeles")
                 .format("MMMM Do YYYY, h:mm a"),
-              ...rest,
+              ...rest
             });
           });
         }
@@ -69,7 +67,8 @@ export default async () => {
     });
 
     /* istanbul ignore next */
-    if (isEmpty(scheduledEvents)) throw "No scheduled events were found for next month.";
+    if (isEmpty(scheduledEvents))
+      throw "No scheduled events were found for next month.";
 
     sortedSchedules = groupByEmail(scheduledEvents);
 
@@ -78,11 +77,11 @@ export default async () => {
       sendFrom: "San Jose Sharks Ice Team <noreply@sjsiceteam.com>",
       sendDate: createDate().toDate(),
       subject: `Upcoming Schedule for ${moment(existingForm.startMonth).format(
-        "MM/DD/YYYY",
+        "MM/DD/YYYY"
       )} - ${moment(existingForm.endMonth).format("MM/DD/YYYY")}`,
       message: upcomingSchedule({
-        events,
-      }),
+        events
+      })
     }));
 
     await Mail.insertMany(emails);

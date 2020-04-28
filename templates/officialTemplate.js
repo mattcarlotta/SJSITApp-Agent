@@ -5,9 +5,9 @@ export default (IMAGEAPI, message) => `<html>
           <div style="font-size: 16px; padding: 30px; vertical-align: top; display: block; max-width: 675px; margin: 0 auto;">
             <div style="margin-bottom: 30px; margin-top: 15px;">
               <p style="color: #2E323B;">
-                <img style="margin-right:15px;" title="sapLogo" src="${IMAGEAPI}/sapLogo.jpg" height="30px" alt="sapLogo.jpg"></img>
-                <img style="margin-right:15px;" title="sharksLogo" src="${IMAGEAPI}/sharksLogo.jpg" height="40px" alt="sharksLogo.jpg"></img>
-                <img title="barracudaLogo" src="${IMAGEAPI}/barracudaLogo.jpg" height="33px" alt="barracudaLogo.jpg"></img>
+                <img style="margin-right:15px;" title="sapLogo" src="${IMAGEAPI}/images/sapLogo.jpg" height="30px" alt="sapLogo.jpg"></img>
+                <img style="margin-right:15px;" title="sharksLogo" src="${IMAGEAPI}/images/sharksLogo.jpg" height="40px" alt="sharksLogo.jpg"></img>
+                <img title="barracudaLogo" src="${IMAGEAPI}/images/barracudaLogo.jpg" height="33px" alt="barracudaLogo.jpg"></img>
               </p>
             </div>
             <div style="background-color: #FFFFFF; border: 1px solid #f0f0f0;">

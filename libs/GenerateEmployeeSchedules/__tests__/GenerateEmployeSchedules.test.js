@@ -1,9 +1,9 @@
 import moment from "moment-timezone";
-import { generateEmployeeSchedules } from "libs";
-import { scheduleLogger } from "loggers";
-import { Event, Mail } from "models";
-import { getEndOfNextMonth, getStartOfNextMonth } from "shared/helpers";
-import { upcomingSchedule } from "templates";
+import { generateEmployeeSchedules } from "~libs";
+import { scheduleLogger } from "~loggers";
+import { Event, Mail } from "~models";
+import { getEndOfNextMonth, getStartOfNextMonth } from "~shared/helpers";
+import { upcomingSchedule } from "~templates";
 
 describe("Generate Employee Schedules Service", () => {
   let db;
@@ -24,8 +24,8 @@ describe("Generate Employee Schedules Service", () => {
       {
         eventDate: {
           $gte: startMonth,
-          $lte: endMonth,
-        },
+          $lte: endMonth
+        }
       },
       {
         callTimes: 1,
@@ -36,13 +36,13 @@ describe("Generate Employee Schedules Service", () => {
         opponent: 1,
         schedule: 1,
         team: 1,
-        uniform: 1,
+        uniform: 1
       },
-      { sort: { eventDate: 1 } },
+      { sort: { eventDate: 1 } }
     )
       .populate({
         path: "schedule.employeeIds",
-        select: "_id firstName lastName email",
+        select: "_id firstName lastName email"
       })
       .lean();
 
@@ -54,9 +54,9 @@ describe("Generate Employee Schedules Service", () => {
         email: "Matt Carlotta <carlotta.matt@gmail.com>",
         callTime: moment(existingEvent.callTimes[0]).format("hh:mm a"),
         eventDate: moment(existingEvent.eventDate).format(
-          "MMMM Do YYYY, h:mm a",
-        ),
-      },
+          "MMMM Do YYYY, h:mm a"
+        )
+      }
     ];
 
     expect(mailSpy).toHaveBeenCalledTimes(1);
@@ -66,13 +66,13 @@ describe("Generate Employee Schedules Service", () => {
           sendTo: ["Matt Carlotta <carlotta.matt@gmail.com>"],
           sendFrom: "San Jose Sharks Ice Team <noreply@sjsiceteam.com>",
           subject: `Upcoming Schedule for ${moment(startMonth).format(
-            "MM/DD/YYYY",
+            "MM/DD/YYYY"
           )} - ${moment(endMonth).format("MM/DD/YYYY")}`,
           message: upcomingSchedule({
-            events,
-          }),
-        }),
-      ]),
+            events
+          })
+        })
+      ])
     );
 
     expect(console.log).toHaveBeenCalledWith(scheduleLogger([1]));

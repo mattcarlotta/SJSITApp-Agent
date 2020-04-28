@@ -1,13 +1,13 @@
 import moment from "moment-timezone";
 import get from "lodash/get";
-import { errorLogger, eventLogger, formCountLogger } from "loggers";
-import { Event, Form, Season } from "models";
+import { errorLogger, eventLogger, formCountLogger } from "~loggers";
+import { Event, Form, Season } from "~models";
 import {
   createSchedule,
   getEndOfMonth,
-  getStartOfNextNextMonth,
-} from "shared/helpers";
-import nhlAPI from "utils/axiosConfig";
+  getStartOfNextNextMonth
+} from "~shared/helpers";
+import nhlAPI from "~utils/axiosConfig";
 
 const format = "YYYY-MM-DD";
 
@@ -30,20 +30,21 @@ export default async () => {
     const existingSeason = await Season.findOne(
       {
         startDate: { $lte: formattedStartMonth },
-        endDate: { $gte: formattedStartMonth },
+        endDate: { $gte: formattedStartMonth }
       },
-      { seasonId: 1 },
+      { seasonId: 1 }
     );
     /* istanbul ignore next */
-    if (!existingSeason) throw "Unable to locate a seasonId associated with that month.";
+    if (!existingSeason)
+      throw "Unable to locate a seasonId associated with that month.";
 
     const { seasonId } = existingSeason;
 
     // fetch Sharks schedule for next month from stats.nhl.com
     const res = await nhlAPI.get(
       `schedule?teamId=28&startDate=${formattedStartMonth}&endDate=${endMonth.format(
-        format,
-      )}`,
+        format
+      )}`
     );
 
     const dates = get(res, ["data", "dates"]);
@@ -53,7 +54,7 @@ export default async () => {
     dates.forEach(({ games }) => {
       // search through data and check to see if Sharks are at home
       const isHomeGame = games.find(
-        ({ teams }) => teams.home.team.name === "San Jose Sharks",
+        ({ teams }) => teams.home.team.name === "San Jose Sharks"
       );
 
       // if they're at home...
@@ -67,9 +68,11 @@ export default async () => {
         const date = moment(gameDate).format("MMMM Do YYYY, hh:mm a");
 
         // generate callTimes based upon the date
-        const callTimes = [120, 105, 90, 75, 30].map(time => moment(date, "MMMM Do YYYY, hh:mm a")
-          .subtract(time, "minutes")
-          .format());
+        const callTimes = [120, 105, 90, 75, 30].map(time =>
+          moment(date, "MMMM Do YYYY, hh:mm a")
+            .subtract(time, "minutes")
+            .format()
+        );
 
         // store results in accumulator
         events.push({
@@ -81,7 +84,7 @@ export default async () => {
           schedule: createSchedule(callTimes),
           seasonId,
           team,
-          notes: "",
+          notes: ""
         });
       }
     });
@@ -117,7 +120,7 @@ export default async () => {
       endMonth: endMonth.format(),
       expirationDate,
       sendEmailNotificationsDate,
-      notes: "",
+      notes: ""
     });
 
     createdForms = 1;

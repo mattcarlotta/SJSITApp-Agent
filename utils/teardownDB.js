@@ -1,4 +1,4 @@
-import { connectDatabase } from "database";
+import { connectDatabase } from "~database";
 
 const { DROPDB } = process.env;
 
@@ -20,11 +20,11 @@ const teardownDB = async () => {
     await db.dropDatabase();
     await db.close();
     return console.log(
-      "\n\x1b[7m\x1b[32;1m PASS \x1b[0m \x1b[2mutils/\x1b[0m\x1b[1mteardownDB.js",
+      "\n\x1b[7m\x1b[32;1m PASS \x1b[0m \x1b[2mutils/\x1b[0m\x1b[1mteardownDB.js"
     );
   } catch (err) {
     return console.log(
-      `\n\x1b[7m\x1b[31;1m FAIL \x1b[0m \x1b[2mutils/\x1b[0m\x1b[31;1mteardownDB.js\x1b[0m\x1b[31m\n${err.toString()}\x1b[0m`,
+      `\n\x1b[7m\x1b[31;1m FAIL \x1b[0m \x1b[2mutils/\x1b[0m\x1b[31;1mteardownDB.js\x1b[0m\x1b[31m\n${err.toString()}\x1b[0m`
     );
   } finally {
     if (DROPDB) {
