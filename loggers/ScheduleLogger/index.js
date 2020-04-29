@@ -1,7 +1,6 @@
 import chalk from "chalk";
 
-export default scheduledEvents => `${chalk.rgb(7, 54, 66).bgRgb(38, 139, 210)(" I ")} ${chalk.rgb(
-  255,
-  255,
-  255,
-)(`Processed Schedules... ${scheduledEvents.length}`)}`;
+export default scheduledEvents =>
+  `${chalk.rgb(7, 54, 66).bgRgb(38, 139, 210)(" INFO ")} ${chalk.blue(
+    `Processed Schedules... ${scheduledEvents.length}`
+  )}\n`;

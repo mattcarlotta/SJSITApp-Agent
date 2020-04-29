@@ -17,7 +17,7 @@
     "drop": "NODE_ENV=test DROPDB=true babel-node ./utils/teardownDB.js",
     "seed": "NODE_ENV=test SEEDDB=true babel-node ./utils/seedDB.js",
     "start": "NODE_ENV=production node ./build/app.js",
-    "test": "NODE_ENV=test DROPDB=true inTesting=true DATABASE=sjsitapp-test-db  jest --config ./jest.json --passWithNoTests",
+    "test": "NODE_ENV=test DROPDB=true jest --config ./jest.json --passWithNoTests",
     "test:cov": "NODE_ENV=test DROPDB=true jest --config ./jest.json --coverage",
     "test:watch": "NODE_ENV=test jest --config ./jest.json --passWithNoTests --watchAll"
   },
@@ -28,8 +28,8 @@
     "@sendgrid/mail": "^6.4.0",
     "axios": "^0.19.0",
     "babel-plugin-module-resolver": "^4.0.0",
-    "better-npm-run": "^0.1.1",
     "chalk": "^4.0.0",
+    "dotenv": "^8.2.0",
     "lodash": "^4.17.15",
     "moment-timezone": "^0.5.27",
     "mongoose": "^5.7.13",

@@ -1,6 +1,8 @@
+import "~env";
+import chalk from "chalk";
 import { connectDatabase } from "~database";
 
-const { DROPDB } = process.env;
+const { DATABASE, DROPDB } = process.env;
 
 /**
  * Function to tear down the testing Mongo database.
@@ -19,17 +21,20 @@ const teardownDB = async () => {
   try {
     await db.dropDatabase();
     await db.close();
-    return console.log(
-      "\n\x1b[7m\x1b[32;1m PASS \x1b[0m \x1b[2mutils/\x1b[0m\x1b[1mteardownDB.js"
+
+    console.log(
+      `\n${chalk.rgb(7, 54, 66).bgRgb(38, 139, 210)(" PASS ")} ${chalk.blue(
+        `\x1b[2mutils/\x1b[0m\x1b[1mteardownDB.js\x1b[0m (${DATABASE})`
+      )}\n`
     );
+
+    return DROPDB ? process.exit(0) : true;
   } catch (err) {
-    return console.log(
+    console.log(
       `\n\x1b[7m\x1b[31;1m FAIL \x1b[0m \x1b[2mutils/\x1b[0m\x1b[31;1mteardownDB.js\x1b[0m\x1b[31m\n${err.toString()}\x1b[0m`
     );
-  } finally {
-    if (DROPDB) {
-      process.exit(0);
-    }
+
+    return DROPDB ? process.exit(1) : false;
   }
 };
 
