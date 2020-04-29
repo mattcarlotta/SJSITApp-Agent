@@ -19,7 +19,6 @@ build
 uploads/
 scrap/
 prod.json
-env/
 
 # Logs
 logs
@@ -65,3 +64,6 @@ npm-debug.log
 
 #ngrok
 ngrok
+
+# production env
+.env.*
