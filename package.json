@@ -12,7 +12,7 @@
     "npm": ">=3"
   },
   "scripts": {
-    "build": "rimraf build && babel ./ -d build --no-comments --ignore node_modules,**/__tests__,coverage,setupTests.js,**/__mocks__",
+    "build": "rimraf build && babel ./ -d build --no-comments --ignore node_modules,**/__tests__,coverage,setupTests.js,**/__mocks__,babel.config.js",
     "dev": "NODE_ENV=development nodemon --exec babel-node ./app.js",
     "drop": "NODE_ENV=test DROPDB=true babel-node ./utils/teardownDB.js",
     "seed": "NODE_ENV=test SEEDDB=true babel-node ./utils/seedDB.js",
