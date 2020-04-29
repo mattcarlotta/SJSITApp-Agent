@@ -13,124 +13,13 @@
   },
   "scripts": {
     "build": "rimraf build && babel ./ -d build --no-comments --ignore node_modules,**/__tests__,coverage,setupTests.js,**/__mocks__",
-    "dev": "better-npm-run dev",
-    "db:drop": "better-npm-run db:drop",
-    "db:seed": "better-npm-run db:seed",
-    "db:seeddev": "better-npm-run db:seeddev",
-    "db:seedprod": "better-npm-run db:seedprod",
-    "db:seedstage": "better-npm-run db:seedstage",
-    "pre-commit": "npm run lint --silent && npm run test",
-    "start": "better-npm-run start",
-    "staging": "better-npm-run staging",
-    "lint": "lint-staged",
-    "test": "better-npm-run test",
-    "test:cov": "better-npm-run test:cov",
-    "test:watch": "better-npm-run test:watch"
-  },
-  "betterScripts": {
-    "db:drop": {
-      "command": "babel-node ./utils/teardownDB.js",
-      "env": {
-        "DATABASE": "sjsitapp-test-db",
-        "NODE_ENV": "development",
-        "DROPDB": "true"
-      }
-    },
-    "db:seed": {
-      "command": "babel-node ./utils/seedDB.js",
-      "env": {
-        "DATABASE": "sjsitapp-test-db",
-        "NODE_ENV": "development",
-        "SEED": "true"
-      }
-    },
-    "db:seeddev": {
-      "command": "babel-node ./utils/seedCurrentMonth.js",
-      "env": {
-        "DATABASE": "sjsitapp-dev-db",
-        "NODE_ENV": "development"
-      }
-    },
-    "db:seedstage": {
-      "command": "babel-node ./utils/seedCurrentMonth.js",
-      "env": {
-        "DATABASE": "sjsitapp-staging-db",
-        "NODE_ENV": "staging"
-      }
-    },
-    "db:seedprod": {
-      "command": "babel-node ./utils/seedCurrentMonth.js",
-      "env": {
-        "DATABASE": "sjsitapp-prod-db",
-        "NODE_ENV": "production"
-      }
-    },
-    "dev": {
-      "command": "nodemon --exec babel-node ./app.js",
-      "env": {
-        "CLIENT": "http://localhost:3000",
-        "DATABASE": "sjsitapp-dev-db",
-        "NODE_ENV": "development",
-        "IMAGEAPI": "https://i.sjsiceteam.com"
-      }
-    },
-    "start": {
-      "command": "node ./build/app.js",
-      "env": {
-        "CLIENT": "https://sjsiceteam.com",
-        "DATABASE": "sjsitapp-prod-db",
-        "NODE_ENV": "production",
-        "IMAGEAPI": "https://i.sjsiceteam.com"
-      }
-    },
-    "staging": {
-      "command": "node ./build/app.js",
-      "env": {
-        "CLIENT": "https://sjsiceteam.com",
-        "DATABASE": "sjsitapp-staging-db",
-        "NODE_ENV": "staging",
-        "IMAGEAPI": "https://i.sjsiceteam.com"
-      }
-    },
-    "test": {
-      "command": "jest --config ./jest.json --passWithNoTests",
-      "env": {
-        "DATABASE": "sjsitapp-test-db",
-        "NODE_ENV": "testing",
-        "DROPDB": "true",
-        "IMAGEAPI": "http://localhost:4000"
-      }
-    },
-    "test:cov": {
-      "command": "jest --config ./jest.json --coverage",
-      "env": {
-        "CLIENT": "http://localhost:5001",
-        "DATABASE": "sjsitapp-test-db",
-        "NODE_ENV": "testing",
-        "DROPDB": "true",
-        "IMAGEAPI": "http://localhost:4000"
-      }
-    },
-    "test:watch": {
-      "command": "jest --config ./jest.json --passWithNoTests --watchAll",
-      "env": {
-        "CLIENT": "http://localhost:5001",
-        "DATABASE": "sjsitapp-test-db",
-        "NODE_ENV": "testing",
-        "IMAGEAPI": "http://localhost:4000"
-      }
-    }
-  },
-  "lint-staged": {
-    "*.js": [
-      "eslint --fix",
-      "git add"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run pre-commit"
-    }
+    "dev": "NODE_ENV=development nodemon --exec babel-node ./app.js",
+    "drop": "NODE_ENV=test DROPDB=true babel-node ./utils/teardownDB.js",
+    "seed": "NODE_ENV=test SEEDDB=true babel-node ./utils/seedDB.js",
+    "start": "NODE_ENV=production node ./build/app.js",
+    "test": "NODE_ENV=test DROPDB=true inTesting=true DATABASE=sjsitapp-test-db  jest --config ./jest.json --passWithNoTests",
+    "test:cov": "NODE_ENV=test DROPDB=true jest --config ./jest.json --coverage",
+    "test:watch": "NODE_ENV=test jest --config ./jest.json --passWithNoTests --watchAll"
   },
   "dependencies": {
     "@babel/core": "^7.7.4",

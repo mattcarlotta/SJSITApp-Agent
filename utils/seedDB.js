@@ -9,7 +9,7 @@ import {
   getNextYear,
   getStartOfNextMonth
 } from "~shared/helpers";
-const { SEED } = process.env;
+const { SEEDDB } = process.env;
 
 const admin = "carlotta.matt@gmail.com";
 const password = "password";
@@ -211,12 +211,12 @@ const seedDB = async () => {
       `\n\x1b[7m\x1b[31;1m FAIL \x1b[0m \x1b[2mutils/\x1b[0m\x1b[31;1mseedDB.js\x1b[0m\x1b[31m\n${err.toString()}\x1b[0m`
     );
   } finally {
-    if (SEED) {
+    if (SEEDDB) {
       process.exit(0);
     }
   }
 };
 
-if (SEED) seedDB();
+if (SEEDDB) seedDB();
 
 export default seedDB;
