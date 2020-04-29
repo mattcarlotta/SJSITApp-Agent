@@ -1,4 +1,4 @@
-import { pollForms } from "libs";
+import { pollForms } from "~libs";
 import { formLogger } from "~loggers";
 import { Form, Mail, User } from "~models";
 import { createDate, endOfDay } from "~shared/helpers";

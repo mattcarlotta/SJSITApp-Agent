@@ -1,3 +1,5 @@
+import "~env";
+import chalk from "chalk";
 import moment from "moment-timezone";
 import { connectDatabase } from "~database";
 import { Event, Form, Mail, Season, User } from "~models";
@@ -9,9 +11,10 @@ import {
   getNextYear,
   getStartOfNextMonth
 } from "~shared/helpers";
-import { admin, password } from "~env";
+const { DATABASE, SEEDDB } = process.env;
 
-const { SEED } = process.env;
+const admin = "carlotta.matt@gmail.com";
+const password = "password";
 
 /**
  * Function to seed the testing Mongo database.
@@ -25,6 +28,9 @@ const { SEED } = process.env;
 const seedDB = async () => {
   const db = connectDatabase();
   try {
+    const databaseExists = User.findOne({ email: admin });
+    if (databaseExists) await db.dropDatabase();
+
     const administrator = {
       email: admin,
       password,
@@ -117,9 +123,7 @@ const seedDB = async () => {
       ]
     };
 
-    const nextMonthDate1 = moment()
-      .add(1, "month")
-      .add(1, "day");
+    const nextMonthDate1 = moment().add(1, "month").add(1, "day");
 
     const newEvent3 = {
       team: "San Jose Sharks",
@@ -146,9 +150,7 @@ const seedDB = async () => {
     const { startOfMonth, endOfMonth } = getMonthDateRange();
 
     const newForm = {
-      expirationDate: createDate()
-        .add(14, "days")
-        .format(),
+      expirationDate: createDate().add(14, "days").format(),
       startMonth: startOfMonth,
       endMonth: endOfMonth,
       sendEmailNotificationsDate: currentTime.format(),
@@ -199,20 +201,22 @@ const seedDB = async () => {
 
     await db.close();
 
-    return console.log(
-      "\n\x1b[7m\x1b[32;1m PASS \x1b[0m \x1b[2mutils/\x1b[0m\x1b[1mseedDB.js"
+    console.log(
+      `\n${chalk.rgb(7, 54, 66).bgRgb(38, 139, 210)(" SEED ")} ${chalk.blue(
+        `\x1b[2mutils/\x1b[0m\x1b[1mseedDB.js\x1b[0m (${DATABASE})`
+      )}\n`
     );
+
+    return SEEDDB ? process.exit(0) : true;
   } catch (err) {
-    return console.log(
+    console.log(
       `\n\x1b[7m\x1b[31;1m FAIL \x1b[0m \x1b[2mutils/\x1b[0m\x1b[31;1mseedDB.js\x1b[0m\x1b[31m\n${err.toString()}\x1b[0m`
     );
-  } finally {
-    if (SEED) {
-      process.exit(0);
-    }
+
+    return SEEDDB ? process.exit(1) : false;
   }
 };
 
-if (SEED) seedDB();
+if (SEEDDB) seedDB();
 
 export default seedDB;
