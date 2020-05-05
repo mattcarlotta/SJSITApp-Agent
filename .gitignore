@@ -67,3 +67,6 @@ ngrok
 
 # production env
 .env.*
+
+# code-cov token
+.cc_token

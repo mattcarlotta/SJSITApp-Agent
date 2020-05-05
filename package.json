@@ -1,6 +1,6 @@
 {
   "name": "sjsitapp-agent",
-  "version": "0.2.1",
+  "version": "0.0.1",
   "main": "app.js",
   "description": "An application for the San Jose Sharks Ice Team.",
   "repository": "https://github.com/mattcarlotta/SJSITApp-Agent",
@@ -8,7 +8,7 @@
   "license": "MIT",
   "private": true,
   "engines": {
-    "node": ">=8",
+    "node": ">=10",
     "npm": ">=3"
   },
   "scripts": {

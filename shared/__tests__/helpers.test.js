@@ -70,11 +70,7 @@ describe("Helper Functions", () => {
   it("returns the start of the month", () => {
     const startMonth = getStartOfMonth().format();
 
-    expect(startMonth).toEqual(
-      moment()
-        .startOf("month")
-        .format()
-    );
+    expect(startMonth).toEqual(moment().startOf("month").format());
   });
 
   it("returns a current month range or specified month range", () => {
@@ -99,14 +95,10 @@ describe("Helper Functions", () => {
     } = getMonthDateRange();
 
     expect(currentStartMonth).toEqual(
-      moment(currentDate)
-        .startOf("month")
-        .toDate()
+      moment(currentDate).startOf("month").toDate()
     );
     expect(currentEndMonth).toEqual(
-      moment(currentDate)
-        .endOf("month")
-        .toDate()
+      moment(currentDate).endOf("month").toDate()
     );
   });
 
