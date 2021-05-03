@@ -3,7 +3,7 @@ import isEmpty from "lodash/isEmpty";
 import { mailLogger } from "~loggers";
 import { Mail } from "~models";
 import { officialTemplate } from "~templates";
-import { endOfDay } from "~shared/helpers";
+import { endOfDay } from "~helpers";
 
 const { IMAGEAPI } = process.env;
 

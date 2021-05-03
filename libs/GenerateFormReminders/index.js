@@ -3,15 +3,10 @@ import moment from "moment-timezone";
 import { formLogger } from "~loggers";
 import { Form, Mail, User } from "~models";
 import { apFormReminder } from "~templates";
-import { getEndOfMonth, createDate } from "~shared/helpers";
-
-const { CLIENT } = process.env;
+import { getEndOfMonth, createDate } from "~helpers";
 
 export default async () => {
-  const startNextMonth = moment()
-    .add(1, "months")
-    .startOf("month")
-    .format();
+  const startNextMonth = moment().add(1, "months").startOf("month").format();
 
   const endNextMonth = getEndOfMonth(startNextMonth);
 
@@ -65,7 +60,6 @@ export default async () => {
         sendDate: createDate().toDate(),
         message: apFormReminder({
           _id,
-          CLIENT,
           expirationDate: createDate(expirationDate)
             .tz("America/Los_Angeles")
             .format("MMMM Do YYYY @ hh:mm a"),

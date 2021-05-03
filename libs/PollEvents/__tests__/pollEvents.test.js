@@ -2,7 +2,7 @@ import moment from "moment-timezone";
 import { pollEvents } from "~libs";
 import { eventLogger } from "~loggers";
 import { Event, Mail } from "~models";
-import { endOfTomorrow } from "~shared/helpers";
+import { endOfTomorrow } from "~helpers";
 import { eventReminder } from "~templates";
 
 describe("Poll Events Service", () => {

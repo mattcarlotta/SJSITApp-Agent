@@ -2,7 +2,7 @@ import moment from "moment-timezone";
 import { generateEmployeeSchedules } from "~libs";
 import { scheduleLogger } from "~loggers";
 import { Event, Mail } from "~models";
-import { getEndOfNextMonth, getStartOfNextMonth } from "~shared/helpers";
+import { getEndOfNextMonth, getStartOfNextMonth } from "~helpers";
 import { upcomingSchedule } from "~templates";
 
 describe("Generate Employee Schedules Service", () => {

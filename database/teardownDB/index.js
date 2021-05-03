@@ -1,4 +1,3 @@
-import "~env";
 import chalk from "chalk";
 import { connectDatabase } from "~database";
 

@@ -1,12 +1,12 @@
 import moment from "moment-timezone";
-import get from "lodash/get";
+import get from "lodash.get";
 import { errorLogger, eventLogger, formCountLogger } from "~loggers";
 import { Event, Form, Season } from "~models";
 import {
   createSchedule,
   getEndOfMonth,
   getStartOfNextNextMonth
-} from "~shared/helpers";
+} from "~helpers";
 import nhlAPI from "~utils/axiosConfig";
 
 const format = "YYYY-MM-DD";

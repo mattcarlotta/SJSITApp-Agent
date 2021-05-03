@@ -1,12 +1,12 @@
 import moment from "moment-timezone";
-import get from "lodash/get";
+import get from "lodash.get";
 import { connectDatabase } from "~database";
 import { Event, Form, Season } from "~models";
 import {
   createSchedule,
   getStartOfMonth,
   getEndOfMonth
-} from "~shared/helpers";
+} from "~helpers";
 import nhlAPI from "~utils/axiosConfig";
 
 moment.tz.setDefault("America/Los_Angeles");

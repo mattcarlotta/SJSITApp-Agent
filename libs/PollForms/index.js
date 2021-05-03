@@ -2,9 +2,7 @@ import isEmpty from "lodash/isEmpty";
 import { formLogger } from "~loggers";
 import { Form, Mail, User } from "~models";
 import { apFormNotification } from "~templates";
-import { createDate, endOfDay } from "~shared/helpers";
-
-const { CLIENT } = process.env;
+import { createDate, endOfDay } from "~helpers";
 
 export default async () => {
   const forms = await Form.find(
@@ -62,7 +60,6 @@ export default async () => {
             sendDate: createDate().toDate(),
             message: apFormNotification({
               _id,
-              CLIENT,
               expirationDate: createDate(expirationDate)
                 .tz("America/Los_Angeles")
                 .format("MMMM Do YYYY @ hh:mm a"),

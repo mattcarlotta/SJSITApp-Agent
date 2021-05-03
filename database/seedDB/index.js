@@ -1,4 +1,3 @@
-import "~env";
 import chalk from "chalk";
 import moment from "moment-timezone";
 import { connectDatabase } from "~database";
@@ -10,7 +9,7 @@ import {
   getMonthDateRange,
   getNextYear,
   getStartOfNextMonth
-} from "~shared/helpers";
+} from "~helpers";
 const { DATABASE, SEEDDB } = process.env;
 
 const admin = "carlotta.matt@gmail.com";

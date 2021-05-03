@@ -1,7 +1,7 @@
 import { pollForms } from "~libs";
 import { formLogger } from "~loggers";
 import { Form, Mail, User } from "~models";
-import { createDate, endOfDay } from "~shared/helpers";
+import { createDate, endOfDay } from "~helpers";
 import { apFormNotification } from "~templates";
 
 const { CLIENT } = process.env;

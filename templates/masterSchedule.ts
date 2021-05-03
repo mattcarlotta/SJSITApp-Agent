@@ -1,7 +1,12 @@
+import type { TAggEvents } from "~models/event";
 import isEmpty from "lodash/isEmpty";
 import moment from "moment-timezone";
 
-export default (events, startMonth, endMonth) => `
+const MasterSchedule = (
+  events: Array<TAggEvents>,
+  startMonth: string,
+  endMonth: string
+): string => `
   <h1 style="text-align: center;font-size: 26px;color: #eeeeee;margin: 0;padding: 10px 0;background: linear-gradient(90deg, #1f1f23 0%, #145e6b 50%, #1f1f23 100%);">
     Upcoming Employee Schedule
   </h1>
@@ -95,3 +100,5 @@ export default (events, startMonth, endMonth) => `
     )
     .join("")}
 `;
+
+export default MasterSchedule;

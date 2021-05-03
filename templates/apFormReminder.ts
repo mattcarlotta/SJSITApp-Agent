@@ -1,10 +1,13 @@
-export default ({
+import { EmailProps } from "~types";
+
+const { CLIENT } = process.env;
+
+const APFormReminder = ({
   _id,
-  CLIENT,
   expirationDate,
   endMonth,
   startMonth
-}) => `<h1 style="text-align: center;font-size: 26px;color: #eeeeee;margin: 0;padding: 10px 0;background: linear-gradient(90deg, #1f1f23 0%, #145e6b 50%, #1f1f23 100%);">
+}: EmailProps) => `<h1 style="text-align: center;font-size: 26px;color: #eeeeee;margin: 0;padding: 10px 0;background: linear-gradient(90deg, #1f1f23 0%, #145e6b 50%, #1f1f23 100%);">
     A/P Form Reminder
   </h1>
   <p style="font-size: 18px;text-align: center;margin: 0;padding-bottom: 10px;color: #eeeeee;background: linear-gradient(90deg, #1f1f23 0%, #145e6b 50%, #1f1f23 100%);">
@@ -23,3 +26,5 @@ export default ({
     <a style="color: #999999;text-decoration: underline;margin-left: 2px;" href="${CLIENT}/employee/forms/view/${_id}" target="_blank" rel="noopener noreferrer">${CLIENT}/employee/forms/view/${_id}</a>
   </div>
 `;
+
+export default APFormReminder;

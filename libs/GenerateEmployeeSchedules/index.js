@@ -1,18 +1,15 @@
 import moment from "moment-timezone";
-import isEmpty from "lodash/isEmpty";
+import isEmpty from "lodash.isempty";
 import { errorLogger, scheduleLogger } from "~loggers";
 import { Event, Form, Mail } from "~models";
 import { upcomingSchedule } from "~templates";
-import { createDate, groupByEmail } from "~shared/helpers";
+import { createDate, groupByEmail } from "~helpers";
 
 export default async () => {
   let sortedSchedules = [];
   const scheduledEvents = [];
   try {
-    const nextMonth = moment()
-      .add(1, "months")
-      .startOf("month")
-      .format();
+    const nextMonth = moment().add(1, "months").startOf("month").format();
 
     // const nextMonth = moment()
     //   .startOf("month")

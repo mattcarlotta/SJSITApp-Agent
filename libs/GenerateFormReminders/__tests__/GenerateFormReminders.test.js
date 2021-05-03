@@ -2,7 +2,7 @@ import moment from "moment-timezone";
 import { generateFormReminders } from "~libs";
 import { formLogger } from "~loggers";
 import { Form, Mail, User } from "~models";
-import { createDate, getEndOfMonth } from "~shared/helpers";
+import { createDate, getEndOfMonth } from "~helpers";
 import { apFormReminder } from "~templates";
 
 const { CLIENT } = process.env;

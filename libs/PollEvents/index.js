@@ -3,7 +3,7 @@ import isEmpty from "lodash/isEmpty";
 import { eventLogger } from "~loggers";
 import { Event, Mail } from "~models";
 import { eventReminder } from "~templates";
-import { createDate, endOfTomorrow } from "~shared/helpers";
+import { createDate, endOfTomorrow } from "~helpers";
 
 export default async () => {
   const events = await Event.find(

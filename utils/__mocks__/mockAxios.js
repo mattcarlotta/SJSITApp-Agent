@@ -1,6 +1,8 @@
 import MockAdapter from "axios-mock-adapter";
-import axios from "utils/axiosConfig";
+import nhlAPI, { ahlAPI } from "~utils/axiosConfig";
 
-const mockApp = new MockAdapter(axios);
+const mockNHLAPI = new MockAdapter(nhlAPI);
 
-export default mockApp;
+export const mockAHLAPI = new MockAdapter(ahlAPI)
+
+export default mockNHLAPI;

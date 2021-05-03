@@ -2,7 +2,7 @@ import mailer from "@sendgrid/mail";
 import { pollEmails } from "~libs";
 import { mailLogger } from "~loggers";
 import { Mail } from "~models";
-import { endOfDay } from "~shared/helpers";
+import { endOfDay } from "~helpers";
 
 mailer.send.mockImplementationOnce(props => Promise.resolve(props));
 mailer.send.mockImplementationOnce(() =>

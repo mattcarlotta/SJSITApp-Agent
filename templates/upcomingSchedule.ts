@@ -1,5 +1,9 @@
-export default ({
+import type { TEventMemberSchedule } from "~models/event";
+
+const UpcomingSchedule = ({
   events
+}: {
+  events: Array<TEventMemberSchedule>;
 }) => `<h1 style="text-align: center;font-size: 26px;color: #eeeeee;margin: 0;padding: 10px 0;background: linear-gradient(90deg, #1f1f23 0%, #145e6b 50%, #1f1f23 100%);">
     Upcoming Schedule
   </h1>
@@ -65,3 +69,5 @@ export default ({
     )
     .join("")}
 `;
+
+export default UpcomingSchedule;

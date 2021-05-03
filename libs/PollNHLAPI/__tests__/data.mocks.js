@@ -1,4 +1,4 @@
-import { getStartOfNextNextMonth } from "shared/helpers";
+import { getStartOfNextNextMonth } from "helpers";
 
 const nextMonth = getStartOfNextNextMonth();
 

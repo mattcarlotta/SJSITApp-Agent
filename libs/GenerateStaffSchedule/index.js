@@ -3,7 +3,7 @@ import isEmpty from "lodash/isEmpty";
 import { errorLogger, scheduleLogger } from "~loggers";
 import { Event, Form, Mail, User } from "~models";
 import { masterSchedule } from "~templates";
-import { createDate } from "~shared/helpers";
+import { createDate } from "~helpers";
 
 export default async () => {
   const masterScheduleMail = [];

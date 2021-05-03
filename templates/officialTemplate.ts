@@ -1,4 +1,6 @@
-export default (IMAGEAPI, message) => `<html>
+const { IMAGEAPI } = process.env;
+
+const OfficialTemplate = (message: string): string => `<html>
     <body>
       <div style="overflow: hidden;">
         <div style="width: 100%; background-color: #FDFDFD; border-collapse: separate !important; border-spacing: 0">
@@ -23,3 +25,5 @@ export default (IMAGEAPI, message) => `<html>
       </div>
     </body>
   </html>`;
+
+export default OfficialTemplate;

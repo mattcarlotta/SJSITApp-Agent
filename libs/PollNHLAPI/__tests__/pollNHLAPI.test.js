@@ -1,8 +1,8 @@
 import { pollNHLAPI } from "~libs";
 import { errorLogger, eventLogger, formCountLogger } from "~loggers";
 import { Event, Form } from "~models";
-import { getEndOfMonth, getStartOfNextNextMonth } from "~shared/helpers";
-import data from "../__mocks__/libs.mocks";
+import { getEndOfMonth, getStartOfNextNextMonth } from "~helpers";
+import data from "./data.mocks";
 
 const format = "YYYY-MM-DD";
 
