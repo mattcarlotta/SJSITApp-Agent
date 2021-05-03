@@ -1,9 +1,9 @@
-import moment from "moment-timezone";
 import { generateEmployeeSchedules } from "~libs";
 import { scheduleLogger } from "~loggers";
 import { Event, Mail } from "~models";
 import { getEndOfNextMonth, getStartOfNextMonth } from "~helpers";
 import { upcomingSchedule } from "~templates";
+import moment from "~utils/momentWithTimeZone";
 
 describe("Generate Employee Schedules Service", () => {
   let db;

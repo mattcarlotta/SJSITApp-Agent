@@ -1,6 +1,4 @@
-import moment from "moment-timezone";
-
-moment.tz.setDefault("America/Los_Angeles");
+import moment from "~utils/momentWithTimeZone";
 
 /**
  * Helper function to create a current date.
@@ -17,11 +15,12 @@ const createDate = date => moment(date || Date.now());
  * @param callTimes - an array of dates
  * @returns {object}
  */
-const createSchedule = callTimes => callTimes.map(time => ({
-  _id: time,
-  title: moment(time).format("hh:mm a"),
-  employeeIds: [],
-}));
+const createSchedule = callTimes =>
+  callTimes.map(time => ({
+    _id: time,
+    title: moment(time).format("hh:mm a"),
+    employeeIds: []
+  }));
 
 /**
  * Helper function to create a current date.
@@ -29,9 +28,7 @@ const createSchedule = callTimes => callTimes.map(time => ({
  * @function endOfDay
  * @returns {Date}
  */
-const endOfDay = () => moment()
-  .endOf("day")
-  .toDate();
+const endOfDay = () => moment().endOf("day").toDate();
 
 /**
  * Helper function to create a current date.
@@ -39,10 +36,7 @@ const endOfDay = () => moment()
  * @function endOfTomorrow
  * @returns {Date}
  */
-const endOfTomorrow = () => moment()
-  .add(1, "day")
-  .endOf("day")
-  .toDate();
+const endOfTomorrow = () => moment().add(1, "day").endOf("day").toDate();
 
 /**
  * Helper function to get a Date of current year.
@@ -66,10 +60,8 @@ const getEndOfMonth = date => moment(date).endOf("month");
  * @function getEndOfNextMonth
  * @returns {Date}
  */
-const getEndOfNextMonth = () => moment()
-  .add(1, "month")
-  .endOf("month")
-  .format();
+const getEndOfNextMonth = () =>
+  moment().add(1, "month").endOf("month").format();
 
 /**
  * Helper function to generate a date range.
@@ -80,12 +72,8 @@ const getEndOfNextMonth = () => moment()
  */
 const getMonthDateRange = date => {
   const newDate = date || Date.now();
-  const startOfMonth = moment(newDate)
-    .startOf("month")
-    .toDate();
-  const endOfMonth = moment(newDate)
-    .endOf("month")
-    .toDate();
+  const startOfMonth = moment(newDate).startOf("month").toDate();
+  const endOfMonth = moment(newDate).endOf("month").toDate();
 
   return { startOfMonth, endOfMonth };
 };
@@ -96,9 +84,7 @@ const getMonthDateRange = date => {
  * @function getNextYear
  * @returns {Date}
  */
-const getNextYear = () => moment()
-  .add(1, "year")
-  .endOf("year");
+const getNextYear = () => moment().add(1, "year").endOf("year");
 
 /**
  * Helper function to get a start month date from now.
@@ -114,10 +100,8 @@ const getStartOfMonth = () => moment().startOf("month");
  * @function getStartOfNextMonth
  * @returns {Date}
  */
-const getStartOfNextMonth = () => moment()
-  .add(1, "months")
-  .startOf("month")
-  .format();
+const getStartOfNextMonth = () =>
+  moment().add(1, "months").startOf("month").format();
 
 /**
  * Helper function to get a start month Date 2 months from now.
@@ -125,9 +109,8 @@ const getStartOfNextMonth = () => moment()
  * @function getStartOfNextNextMonth
  * @returns {Date}
  */
-const getStartOfNextNextMonth = () => moment()
-  .add(2, "months")
-  .startOf("month");
+const getStartOfNextNextMonth = () =>
+  moment().add(2, "months").startOf("month");
 
 /**
  * Helper function to group objects into a sorted array of events by email.
@@ -136,16 +119,18 @@ const getStartOfNextNextMonth = () => moment()
  * @param data - array of events
  * @returns {object}
  */
-const groupByEmail = data => data
-  .reduce((acc, currentValue) => {
-    if (!acc.some(email => email === currentValue.email)) acc.push(currentValue.email);
+const groupByEmail = data =>
+  data
+    .reduce((acc, currentValue) => {
+      if (!acc.some(email => email === currentValue.email))
+        acc.push(currentValue.email);
 
-    return acc;
-  }, [])
-  .map(email => ({
-    email,
-    events: data.filter(event => event.email === email),
-  }));
+      return acc;
+    }, [])
+    .map(email => ({
+      email,
+      events: data.filter(event => event.email === email)
+    }));
 
 /**
  * Helper function to create a current date.
@@ -171,6 +156,6 @@ export {
   getStartOfMonth,
   getStartOfNextMonth,
   getStartOfNextNextMonth,
-  groupByEmail,
+  groupByEmail
   // startOfDay,
 };

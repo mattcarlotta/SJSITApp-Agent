@@ -1,4 +1,3 @@
-import moment from "moment-timezone";
 import {
   createDate,
   createSchedule,
@@ -7,7 +6,8 @@ import {
   getNextYear,
   getStartOfMonth,
   groupByEmail
-} from "~shared/helpers";
+} from "~helpers";
+import moment from "~utils/momentWithTimeZone";
 
 const scheduledEvents = [
   {

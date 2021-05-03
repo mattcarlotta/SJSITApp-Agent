@@ -1,9 +1,9 @@
-import moment from "moment-timezone";
 import { pollEvents } from "~libs";
 import { eventLogger } from "~loggers";
 import { Event, Mail } from "~models";
 import { endOfTomorrow } from "~helpers";
 import { eventReminder } from "~templates";
+import moment from "~utils/momentWithTimeZone";
 
 describe("Poll Events Service", () => {
   let db;

@@ -29,6 +29,7 @@
     "@sendgrid/mail": "^7.4.2",
     "axios": "^0.21.1",
     "chalk": "^4.1.1",
+    "cheerio": "^1.0.0-rc.6",
     "dotenv": "^8.2.0",
     "lodash.get": "^4.4.2",
     "lodash.isempty": "^4.4.0",

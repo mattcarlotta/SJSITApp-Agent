@@ -1,9 +1,9 @@
-import moment from "moment-timezone";
 import { generateFormReminders } from "~libs";
 import { formLogger } from "~loggers";
 import { Form, Mail, User } from "~models";
 import { createDate, getEndOfMonth } from "~helpers";
 import { apFormReminder } from "~templates";
+import moment from "~utils/momentWithTimeZone";
 
 const { CLIENT } = process.env;
 
@@ -19,10 +19,7 @@ describe("Generate A/P Form Reminders Service", () => {
 
   it("handles polling Form documents for reminders", async () => {
     const mailSpy = jest.spyOn(Mail, "create");
-    const startNextMonth = moment()
-      .add(1, "months")
-      .startOf("month")
-      .format();
+    const startNextMonth = moment().add(1, "months").startOf("month").format();
 
     const endNextMonth = getEndOfMonth(startNextMonth);
 

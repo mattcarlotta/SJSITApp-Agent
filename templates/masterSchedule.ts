@@ -1,6 +1,6 @@
 import type { TAggEvents } from "~models/event";
-import isEmpty from "lodash/isEmpty";
-import moment from "moment-timezone";
+import isEmpty from "lodash.isempty";
+import moment from "~utils/momentWithTimeZone";
 
 const MasterSchedule = (
   events: Array<TAggEvents>,

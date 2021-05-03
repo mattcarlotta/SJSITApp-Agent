@@ -1,17 +1,14 @@
-import moment from "moment-timezone";
-import isEmpty from "lodash/isEmpty";
+import isEmpty from "lodash.isempty";
 import { errorLogger, scheduleLogger } from "~loggers";
 import { Event, Form, Mail, User } from "~models";
 import { masterSchedule } from "~templates";
 import { createDate } from "~helpers";
+import moment from "~utils/momentWithTimeZone";
 
 export default async () => {
   const masterScheduleMail = [];
   try {
-    const nextMonth = moment()
-      .add(1, "months")
-      .startOf("month")
-      .format();
+    const nextMonth = moment().add(1, "months").startOf("month").format();
 
     // const nextMonth = moment()
     //   .startOf("month")

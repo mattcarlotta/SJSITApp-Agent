@@ -1,15 +1,9 @@
-import moment from "moment-timezone";
 import get from "lodash.get";
 import { connectDatabase } from "~database";
 import { Event, Form, Season } from "~models";
-import {
-  createSchedule,
-  getStartOfMonth,
-  getEndOfMonth
-} from "~helpers";
+import { createSchedule, getStartOfMonth, getEndOfMonth } from "~helpers";
 import nhlAPI from "~utils/axiosConfig";
-
-moment.tz.setDefault("America/Los_Angeles");
+import moment from "~utils/momentWithTimeZone";
 
 const format = "YYYY-MM-DD";
 
@@ -20,9 +14,7 @@ const format = "YYYY-MM-DD";
     // start of current month
     const startMonth = getStartOfMonth();
     const endMonth = getEndOfMonth(startMonth);
-    const startOfNextMonth = moment()
-      .add(1, "months")
-      .startOf("month");
+    const startOfNextMonth = moment().add(1, "months").startOf("month");
     const endOfNextMonth = getEndOfMonth(startOfNextMonth);
 
     // stringified months
@@ -106,9 +98,7 @@ const format = "YYYY-MM-DD";
         .add(6, "days")
         .endOf("day")
         .format(),
-      sendEmailNotificationsDate: moment()
-        .startOf("month")
-        .format(),
+      sendEmailNotificationsDate: moment().startOf("month").format(),
       sentEmails: true,
       notes: ""
     };

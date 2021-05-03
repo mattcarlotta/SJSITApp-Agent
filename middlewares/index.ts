@@ -1,5 +1,5 @@
-import moment from "moment-timezone";
 import mailer from "@sendgrid/mail";
+import moment from "~utils/momentWithTimeZone";
 import { logErrorMessage, logInfoMessage } from "../logger";
 
 const { sendgridAPIKey } = process.env;

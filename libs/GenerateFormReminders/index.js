@@ -1,9 +1,9 @@
-import isEmpty from "lodash/isEmpty";
-import moment from "moment-timezone";
+import isEmpty from "lodash.isempty";
 import { formLogger } from "~loggers";
 import { Form, Mail, User } from "~models";
 import { apFormReminder } from "~templates";
 import { getEndOfMonth, createDate } from "~helpers";
+import moment from "~utils/momentWithTimeZone";
 
 export default async () => {
   const startNextMonth = moment().add(1, "months").startOf("month").format();

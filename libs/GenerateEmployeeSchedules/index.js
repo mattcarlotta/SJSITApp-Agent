@@ -1,9 +1,9 @@
-import moment from "moment-timezone";
 import isEmpty from "lodash.isempty";
 import { errorLogger, scheduleLogger } from "~loggers";
 import { Event, Form, Mail } from "~models";
 import { upcomingSchedule } from "~templates";
 import { createDate, groupByEmail } from "~helpers";
+import moment from "~utils/momentWithTimeZone";
 
 export default async () => {
   let sortedSchedules = [];

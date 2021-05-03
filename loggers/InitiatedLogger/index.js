@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import moment from "moment-timezone";
+import moment from "~utils/momentWithTimeZone";
 
 export default () =>
   `${chalk.rgb(7, 54, 66).bgRgb(38, 139, 210)(" INFO ")} ${chalk.blue(

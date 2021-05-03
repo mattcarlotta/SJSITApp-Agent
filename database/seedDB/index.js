@@ -1,5 +1,4 @@
 import chalk from "chalk";
-import moment from "moment-timezone";
 import { connectDatabase } from "~database";
 import { Event, Form, Mail, Season, User } from "~models";
 import {
@@ -10,6 +9,8 @@ import {
   getNextYear,
   getStartOfNextMonth
 } from "~helpers";
+import moment from "~utils/momentWithTimeZone";
+
 const { DATABASE, SEEDDB } = process.env;
 
 const admin = "carlotta.matt@gmail.com";

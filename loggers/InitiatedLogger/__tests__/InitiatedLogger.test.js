@@ -1,6 +1,6 @@
 import chalk from "chalk";
-import moment from "moment-timezone";
 import { initiatedLogger } from "~loggers";
+import moment from "~utils/momentWithTimeZone";
 
 describe("Initiated Logger", () => {
   it("calls console.log with a timestamped message", () => {

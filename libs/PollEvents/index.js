@@ -1,9 +1,9 @@
-import moment from "moment-timezone";
-import isEmpty from "lodash/isEmpty";
+import isEmpty from "lodash.isempty";
 import { eventLogger } from "~loggers";
 import { Event, Mail } from "~models";
 import { eventReminder } from "~templates";
 import { createDate, endOfTomorrow } from "~helpers";
+import moment from "~utils/momentWithTimeZone";
 
 export default async () => {
   const events = await Event.find(
