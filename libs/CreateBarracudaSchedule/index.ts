@@ -44,10 +44,10 @@ const CreateBarracudaSchedule = async (): Promise<void> => {
 
     const res = await ahlAPI.get("games");
     const $ = cheerio.load(res.data);
-    const currentMonth = createDate().format(monthnameFormat);
+    const nextMonth = createDate().add(1, "month").format(monthnameFormat);
     const currentYear = createDate().format(fullyearFormat);
 
-    const currentMonthSchedule = $(`#${currentMonth}${currentYear}`);
+    const currentMonthSchedule = $(`#${nextMonth}${currentYear}`);
     if (isEmpty(currentMonthSchedule))
       throw String("No Barracuda home events were found. Aborted!");
 

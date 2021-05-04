@@ -1,141 +1,199 @@
 /**
- * Formats moment dates as am or pm
+ * Formats moment dates as am or pm.
+ *
+ * Format - ```a```
+ * @example ```am```
  */
 export const aFormat = "a";
 
 /**
- * Formats moment dates as 2 second digits: 01
+ * Formats moment dates as 2 second digits.
+ *
+ * Format - ```ss```
+ * @example ```01```
  */
 export const secondsFormat = "ss";
 
 /**
- * Formats moment dates as 2 minute digts: 01
+ * Formats moment dates as 2 minute digits.
+ *
+ * Format - ```mm```
+ * @example ```01```
  */
 export const minuteFormat = "mm";
 
 /**
- * Formats moment dates as 2 hour digts: 01
+ * Formats moment dates as 2 hour digits.
+ *
+ * Format - ```hh```
+ * @example ```01```
  */
 export const hourFormat = "hh";
 
 /**
- * Formats moment dates as 1 hour digts: 1
+ * Formats moment dates as 1 hour digit.
+ *
+ * Format - ```h```
+ * @example ```1```
  */
 export const shortHourFormat = "h";
 
 /**
- * Formats moment dates as hour, minute and seconds with am/pm: 01:00 pm
+ * Formats moment dates as hour, minute and seconds with am/pm.
+ *
+ * Format - ```hh:mm a```
+ * @example ```12:00 pm```
  */
 export const timestampFormat = `${hourFormat}:${minuteFormat} ${aFormat}`;
 
 /**
- * Formats moment dates as 1 day digits: 1
+ * Formats moment dates as 1 or 2 day digit.
+ *
+ * Format - ```D```
+ * @example ```1``` or ```10```
  */
 export const dayFormat = "D";
 
 /**
- * Formats moment dates as 1 day digits by suffix (st/nd/rd/th): 1st
+ * Formats moment dates as 1 day digits by suffix (st/nd/rd/th).
+ *
+ * Format - ```Do```
+ * @example ```1st```
  */
 export const daySuffix = "Do";
 
 /**
- * Formats moment dates as 2 digits: 01
+ * Formats moment dates as 2 digits
+ *
+ * Format - ```DD```
+ * @example ```01```
  */
 export const fulldayFormat = "DD";
 
 /**
- * Formats moment dates with abbreviated weekday: TUE
- */
-export const shortdayFormat = "DDD";
-
-/**
- * Formats moment dates with abbreviated weekday: Tue
+ * Formats moment dates with abbreviated weekday.
+ *
+ * Format - ```ddd```
+ * @example ```Mon```
  */
 export const weekdayFormat = "ddd";
 
 /**
- * Formats moment dates with weekday: Tuesday
+ * Formats moment dates with weekday.
+ *
+ * Format - ```dddd```
+ * @example ```Monday```
  */
 export const fullweekdayFormat = "dddd";
 
 /**
- * Formats year dates as 4 digits: 2020.
+ * Formats year dates as 4 digits.
+ *
+ * Format - ```YYYY```
+ * @example ```2021```
  */
 export const fullyearFormat = "YYYY";
 
 /**
- * Formats month dates as 2 digits: 04.
+ * Formats month dates as 2 digits.
+ *
+ * Format - ```MM```
+ * @example ```01```
  */
 export const monthdateFormat = "MM";
 
 /**
- * Formats month dates as string months: Apr.
+ * Formats month dates as string months.
+ *
+ * Format - ```MMM```
+ * @example ```Jan```
  */
 export const shortMonthNameFormat = "MMM";
 
 /**
- * Formats month dates as string months: April.
+ * Formats month dates as string months.
+ *
+ * Format - ```MMMM```
+ * @example ```January```
  */
 export const monthnameFormat = "MMMM";
 
 /**
- * Formats moment dates as abbreviated 3 digits months followed by day: Apr 21st
+ * Formats moment dates as abbreviated 3 digits months followed by day.
+ *
+ * Format - ```MMM Do```
+ * @example ```Jan 1st```
  */
 export const shortmonthFormat = `${shortMonthNameFormat} ${daySuffix}`;
 
 /**
- * Formats moment dates as 3 digits months, followed by day and time: Apr 21st @ 12:00 pm.
+ * Formats moment dates as 3 digits months, followed by day and time.
+ *
+ * Format - ```MMM Do @ hh:mm a```
+ * @example ```Jan 1st @ 12:00 pm```
  */
 export const shortDateTimeFormat = `${shortmonthFormat} @ ${timestampFormat}`;
 
 /**
- * Formats moment dates as 3 digits months, followed by day, 4 digit year, and time: Apr 21st 2020 @ 12:00pm.
+ * Formats moment dates as 3 digits months, followed by day + suffix, 4 digit year, and time.
+ *
+ * Format - ```MMM Do YYYY @ hh:mm a```
+ * @example ```Jan 21st 2021 @ 12:00pm```
  */
 export const dateTimeFormat = `${shortmonthFormat} ${fullyearFormat} @ ${timestampFormat}`;
 
 /**
- * Formats moment dates as month names followed by 2 digit day with suffix and time.
- *
- * @example ```April 21st @ 12:00pm```
- */
-export const serviceTimeFormat = `${monthnameFormat}-${daySuffix} @ ${timestampFormat}`;
-
-/**
  * Formats moment dates as 3 digits months, followed by day, 4 digit year, and time.
  *
- * @example ```Apr 21st 2020 @ 12:00:00 pm.```
+ * Format - ```MMM Do YYYY @ hh:mm:ss a```
+ * @example ```Jan 1st 2020 @ 12:00:00 pm.```
  */
 export const fullDateTimeFormat = `${shortmonthFormat} ${fullyearFormat} @ ${hourFormat}:${minuteFormat}:${secondsFormat} ${aFormat}`;
 
 /**
  * Formats moment dates as month name, followed by day, year and time.
  *
- * `MMMM D YYYY h:mma`
- * @example ```April 21 2021 1:00pm```.
+ * Format - ```MMMM D YYYY h:mma```
+ * @example ```January 1 2021 12:00pm```
  */
 export const barracudaEventFormat = `${monthnameFormat} ${dayFormat} ${fullyearFormat} ${shortHourFormat}:${minuteFormat}${aFormat}`;
 
 /**
- * Formats moment dates as 3 digit weekday, month name, followed by day, and time: Sat, April 21st @ 12:00pm.
+ * Formats moment dates as 3 digit weekday, month name, followed by day, and time.
+ *
+ * Format - ```ddd, MMMM Do @ hh:mm a```
+ * @example ```Sat, January 1st @ 12:00pm```
  */
 export const weekdateTimeFormat = `${weekdayFormat}, ${monthnameFormat} ${daySuffix} @ ${timestampFormat}`;
 
 /**
- * Formats moment dates as month, followed by day, and 4 digit year: April 21st 2020.
+ * Formats moment dates as month, followed by day, and 4 digit year.
+ *
+ * Format - ```MMMM Do YYYY```
+ * @example ```January 1st 2021```
  */
 export const calendarDateFormat = `${monthnameFormat} ${daySuffix} ${fullyearFormat}`;
 
 /**
- * Formats moment dates as month, followed by day, and 4 digit year: Apr 21st, 2020.
+ * Formats moment dates as month, followed by day, and 4 digit year.
+ *
+ * Format - ```MMM Do, YYYY```
+ * @example ```Jan 1st 2021```
  */
 export const shortCalendarDateFormat = `${shortMonthNameFormat} ${daySuffix}, ${fullyearFormat}`;
 
 /**
- * Default moment formated dates: 2021-03-01T00:00:00Z
- */
-export const defaultFormat = `${fullyearFormat}-${monthdateFormat}-${fulldayFormat}THH:mm:ssZ`;
-
-/**
- * Formats moment dates with 4 digit year, 2 digit month and 2 digit day : 2021-03-01
+ * Formats moment dates with 4 digit year, 2 digit month and 2 digit day.
+ *
+ * Format - ```YYYY-MM-DD```
+ * @example ```2021-01-01```
  */
 export const eventFormat = `${fullyearFormat}-${monthdateFormat}-${fulldayFormat}`;
+
+/**
+ * Default moment formated dates:
+ *
+ * Format - ```YYYY-MM-DDTHH:mm:ssZ```
+ * @example ```2021-01-01T00:00:00Z```
+ */
+export const defaultFormat = `${eventFormat}THH:mm:ssZ`;

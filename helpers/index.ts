@@ -157,6 +157,8 @@ const groupByEmail = (data: Array<TEventMemberSchedule>): TEventsSorted =>
 
 /**
  * Transforms UPPERCASE text to Capital case.
+ *
+ * @example ```EXAMPLE => Example```
  */
 const toCapitalize = (text: string): string =>
   text.replace(
