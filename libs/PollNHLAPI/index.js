@@ -36,7 +36,7 @@ export default async () => {
     );
     /* istanbul ignore next */
     if (!existingSeason)
-      throw "Unable to locate a seasonId associated with that month.";
+      throw String("Unable to locate a seasonId associated with that month.");
 
     const { seasonId } = existingSeason;
 
@@ -48,7 +48,7 @@ export default async () => {
     );
 
     const dates = get(res, ["data", "dates"]);
-    if (!dates) throw "Unable to retrieve next month's game schedule.";
+    if (!dates) throw String("Unable to retrieve next month's game schedule.");
 
     // build an array of events
     dates.forEach(({ games }) => {

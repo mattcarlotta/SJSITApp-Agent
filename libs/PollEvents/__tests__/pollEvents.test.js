@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+import { connectToDB } from "~database";
 import { pollEvents } from "~libs";
 import { eventLogger } from "~loggers";
 import { Event, Mail } from "~models";
@@ -6,13 +8,12 @@ import { eventReminder } from "~templates";
 import moment from "~utils/momentWithTimeZone";
 
 describe("Poll Events Service", () => {
-  let db;
-  beforeAll(() => {
-    db = connectDatabase();
+  beforeAll(async () => {
+    await connectToDB();
   });
 
   afterAll(async () => {
-    await db.close();
+    await mongoose.connection.close();
   });
 
   it("handles polling Events documents", async () => {

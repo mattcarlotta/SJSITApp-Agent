@@ -1,7 +1,10 @@
+import mongoose from "mongoose";
+import { connectToDB } from "~database";
 import { pollNHLAPI } from "~libs";
 import { errorLogger, eventLogger, formCountLogger } from "~loggers";
 import { Event, Form } from "~models";
 import { getEndOfMonth, getStartOfNextNextMonth } from "~helpers";
+import mockAxios from "~utils/mockAxios";
 import data from "./data.mocks";
 
 const format = "YYYY-MM-DD";
@@ -10,11 +13,10 @@ const eventSpy = jest.spyOn(Event, "insertMany");
 const formSpy = jest.spyOn(Form, "create");
 
 describe("Poll NHL API Service", () => {
-  let db;
   let startMonth;
   let endMonth;
-  beforeAll(() => {
-    db = connectDatabase();
+  beforeAll(async () => {
+    await connectToDB();
     startMonth = getStartOfNextNextMonth().format(format);
     endMonth = getEndOfMonth(startMonth).format(format);
   });
@@ -29,7 +31,7 @@ describe("Poll NHL API Service", () => {
   });
 
   afterAll(async () => {
-    await db.close();
+    await mongoose.connection.close();
     eventSpy.mockRestore();
     formSpy.mockRestore();
     mockAxios.restore();

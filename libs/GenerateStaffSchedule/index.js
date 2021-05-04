@@ -16,7 +16,7 @@ export default async () => {
 
     const existingForm = await Form.findOne({ startMonth: { $eq: nextMonth } });
     /* istanbul ignore next */
-    if (!existingForm) throw "Unable to locate a form for next month.";
+    if (!existingForm) throw String("Unable to locate a form for next month.");
 
     const events = await Event.find(
       {
@@ -43,7 +43,7 @@ export default async () => {
       })
       .lean();
     /* istanbul ignore next */
-    if (isEmpty(events)) throw "No events were found for next month.";
+    if (isEmpty(events)) throw String("No events were found for next month.");
 
     const staffMembers = await User.aggregate([
       {
@@ -64,7 +64,8 @@ export default async () => {
       }
     ]);
     /* istanbul ignore next */
-    if (isEmpty(staffMembers)) throw "Unable to locate any staff members.";
+    if (isEmpty(staffMembers))
+      throw String("Unable to locate any staff members.");
 
     const staffEmailAddresses = staffMembers.map(({ email }) => email);
     const format = "MM/DD/YYYY";

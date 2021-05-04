@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+import { connectToDB } from "~database";
 import { pollForms } from "~libs";
 import { formLogger } from "~loggers";
 import { Form, Mail, User } from "~models";
@@ -7,13 +9,12 @@ import { apFormNotification } from "~templates";
 const { CLIENT } = process.env;
 
 describe("Poll Forms Service", () => {
-  let db;
-  beforeAll(() => {
-    db = connectDatabase();
+  beforeAll(async () => {
+    await connectToDB();
   });
 
   afterAll(async () => {
-    await db.close();
+    await mongoose.connection.close();
   });
 
   it("handles polling Form documents", async () => {

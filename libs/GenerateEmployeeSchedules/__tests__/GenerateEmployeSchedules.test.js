@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+import { connectToDB } from "~database";
 import { generateEmployeeSchedules } from "~libs";
 import { scheduleLogger } from "~loggers";
 import { Event, Mail } from "~models";
@@ -6,13 +8,12 @@ import { upcomingSchedule } from "~templates";
 import moment from "~utils/momentWithTimeZone";
 
 describe("Generate Employee Schedules Service", () => {
-  let db;
-  beforeAll(() => {
-    db = connectDatabase();
+  beforeAll(async () => {
+    await connectToDB();
   });
 
   afterAll(async () => {
-    await db.close();
+    await mongoose.connection.close();
   });
 
   it("handles polling schedule events documents", async () => {

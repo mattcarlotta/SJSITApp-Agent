@@ -17,7 +17,7 @@ export default async () => {
 
     const existingForm = await Form.findOne({ startMonth: { $eq: nextMonth } });
     /* istanbul ignore next */
-    if (!existingForm) throw "Unable to locate a form for next month.";
+    if (!existingForm) throw String("Unable to locate a form for next month.");
 
     const existingEvents = await Event.find(
       {
@@ -44,7 +44,8 @@ export default async () => {
       })
       .lean();
     /* istanbul ignore next */
-    if (isEmpty(existingEvents)) throw "No events were found for next month.";
+    if (isEmpty(existingEvents))
+      throw String("No events were found for next month.");
 
     existingEvents.forEach(({ _id, schedule, eventDate, ...rest }) => {
       schedule.forEach(({ employeeIds, title: callTime }) => {
@@ -65,7 +66,7 @@ export default async () => {
 
     /* istanbul ignore next */
     if (isEmpty(scheduledEvents))
-      throw "No scheduled events were found for next month.";
+      throw String("No scheduled events were found for next month.");
 
     sortedSchedules = groupByEmail(scheduledEvents);
 

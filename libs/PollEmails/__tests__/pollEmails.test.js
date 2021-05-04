@@ -1,4 +1,6 @@
+import mongoose from "mongoose";
 import mailer from "@sendgrid/mail";
+import { connectToDB } from "~database";
 import { pollEmails } from "~libs";
 import { mailLogger } from "~loggers";
 import { Mail } from "~models";
@@ -10,13 +12,12 @@ mailer.send.mockImplementationOnce(() =>
 );
 
 describe("Poll Email Service", () => {
-  let db;
-  beforeAll(() => {
-    db = connectDatabase();
+  beforeAll(async () => {
+    await connectToDB();
   });
 
   afterAll(async () => {
-    await db.close();
+    await mongoose.connection.close();
   });
 
   it("handles polling Mail documents", async () => {

@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+import { connectToDB } from "~database";
 import { generateFormReminders } from "~libs";
 import { formLogger } from "~loggers";
 import { Form, Mail, User } from "~models";
@@ -8,13 +10,12 @@ import moment from "~utils/momentWithTimeZone";
 const { CLIENT } = process.env;
 
 describe("Generate A/P Form Reminders Service", () => {
-  let db;
-  beforeAll(() => {
-    db = connectDatabase();
+  beforeAll(async () => {
+    await connectToDB();
   });
 
   afterAll(async () => {
-    await db.close();
+    await mongoose.connection.close();
   });
 
   it("handles polling Form documents for reminders", async () => {

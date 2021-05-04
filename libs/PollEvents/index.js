@@ -70,9 +70,7 @@ export default async () => {
     });
 
     /* istanbul ignore next */
-    if (!isEmpty(emailReminders)) {
-      await Mail.insertMany(emailReminders);
-    }
+    if (!isEmpty(emailReminders)) await Mail.insertMany(emailReminders);
 
     await Event.updateMany(
       {

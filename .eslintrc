@@ -52,6 +52,11 @@
     "import/extensions": 0,
     "babel/object-curly-spacing": 0,
     "comma-dangle": 0,
+    "nonblock-statement-body-position": 0,
+    "curly": ["error", "multi-or-nest"],
+    "object-curly-newline": 0,
+    "implicit-arrow-linebreak": 0,
+    "function-paren-newline": 0,
     "prefer-destructuring": [
       "error",
       {
