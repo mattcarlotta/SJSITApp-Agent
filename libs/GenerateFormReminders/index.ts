@@ -5,6 +5,11 @@ import { apFormReminder } from "~templates";
 import { createDate, getEndOfMonth } from "~helpers";
 import { dateTimeFormat } from "~utils/dateFormats";
 
+/**
+ * Send out A/P form reminders to employees on the nth of every month @ time
+ *
+ * @function GenerateFormReminders
+ */
 const GenerateFormReminders = async (): Promise<void> => {
   const startNextMonth = createDate()
     .add(1, "months")

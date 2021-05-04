@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { connectToDB } from "~database";
-import { pollNHLAPI } from "~libs";
+import { createSharksSchedule } from "~libs";
 import { errorLogger, eventLogger, formCountLogger } from "~loggers";
 import { Event, Form } from "~models";
 import { getEndOfMonth, getStartOfNextNextMonth } from "~helpers";
@@ -12,7 +12,7 @@ const format = "YYYY-MM-DD";
 const eventSpy = jest.spyOn(Event, "insertMany");
 const formSpy = jest.spyOn(Form, "create");
 
-describe("Poll NHL API Service", () => {
+describe("Create Sharks Schedule Service", () => {
   let startMonth;
   let endMonth;
   beforeAll(async () => {
@@ -44,7 +44,7 @@ describe("Poll NHL API Service", () => {
       })
       .reply(200);
 
-    await pollNHLAPI();
+    await createSharksSchedule();
 
     expect(eventSpy).toHaveBeenCalledTimes(0);
     expect(formSpy).toHaveBeenCalledTimes(0);
@@ -59,7 +59,7 @@ describe("Poll NHL API Service", () => {
       .onGet(`schedule?teamId=28&startDate=${startMonth}&endDate=${endMonth}`)
       .reply(200, data);
 
-    await pollNHLAPI();
+    await createSharksSchedule();
 
     expect(eventSpy).toHaveBeenCalledTimes(1);
     expect(eventSpy).toHaveBeenCalledWith(

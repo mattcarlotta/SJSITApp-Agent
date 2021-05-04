@@ -27,7 +27,6 @@
       "~helpers": ["helpers/index"],
       "~libs/*": ["libs/*"],
       "~libs": ["libs/index"],
-      "~loggers/*": ["loggers/*"],
       "~loggers": ["loggers/index"],
       "~middlewares": ["middlewares/index"],
       "~models/*": ["models/*"],

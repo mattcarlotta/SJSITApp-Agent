@@ -1,6 +1,6 @@
 import get from "lodash.get";
 import { errorMessage, infoMessage } from "~loggers";
-import { Event, Form, Season } from "~models";
+import { Event, Season } from "~models";
 import {
   createDate,
   createSchedule,
@@ -9,10 +9,15 @@ import {
 } from "~helpers";
 import nhlAPI from "~utils/axiosConfig";
 import { eventFormat } from "~utils/dateFormats";
+import { IEvent } from "~types";
 
-export default async () => {
-  const events = [];
-  let createdForms = 0;
+/**
+ * Creates Sharks events for next months schedule
+ *
+ * @function CreateSharksSchedule
+ */
+const CreateSharksSchedule = async (): Promise<void> => {
+  const events = [] as Array<IEvent>;
   try {
     // start of next month
     const startMonth = getStartOfNextNextMonth();
@@ -65,7 +70,7 @@ export default async () => {
         const date = createDate(gameDate).format("MMMM Do YYYY, hh:mm a");
 
         // generate callTimes based upon the date
-        const callTimes = [120, 105, 90, 75, 30].map(time =>
+        const callTimes = [120, 90, 60, 30].map(time =>
           createDate(date, "MMMM Do YYYY, hh:mm a")
             .subtract(time, "minutes")
             .format()
@@ -88,43 +93,10 @@ export default async () => {
 
     await Event.insertMany(events);
 
-    // testing current month dates
-    // const sendEmailNotificationsDate = moment().format();
-    // const expirationDate = moment()
-    //   .startOf("month")
-    //   .add(6, "days")
-    //   .endOf("day")
-    //   .format();
-
-    // set A/P form expiration date 7 days from the 1st
-    const expirationDate = createDate()
-      .add(1, "month")
-      .startOf("month")
-      .add(6, "days")
-      .endOf("day")
-      .format();
-
-    // send A/P Form emails on the 1st of each month
-    const sendEmailNotificationsDate = createDate()
-      .add(1, "month")
-      .startOf("month")
-      .format();
-
-    // create an A/P form
-    await Form.create({
-      seasonId,
-      startMonth: startMonth.format(),
-      endMonth: endMonth.format(),
-      expirationDate,
-      sendEmailNotificationsDate,
-      notes: ""
-    });
-
-    createdForms = 1;
+    infoMessage(`Processed Sharks Events... ${events.length}`);
   } catch (err) {
     errorMessage(err);
-  } finally {
-    infoMessage(`Processed Events... ${events.length}`);
-    infoMessage(`Processed Forms... ${createdForms}`);
   }
 };
+
+export default CreateSharksSchedule;

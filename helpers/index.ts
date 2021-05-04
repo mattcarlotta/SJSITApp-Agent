@@ -1,4 +1,5 @@
-import moment from ".../../utils/momentWithTimeZone";
+import moment from "../utils/momentWithTimeZone";
+import { shortDateTimeFormat } from "../utils/dateFormats";
 import type {
   Moment,
   TEventMemberSchedule,
@@ -97,6 +98,18 @@ const getMonthDateRange = (
 const getNextYear = (): Moment => moment().add(1, "year").endOf("year");
 
 /**
+ * Helper function to generate a service date.
+ *
+ * @function getServiceTime
+ * @param time - string
+ * @param day - string
+ * @param month - string
+ * @returns {Date} date
+ */
+const getServiceTime = (time: string, day: string, month: string): Date =>
+  createDate(`${month}-${day} @ ${time}`, shortDateTimeFormat).toDate();
+
+/**
  * Helper function to get a start month date from now.
  *
  * @function getStartOfMonth
@@ -142,6 +155,15 @@ const groupByEmail = (data: Array<TEventMemberSchedule>): TEventsSorted =>
       events: data.filter(event => event.email === email)
     }));
 
+/**
+ * Transforms UPPERCASE text to Capital case.
+ */
+const toCapitalize = (text: string): string =>
+  text.replace(
+    /(\w)(\w*)/g,
+    (_, firstChar, rest) => firstChar + rest.toLowerCase()
+  );
+
 export {
   createDate,
   createSchedule,
@@ -152,8 +174,10 @@ export {
   getEndOfNextMonth,
   getMonthDateRange,
   getNextYear,
+  getServiceTime,
   getStartOfMonth,
   getStartOfNextMonth,
   getStartOfNextNextMonth,
-  groupByEmail
+  groupByEmail,
+  toCapitalize
 };
