@@ -3,10 +3,10 @@ import { eventLogger } from "~loggers";
 import { Event, Mail } from "~models";
 import { eventReminder } from "~templates";
 import { createDate, endOfTomorrow } from "~helpers";
-import moment from "~utils/momentWithTimeZone";
+import type { TAggEvents, TEmail } from "~types";
 
 export default async () => {
-  const events = await Event.find(
+  const events = (await Event.find(
     {
       eventDate: {
         $lte: endOfTomorrow()
@@ -29,9 +29,9 @@ export default async () => {
       path: "schedule.employeeIds",
       select: "_id firstName lastName email emailReminders"
     })
-    .lean();
+    .lean()) as Array<TAggEvents>;
 
-  const emailReminders = [];
+  const emailReminders = [] as Array<TEmail>;
   /* istanbul ignore next */
   if (!isEmpty(events)) {
     const eventIds = events.map(({ _id }) => _id);
@@ -47,12 +47,12 @@ export default async () => {
               emailReminders: sendMemberReminders
             }) => {
               if (sendMemberReminders) {
-                const eventDateToString = moment(eventDate)
-                  .tz("America/Los_Angeles")
-                  .format("MMMM Do, YYYY @ h:mm a");
+                const eventDateToString = createDate(eventDate).format(
+                  "MMMM Do, YYYY @ h:mm a"
+                );
 
                 emailReminders.push({
-                  sendTo: `${firstName} ${lastName} <${email}>`,
+                  sendTo: [`${firstName} ${lastName} <${email}>`],
                   sendFrom: "San Jose Sharks Ice Team <noreply@sjsiceteam.com>",
                   sendDate: createDate().toDate(),
                   subject: `Event Reminder for ${eventDateToString}`,

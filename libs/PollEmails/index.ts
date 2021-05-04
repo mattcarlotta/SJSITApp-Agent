@@ -5,9 +5,7 @@ import { Mail } from "~models";
 import { officialTemplate } from "~templates";
 import { endOfDay } from "~helpers";
 
-const { IMAGEAPI } = process.env;
-
-export default async () => {
+const PollEmails = async (): Promise<void> => {
   const emails = await Mail.aggregate([
     {
       $match: {
@@ -32,7 +30,7 @@ export default async () => {
           to: sendTo,
           from: sendFrom,
           subject,
-          html: officialTemplate(IMAGEAPI, message)
+          html: officialTemplate(message)
         });
 
         await Mail.updateOne({ _id }, { status: "sent" });
@@ -44,3 +42,5 @@ export default async () => {
 
   console.log(mailLogger(emails));
 };
+
+export default PollEmails;

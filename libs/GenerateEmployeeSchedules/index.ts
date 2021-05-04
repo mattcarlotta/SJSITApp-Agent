@@ -4,12 +4,14 @@ import { Event, Form, Mail } from "~models";
 import { upcomingSchedule } from "~templates";
 import { createDate, groupByEmail } from "~helpers";
 import moment from "~utils/momentWithTimeZone";
+import { calendarDateFormat } from "~utils/dateFormats";
+import type { TAggEvents, TEventMemberSchedule, TEventsSorted } from "~types";
 
 export default async () => {
-  let sortedSchedules = [];
-  const scheduledEvents = [];
+  let sortedSchedules = [] as TEventsSorted;
+  const scheduledEvents = [] as Array<TEventMemberSchedule>;
   try {
-    const nextMonth = moment().add(1, "months").startOf("month").format();
+    const nextMonth = moment().add(1, "month").startOf("month").toDate();
 
     // const nextMonth = moment()
     //   .startOf("month")
@@ -19,11 +21,14 @@ export default async () => {
     /* istanbul ignore next */
     if (!existingForm) throw String("Unable to locate a form for next month.");
 
-    const existingEvents = await Event.find(
+    const startMonth = moment(existingForm.startMonth);
+    const endMonth = moment(existingForm.endMonth);
+
+    const existingEvents = (await Event.find(
       {
         eventDate: {
-          $gte: existingForm.startMonth,
-          $lte: existingForm.endMonth
+          $gte: startMonth.format(),
+          $lte: endMonth.format()
         }
       },
       {
@@ -42,7 +47,7 @@ export default async () => {
         path: "schedule.employeeIds",
         select: "_id firstName lastName email"
       })
-      .lean();
+      .lean()) as Array<TAggEvents>;
     /* istanbul ignore next */
     if (isEmpty(existingEvents))
       throw String("No events were found for next month.");
@@ -54,9 +59,7 @@ export default async () => {
             scheduledEvents.push({
               email: `${firstName} ${lastName} <${email}>`,
               callTime,
-              eventDate: moment(eventDate)
-                .tz("America/Los_Angeles")
-                .format("MMMM Do YYYY, h:mm a"),
+              eventDate: moment(eventDate).format("MMMM Do YYYY, h:mm a"),
               ...rest
             });
           });
@@ -74,12 +77,10 @@ export default async () => {
       sendTo: [email],
       sendFrom: "San Jose Sharks Ice Team <noreply@sjsiceteam.com>",
       sendDate: createDate().toDate(),
-      subject: `Upcoming Schedule for ${moment(existingForm.startMonth).format(
-        "MM/DD/YYYY"
-      )} - ${moment(existingForm.endMonth).format("MM/DD/YYYY")}`,
-      message: upcomingSchedule({
-        events
-      })
+      subject: `Upcoming Schedule for ${startMonth.format(
+        calendarDateFormat
+      )} - ${endMonth.format(calendarDateFormat)}`,
+      message: upcomingSchedule(events)
     }));
 
     await Mail.insertMany(emails);

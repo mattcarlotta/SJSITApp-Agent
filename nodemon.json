@@ -1,0 +1,6 @@
+{
+  "watch": ["**/*.ts"],
+  "ext": "ts",
+  "ignore": [".github", "build", "coverage", "node_modules"],
+  "exec": "ENV_DEBUG=true ENV_LOAD=.env.dev ts-node --project ./tsconfig.json -r tsconfig-paths/register -r snackables ./index.ts"
+}

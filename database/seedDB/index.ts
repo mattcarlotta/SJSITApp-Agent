@@ -1,6 +1,8 @@
-import chalk from "chalk";
-import { connectDatabase } from "~database";
-import { Event, Form, Mail, Season, User } from "~models";
+import "snackables";
+import mongoose from "mongoose";
+import { createConnectionToDatabase, connectToDB } from "../index";
+import { Event, Form, Mail, Season, User } from "../../models";
+import { logErrorMessage, logInfoMessage } from "../../logger";
 import {
   createDate,
   getCurrentYear,
@@ -8,49 +10,50 @@ import {
   getMonthDateRange,
   getNextYear,
   getStartOfNextMonth
-} from "~helpers";
-import moment from "~utils/momentWithTimeZone";
+} from "../../helpers";
+import { fullyearFormat } from "../../utils/dateFormats";
 
-const { DATABASE, SEEDDB } = process.env;
-
-const admin = "carlotta.matt@gmail.com";
-const password = "password";
+const { DATABASE, EXIT, SEED } = process.env;
 
 /**
  * Function to seed the testing Mongo database.
  *
  * @function
- * @async
  * @returns {string} - displays a:  PASS  utils/seedDB.js message to console.
  * @throws {error} - displays a:  FAIL  utils/seedDB.js message to console with the error.
  */
-
 const seedDB = async () => {
-  const db = connectDatabase();
   try {
-    const databaseExists = User.findOne({ email: admin });
+    await connectToDB();
+    const db = await createConnectionToDatabase();
+
+    const databaseExists = User.findOne({ email: "staffmember@test.com" });
     if (databaseExists) await db.dropDatabase();
 
-    const administrator = {
-      email: admin,
-      password,
-      firstName: "Matt",
-      lastName: "Carlotta",
-      role: "employee",
-      token: "akqVlA.Zp2lWRQ/bBm3XRbHWW$ejYSZfIT4tZKtfFVIRca7ZZJvKuYhl7B6lijdr",
-      emailReminders: true,
-      registered: createDate().toDate()
-    };
+    const password = "password";
+    const registered = createDate().toDate();
 
     const staff = {
-      email: "staff@sjsiceteam.com",
+      email: "staffmember@test.com",
       password,
       firstName: "Ice Team",
       lastName: "Staff",
       role: "staff",
-      token: "akqVlB.Zp2lWRQ/bBv3XRbHWW$ejYSZfIT4tZKtfFVIRca7ZZJvKuYhl7B6lijdr",
+      token: "012345678910",
       emailReminders: true,
-      registered: createDate().toDate()
+      registered
+    };
+
+    const scheduledMember = {
+      avatar: "2.png",
+      email: "scheduledmember@test.com",
+      password,
+      firstName: "Scheduled",
+      lastName: "Member",
+      role: "member",
+      token: "012345678911",
+      emailReminders: true,
+      registered
     };
 
     const noUserReminders = {
@@ -58,27 +61,30 @@ const seedDB = async () => {
       password,
       firstName: "Bob",
       lastName: "Smith",
-      role: "employee",
-      token:
-        "akqVlsdfd.Zp2lWRQ/bBm3XRbHWW$ejYSZfIT4tZKtfFVIRca7ZZJvKuYhl7B6lijdr",
+      role: "member",
+      token: "012345678912",
       emailReminders: false,
-      registered: createDate().toDate()
+      registered
     };
 
-    await User.insertMany([administrator, staff, noUserReminders]);
+    await User.insertMany([staff, scheduledMember, noUserReminders]);
 
     const currentYear = getCurrentYear();
     const nextYear = getNextYear();
 
     const newSeason = {
-      seasonId: `${currentYear.format("YYYY")}${nextYear.format("YYYY")}`,
+      seasonId: `${currentYear.format(fullyearFormat)}${nextYear.format(
+        fullyearFormat
+      )}`,
       startDate: currentYear.format(),
       endDate: nextYear.format()
     };
 
     await Season.create(newSeason);
 
-    const adminAccount = await User.findOne({ email: administrator.email });
+    const scheduledMemberAcct = await User.findOne({
+      email: scheduledMember.email
+    });
     const currentTime = createDate();
 
     const newEvent = {
@@ -96,12 +102,12 @@ const seedDB = async () => {
         {
           _id: currentTime.format(),
           title: currentTime.format("hh:mm a"),
-          employeeIds: [adminAccount._id]
+          employeeIds: [scheduledMemberAcct!._id]
         }
       ]
     };
 
-    const nextMonthDate = moment().add(1, "month");
+    const nextMonthDate = createDate().add(1, "month");
 
     const newEvent2 = {
       team: "San Jose Barracuda",
@@ -118,12 +124,12 @@ const seedDB = async () => {
         {
           _id: nextMonthDate.format(),
           title: nextMonthDate.format("hh:mm a"),
-          employeeIds: [adminAccount._id]
+          employeeIds: [scheduledMemberAcct!._id]
         }
       ]
     };
 
-    const nextMonthDate1 = moment().add(1, "month").add(1, "day");
+    const nextMonthDate1 = createDate().add(1, "month").add(1, "day");
 
     const newEvent3 = {
       team: "San Jose Sharks",
@@ -150,9 +156,9 @@ const seedDB = async () => {
     const { startOfMonth, endOfMonth } = getMonthDateRange();
 
     const newForm = {
-      expirationDate: createDate().add(14, "days").format(),
-      startMonth: startOfMonth,
-      endMonth: endOfMonth,
+      expirationDate: createDate().add(14, "days").toDate(),
+      startMonth: startOfMonth.toDate(),
+      endMonth: endOfMonth.toDate(),
       sendEmailNotificationsDate: currentTime.format(),
       sentEmails: false,
       notes: "Form 1",
@@ -160,18 +166,10 @@ const seedDB = async () => {
     };
 
     const newForm2 = {
-      expirationDate: moment()
-        .add(1, "month")
-        .startOf("month")
-        .add(14, "days")
-        .endOf("day")
-        .format(),
-      startMonth: getStartOfNextMonth(),
-      endMonth: getEndOfNextMonth(),
-      sendEmailNotificationsDate: moment()
-        .add(1, "month")
-        .startOf("month")
-        .format(),
+      expirationDate: createDate().add(14, "days").toDate(),
+      startMonth: getStartOfNextMonth().toDate(),
+      endMonth: getEndOfNextMonth().toDate(),
+      sendEmailNotificationsDate: getStartOfNextMonth().toDate(),
       sentEmails: false,
       notes: "Form 2",
       seasonId: "20192020"
@@ -180,8 +178,8 @@ const seedDB = async () => {
     await Form.insertMany([newForm, newForm2]);
 
     const newMail1 = {
-      sendTo: administrator.email,
-      sendDate: currentTime.format(),
+      sendTo: scheduledMember.email,
+      sendDate: currentTime.toDate(),
       sendFrom: "San Jose Sharks Ice Team <testing@sjsiceteam.com>",
       status: "unsent",
       subject: "Testing",
@@ -189,8 +187,8 @@ const seedDB = async () => {
     };
 
     const newMail2 = {
-      sendTo: administrator.email,
-      sendDate: currentTime.format(),
+      sendTo: scheduledMember.email,
+      sendDate: currentTime.toDate(),
       sendFrom: "San Jose Sharks Ice Team <testing@sjsiceteam.com>",
       status: "unsent",
       subject: "Testing 2",
@@ -201,22 +199,24 @@ const seedDB = async () => {
 
     await db.close();
 
-    console.log(
-      `\n${chalk.rgb(7, 54, 66).bgRgb(38, 139, 210)(" SEED ")} ${chalk.blue(
-        `\x1b[2mutils/\x1b[0m\x1b[1mseedDB.js\x1b[0m (${DATABASE})`
-      )}\n`
+    logInfoMessage(
+      `\x1b[2mutils/\x1b[0m\x1b[1mseedDB.js\x1b[0m (${DATABASE})\n`
     );
 
-    return SEEDDB ? process.exit(0) : true;
+    await mongoose.connection.close();
+
+    if (EXIT) process.exit(0);
+
+    return null;
   } catch (err) {
-    console.log(
-      `\n\x1b[7m\x1b[31;1m FAIL \x1b[0m \x1b[2mutils/\x1b[0m\x1b[31;1mseedDB.js\x1b[0m\x1b[31m\n${err.toString()}\x1b[0m`
-    );
+    logErrorMessage(`seedDB.js\x1b[0m\x1b[31m\n${err.toString()}\x1b[0m\n`);
 
-    return SEEDDB ? process.exit(1) : false;
+    mongoose.connection.close();
+
+    process.exit(0);
   }
 };
 
-if (SEEDDB) seedDB();
+if (SEED) seedDB();
 
 export default seedDB;

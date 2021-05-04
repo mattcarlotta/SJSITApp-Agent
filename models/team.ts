@@ -1,11 +1,5 @@
-import { Document, Schema, model } from "mongoose";
-
-export interface ITeamDocument extends Document {
-  // _id?: Types.ObjectId;
-  league: string;
-  team: string;
-  name: string;
-}
+import { Schema, model } from "mongoose";
+import type { ITeamDocument } from "~types";
 
 // NHL/AHL teams
 const teamSchema = new Schema<ITeamDocument>({
@@ -14,6 +8,6 @@ const teamSchema = new Schema<ITeamDocument>({
   name: { type: String, unique: true, lowercase: true }
 });
 
-const TeamModel = model("Team", teamSchema);
+const TeamModel = model<ITeamDocument>("Team", teamSchema);
 
 export default TeamModel;

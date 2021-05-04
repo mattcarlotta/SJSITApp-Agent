@@ -1,4 +1,4 @@
-import { EmailProps } from "~types";
+import { TEmailProps } from "~types";
 
 const { CLIENT } = process.env;
 
@@ -8,7 +8,7 @@ const APFormNotification = ({
   endMonth,
   startMonth,
   notes
-}: EmailProps): string => `<h1 style="text-align: center;font-size: 26px;color: #eeeeee;margin: 0;padding: 10px 0;background: linear-gradient(90deg, #1f1f23 0%, #145e6b 50%, #1f1f23 100%);">
+}: TEmailProps): string => `<h1 style="text-align: center;font-size: 26px;color: #eeeeee;margin: 0;padding: 10px 0;background: linear-gradient(90deg, #1f1f23 0%, #145e6b 50%, #1f1f23 100%);">
     A/P Form Notification
   </h1>
   <p style="font-size: 18px;text-align: center;margin: 0;padding-bottom: 10px;color: #eeeeee;background: linear-gradient(90deg, #1f1f23 0%, #145e6b 50%, #1f1f23 100%);">

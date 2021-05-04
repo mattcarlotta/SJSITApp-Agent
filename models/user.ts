@@ -1,47 +1,5 @@
-import { Document, Schema, model, Types } from "mongoose";
-
-export type TActiveMembers = Array<{
-  _id: Types.ObjectId;
-  name: string;
-}>;
-
-export type TScheduledEventsForMember = Array<{
-  _id: Types.ObjectId;
-  eventCount: number;
-}>;
-
-export interface IUser {
-  // _id?: Types.ObjectId;
-  avatar?: string;
-  email: string;
-  role?: string;
-  status?: string;
-  firstName: string;
-  lastName: string;
-  password: string;
-  registered?: Date;
-  token: string;
-  emailReminders?: boolean;
-}
-
-export interface UserSchedule extends IUser {
-  response: string;
-  notes?: string;
-}
-
-export interface IUserDocument extends Document {
-  // _id?: Types.ObjectId;
-  avatar?: string;
-  email: string;
-  role?: string;
-  status?: string;
-  firstName: string;
-  lastName: string;
-  password: string;
-  registered?: Date;
-  token: string;
-  emailReminders?: boolean;
-}
+import { Schema, model } from "mongoose";
+import type { IUserDocument } from "~types";
 
 // admin, staff, member
 const userSchema = new Schema<IUserDocument>({
@@ -64,6 +22,6 @@ const userSchema = new Schema<IUserDocument>({
   emailReminders: { type: Boolean, default: true }
 });
 
-const UserModel = model("User", userSchema);
+const UserModel = model<IUserDocument>("User", userSchema);
 
 export default UserModel;

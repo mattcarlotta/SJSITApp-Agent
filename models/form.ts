@@ -1,15 +1,5 @@
-import { Document, Schema, model } from "mongoose";
-
-export interface IFormDocument extends Document {
-  // _id?: Types.ObjectId;
-  startMonth: Date;
-  endMonth: Date;
-  expirationDate: Date;
-  seasonId: string;
-  sendEmailNotificationsDate: Date | string;
-  sentEmails?: boolean;
-  notes?: string;
-}
+import { Schema, model } from "mongoose";
+import type { IFormDocument } from "~types";
 
 // monthly form
 const formSchema = new Schema<IFormDocument>({
@@ -25,6 +15,6 @@ const formSchema = new Schema<IFormDocument>({
   notes: String
 });
 
-const FormModel = model("Form", formSchema);
+const FormModel = model<IFormDocument>("Form", formSchema);
 
 export default FormModel;

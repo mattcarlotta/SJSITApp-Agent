@@ -4,11 +4,11 @@ import { Form, Mail, User } from "~models";
 import { apFormReminder } from "~templates";
 import { getEndOfMonth, createDate } from "~helpers";
 import moment from "~utils/momentWithTimeZone";
+import { dateTimeFormat } from "~utils/dateFormats";
 
-export default async () => {
-  const startNextMonth = moment().add(1, "months").startOf("month").format();
-
-  const endNextMonth = getEndOfMonth(startNextMonth);
+const GenerateFormReminders = async (): Promise<void> => {
+  const startNextMonth = moment().add(1, "months").startOf("month").toDate();
+  const endNextMonth = getEndOfMonth(startNextMonth).toDate();
 
   const existingForm = await Form.findOne(
     {
@@ -60,9 +60,7 @@ export default async () => {
         sendDate: createDate().toDate(),
         message: apFormReminder({
           _id,
-          expirationDate: createDate(expirationDate)
-            .tz("America/Los_Angeles")
-            .format("MMMM Do YYYY @ hh:mm a"),
+          expirationDate: createDate(expirationDate).format(dateTimeFormat),
           endMonth: endOfMonth,
           startMonth: startOfMonth
         })
@@ -76,3 +74,5 @@ export default async () => {
   /* istanbul ignore next */
   console.log(formLogger(formReminders));
 };
+
+export default GenerateFormReminders;

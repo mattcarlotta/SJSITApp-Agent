@@ -1,11 +1,5 @@
-import { Document, Schema, model } from "mongoose";
-
-export interface ISeasonDocument extends Document {
-  // _id?: Types.ObjectId;
-  seasonId: string;
-  startDate: Date;
-  endDate: Date;
-}
+import { Schema, model } from "mongoose";
+import type { ISeasonDocument } from "~types";
 
 // current season year
 const seasonSchema = new Schema<ISeasonDocument>({
@@ -14,9 +8,6 @@ const seasonSchema = new Schema<ISeasonDocument>({
   endDate: { type: Date, required: true }
 });
 
-const SeasonModel = model(
-  "Season",
-  seasonSchema
-);
+const SeasonModel = model<ISeasonDocument>("Season", seasonSchema);
 
 export default SeasonModel;

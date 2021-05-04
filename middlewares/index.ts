@@ -2,11 +2,11 @@ import mailer from "@sendgrid/mail";
 import moment from "~utils/momentWithTimeZone";
 import { logErrorMessage, logInfoMessage } from "../logger";
 
-const { sendgridAPIKey } = process.env;
+const { SENDGRIDAPIKEY } = process.env;
 
 moment.tz.setDefault("America/Los_Angeles");
 
-mailer.setApiKey(sendgridAPIKey as string);
+mailer.setApiKey(SENDGRIDAPIKEY as string);
 
 process.on("exit", () => logInfoMessage("Email service has been stopped."));
 

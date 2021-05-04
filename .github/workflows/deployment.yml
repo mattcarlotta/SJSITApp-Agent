@@ -26,7 +26,7 @@ jobs:
       - name: Setup Environment
         uses: actions/setup-node@v1
         with:
-          node-version: 10.x
+          node-version: 14.x
 
       - name: Yarn Cache Directory
         id: yarn-cache-dir-path
@@ -50,8 +50,7 @@ jobs:
         run: yarn test
         env:
           DATABASE: iceteam-test-database
-          inTesting: true
-          sendgridAPIKey: eat-me-pfftt
+          SENDGRIDAPIKEY: eat-me-pfftt
 
       - name: Create Local Build
         if: steps.tests.exit_code == 0
@@ -61,7 +60,7 @@ jobs:
           CLIENT: ${{ secrets.CLIENT }}
           DATABASE: ${{ secrets.DATABASE }}
           IMAGEAPI: ${{ secrets.IMAGEAPI }}
-          sendgridAPIKey: ${{ secrets.sendgridAPIKey }}
+          SENDGRIDAPIKEY: ${{ secrets.SENDGRIDAPIKEY }}
 
       - name: Deploy Build
         run: |

@@ -4,7 +4,9 @@ import { generateStaffSchedule } from "~libs";
 import { scheduleLogger } from "~loggers";
 import { Event, Mail } from "~models";
 import { getEndOfNextMonth, getStartOfNextMonth } from "~helpers";
+import { calendarDateFormat } from "~utils/dateFormats";
 import { masterSchedule } from "~templates";
+
 import moment from "~utils/momentWithTimeZone";
 
 describe("Generate Staff Schedule Service", () => {
@@ -18,8 +20,8 @@ describe("Generate Staff Schedule Service", () => {
 
   it("handles polling schedule events documents for staff members", async () => {
     const mailSpy = jest.spyOn(Mail, "insertMany");
-    const startMonth = getStartOfNextMonth();
-    const endMonth = getEndOfNextMonth();
+    const startMonth = getStartOfNextMonth().toDate();
+    const endMonth = getEndOfNextMonth().toDate();
 
     const existingEvents = await Event.find(
       {
@@ -49,7 +51,6 @@ describe("Generate Staff Schedule Service", () => {
 
     await generateStaffSchedule();
 
-    const format = "MM/DD/YYYY";
     expect(mailSpy).toHaveBeenCalledTimes(1);
     expect(mailSpy).toHaveBeenCalledWith(
       expect.arrayContaining([
@@ -57,12 +58,12 @@ describe("Generate Staff Schedule Service", () => {
           sendTo: ["Ice Team Staff <staff@sjsiceteam.com>"],
           sendFrom: "San Jose Sharks Ice Team <noreply@sjsiceteam.com>",
           subject: `Upcoming Schedule for ${moment(startMonth).format(
-            format
-          )} - ${moment(endMonth).format(format)}`,
+            calendarDateFormat
+          )} - ${moment(endMonth).format(calendarDateFormat)}`,
           message: masterSchedule(
             existingEvents,
-            moment(startMonth).format(format),
-            moment(endMonth).format(format)
+            moment(startMonth).format(calendarDateFormat),
+            moment(endMonth).format(calendarDateFormat)
           )
         })
       ])

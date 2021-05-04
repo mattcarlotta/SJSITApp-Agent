@@ -3,6 +3,8 @@ import { formLogger } from "~loggers";
 import { Form, Mail, User } from "~models";
 import { apFormNotification } from "~templates";
 import { createDate, endOfDay } from "~helpers";
+import { dateTimeFormat, calendarDateFormat } from "~utils/dateFormats";
+import type { TEmail } from "~types";
 
 export default async () => {
   const forms = await Form.find(
@@ -21,7 +23,7 @@ export default async () => {
     { sort: { startMonth: 1 } }
   ).lean();
 
-  let formReminders = [];
+  let formReminders = [] as Array<TEmail>;
   /* istanbul ignore next */
   if (!isEmpty(forms)) {
     const members = await User.aggregate([
@@ -49,9 +51,10 @@ export default async () => {
 
       formReminders = forms.map(
         ({ _id, expirationDate, endMonth, startMonth, notes }) => {
-          const format = "MM/DD/YYYY";
-          const endOfMonth = createDate(endMonth).format(format);
-          const startOfMonth = createDate(startMonth).format(format);
+          const endOfMonth = createDate(endMonth).format(calendarDateFormat);
+          const startOfMonth = createDate(startMonth).format(
+            calendarDateFormat
+          );
 
           return {
             sendTo: memberEmails,
@@ -60,9 +63,7 @@ export default async () => {
             sendDate: createDate().toDate(),
             message: apFormNotification({
               _id,
-              expirationDate: createDate(expirationDate)
-                .tz("America/Los_Angeles")
-                .format("MMMM Do YYYY @ hh:mm a"),
+              expirationDate: createDate(expirationDate).format(dateTimeFormat),
               endMonth: endOfMonth,
               startMonth: startOfMonth,
               notes

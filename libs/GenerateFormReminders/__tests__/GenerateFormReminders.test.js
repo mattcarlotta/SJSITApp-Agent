@@ -6,8 +6,7 @@ import { Form, Mail, User } from "~models";
 import { createDate, getEndOfMonth } from "~helpers";
 import { apFormReminder } from "~templates";
 import moment from "~utils/momentWithTimeZone";
-
-const { CLIENT } = process.env;
+import { dateTimeFormat } from "~utils/dateFormats";
 
 describe("Generate A/P Form Reminders Service", () => {
   beforeAll(async () => {
@@ -75,10 +74,7 @@ describe("Generate A/P Form Reminders Service", () => {
           subject: `Sharks & Barracuda A/P Form Reminder (${startOfMonth} - ${endOfMonth})`,
           message: apFormReminder({
             _id,
-            CLIENT,
-            expirationDate: createDate(expirationDate).format(
-              "MMMM Do YYYY @ hh:mm a"
-            ),
+            expirationDate: createDate(expirationDate).format(dateTimeFormat),
             endMonth: endOfMonth,
             startMonth: startOfMonth,
             notes

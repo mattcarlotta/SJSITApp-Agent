@@ -3,12 +3,14 @@ import { errorLogger, scheduleLogger } from "~loggers";
 import { Event, Form, Mail, User } from "~models";
 import { masterSchedule } from "~templates";
 import { createDate } from "~helpers";
+import { calendarDateFormat } from "~utils/dateFormats";
 import moment from "~utils/momentWithTimeZone";
+import type { TEmail } from "~types";
 
-export default async () => {
-  const masterScheduleMail = [];
+const GenerateStaffSchedule = async (): Promise<void> => {
+  const masterScheduleMail = [] as Array<TEmail>;
   try {
-    const nextMonth = moment().add(1, "months").startOf("month").format();
+    const nextMonth = moment().add(1, "months").startOf("month").toDate();
 
     // const nextMonth = moment()
     //   .startOf("month")
@@ -18,11 +20,14 @@ export default async () => {
     /* istanbul ignore next */
     if (!existingForm) throw String("Unable to locate a form for next month.");
 
+    const startMonth = moment(existingForm.startMonth);
+    const endMonth = moment(existingForm.endMonth);
+
     const events = await Event.find(
       {
         eventDate: {
-          $gte: existingForm.startMonth,
-          $lte: existingForm.endMonth
+          $gte: startMonth.format(),
+          $lte: endMonth.format()
         }
       },
       {
@@ -68,16 +73,15 @@ export default async () => {
       throw String("Unable to locate any staff members.");
 
     const staffEmailAddresses = staffMembers.map(({ email }) => email);
-    const format = "MM/DD/YYYY";
-    const startMonth = moment(existingForm.startMonth).format(format);
-    const endMonth = moment(existingForm.endMonth).format(format);
+    const scheduleStartMonth = startMonth.format(calendarDateFormat);
+    const scheduleEndMonth = endMonth.format(calendarDateFormat);
 
     masterScheduleMail.push({
       sendTo: staffEmailAddresses,
       sendFrom: "San Jose Sharks Ice Team <noreply@sjsiceteam.com>",
       sendDate: createDate().toDate(),
-      subject: `Upcoming Schedule for ${startMonth} - ${endMonth}`,
-      message: masterSchedule(events, startMonth, endMonth)
+      subject: `Upcoming Schedule for ${scheduleStartMonth} - ${scheduleEndMonth}`,
+      message: masterSchedule(events, scheduleStartMonth, scheduleEndMonth)
     });
 
     await Mail.insertMany(masterScheduleMail);
@@ -88,3 +92,5 @@ export default async () => {
     console.log(scheduleLogger(masterScheduleMail));
   }
 };
+
+export default GenerateStaffSchedule;

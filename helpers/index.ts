@@ -1,24 +1,31 @@
-import moment from "~utils/momentWithTimeZone";
+import moment from ".../../utils/momentWithTimeZone";
+import type {
+  Moment,
+  TEventMemberSchedule,
+  TEventEmptySchedule,
+  TEventsSorted
+} from "../types";
 
 /**
  * Helper function to create a current date.
  *
  * @function createDate
+ * @param date - string or date
  * @returns {Date}
  */
-const createDate = date => moment(date || Date.now());
+const createDate = (date?: Date | string, format?: string): Moment =>
+  moment(date || Date.now(), format);
 
 /**
  * Helper function to generate a schedule based upon calltimes.
  *
  * @function createSchedule
  * @param callTimes - an array of dates
- * @returns {object}
+ * @returns {TEventEmptySchedule} -[{ _id: string; employeeIds: [] }]
  */
-const createSchedule = callTimes =>
+const createSchedule = (callTimes: Array<string>): TEventEmptySchedule =>
   callTimes.map(time => ({
     _id: time,
-    title: moment(time).format("hh:mm a"),
     employeeIds: []
   }));
 
@@ -26,54 +33,57 @@ const createSchedule = callTimes =>
  * Helper function to create a current date.
  *
  * @function endOfDay
- * @returns {Date}
+ * @returns Date
  */
-const endOfDay = () => moment().endOf("day").toDate();
+const endOfDay = (): Date => moment().endOf("day").toDate();
 
 /**
  * Helper function to create a current date.
  *
  * @function endOfTomorrow
- * @returns {Date}
+ * @returns string
  */
-const endOfTomorrow = () => moment().add(1, "day").endOf("day").toDate();
+const endOfTomorrow = (): string =>
+  moment().add(1, "day").endOf("day").format();
 
 /**
  * Helper function to get a Date of current year.
  *
  * @function getCurrentYear
- * @returns {Date}
+ * @returns Moment
  */
-const getCurrentYear = () => moment().startOf("year");
+const getCurrentYear = (): Moment => moment().startOf("year");
 
 /**
  * Helper function to get a end month date.
  *
  * @function getEndOfMonth
- * @returns {Date}
+ * @param date - string or date
+ * @returns {Moment}
  */
-const getEndOfMonth = date => moment(date).endOf("month");
+const getEndOfMonth = (date: Date | string): Moment =>
+  moment(date).endOf("month");
 
 /**
  * Helper function to create a next end month date.
  *
  * @function getEndOfNextMonth
- * @returns {Date}
+ * @returns {Moment}
  */
-const getEndOfNextMonth = () =>
-  moment().add(1, "month").endOf("month").format();
+const getEndOfNextMonth = (): Moment => moment().add(1, "month").endOf("month");
 
 /**
  * Helper function to generate a date range.
  *
  * @function getMonthDateRange
  * @param date
- * @returns {object}
+ * @returns {object} The startOfMonth and endOfMonth
  */
-const getMonthDateRange = date => {
-  const newDate = date || Date.now();
-  const startOfMonth = moment(newDate).startOf("month").toDate();
-  const endOfMonth = moment(newDate).endOf("month").toDate();
+const getMonthDateRange = (
+  date?: Date | string
+): { startOfMonth: Moment; endOfMonth: Moment } => {
+  const startOfMonth = moment(date).startOf("month");
+  const endOfMonth = moment(date).endOf("month");
 
   return { startOfMonth, endOfMonth };
 };
@@ -82,34 +92,34 @@ const getMonthDateRange = date => {
  * Helper function to get a Date of current year.
  *
  * @function getNextYear
- * @returns {Date}
+ * @returns {Moment}
  */
-const getNextYear = () => moment().add(1, "year").endOf("year");
+const getNextYear = (): Moment => moment().add(1, "year").endOf("year");
 
 /**
  * Helper function to get a start month date from now.
  *
  * @function getStartOfMonth
- * @returns {Date}
+ * @returns {Moment}
  */
-const getStartOfMonth = () => moment().startOf("month");
+const getStartOfMonth = (): Moment => moment().startOf("month");
 
 /**
  * Helper function to create a next start month date.
  *
  * @function getStartOfNextMonth
- * @returns {Date}
+ * @returns {string}
  */
-const getStartOfNextMonth = () =>
-  moment().add(1, "months").startOf("month").format();
+const getStartOfNextMonth = (): Moment =>
+  moment().add(1, "months").startOf("month");
 
 /**
  * Helper function to get a start month Date 2 months from now.
  *
  * @function getStartOfNextNextMonth
- * @returns {Date}
+ * @returns {Moment}
  */
-const getStartOfNextNextMonth = () =>
+const getStartOfNextNextMonth = (): Moment =>
   moment().add(2, "months").startOf("month");
 
 /**
@@ -119,29 +129,18 @@ const getStartOfNextNextMonth = () =>
  * @param data - array of events
  * @returns {object}
  */
-const groupByEmail = data =>
+const groupByEmail = (data: Array<TEventMemberSchedule>): TEventsSorted =>
   data
     .reduce((acc, currentValue) => {
       if (!acc.some(email => email === currentValue.email))
         acc.push(currentValue.email);
 
       return acc;
-    }, [])
+    }, [] as Array<string>)
     .map(email => ({
       email,
       events: data.filter(event => event.email === email)
     }));
-
-/**
- * Helper function to create a current date.
- *
- * @function
- * @returns {Date}
- */
-// const startOfDay = () =>
-//   moment()
-//     .startOf("day")
-//     .toDate();
 
 export {
   createDate,
@@ -157,5 +156,4 @@ export {
   getStartOfNextMonth,
   getStartOfNextNextMonth,
   groupByEmail
-  // startOfDay,
 };

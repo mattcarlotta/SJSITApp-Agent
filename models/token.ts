@@ -1,13 +1,5 @@
-import { Document, Schema, model } from "mongoose";
-
-export interface ITokenDocument extends Document {
-  // _id?: Types.ObjectId;
-  token: string;
-  authorizedEmail: string;
-  email?: string;
-  role: string;
-  expiration: Date;
-}
+import { Schema, model } from "mongoose";
+import type { ITokenDocument } from "~types";
 
 // token templates
 const tokenSchema = new Schema({
@@ -21,6 +13,6 @@ const tokenSchema = new Schema({
   }
 });
 
-const TokenModel = model("Token", tokenSchema);
+const TokenModel = model<ITokenDocument>("Token", tokenSchema);
 
 export default TokenModel;

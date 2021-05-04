@@ -2,14 +2,13 @@ import get from "lodash.get";
 import { errorLogger, eventLogger, formCountLogger } from "~loggers";
 import { Event, Form, Season } from "~models";
 import {
+  createDate,
   createSchedule,
   getEndOfMonth,
   getStartOfNextNextMonth
 } from "~helpers";
 import nhlAPI from "~utils/axiosConfig";
-import moment from "~utils/momentWithTimeZone";
-
-const format = "YYYY-MM-DD";
+import { eventFormat } from "~utils/dateFormats";
 
 export default async () => {
   const events = [];
@@ -21,16 +20,14 @@ export default async () => {
     // testing current month
     // const startMonth = moment().startOf("month");
 
-    const formattedStartMonth = startMonth.format(format);
-
     // end of next month
-    const endMonth = getEndOfMonth(startMonth);
+    const endMonth = getEndOfMonth(startMonth.toDate());
 
     // locate season that encapulates next month
     const existingSeason = await Season.findOne(
       {
-        startDate: { $lte: formattedStartMonth },
-        endDate: { $gte: formattedStartMonth }
+        startDate: { $lte: startMonth.toDate() },
+        endDate: { $gte: startMonth.toDate() }
       },
       { seasonId: 1 }
     );
@@ -42,9 +39,9 @@ export default async () => {
 
     // fetch Sharks schedule for next month from stats.nhl.com
     const res = await nhlAPI.get(
-      `schedule?teamId=28&startDate=${formattedStartMonth}&endDate=${endMonth.format(
-        format
-      )}`
+      `schedule?teamId=28&startDate=${startMonth.format(
+        eventFormat
+      )}&endDate=${endMonth.format(eventFormat)}`
     );
 
     const dates = get(res, ["data", "dates"]);
@@ -65,11 +62,11 @@ export default async () => {
         const team = get(teams, ["home", "team", "name"]);
         const opponent = get(teams, ["away", "team", "name"]);
 
-        const date = moment(gameDate).format("MMMM Do YYYY, hh:mm a");
+        const date = createDate(gameDate).format("MMMM Do YYYY, hh:mm a");
 
         // generate callTimes based upon the date
         const callTimes = [120, 105, 90, 75, 30].map(time =>
-          moment(date, "MMMM Do YYYY, hh:mm a")
+          createDate(date, "MMMM Do YYYY, hh:mm a")
             .subtract(time, "minutes")
             .format()
         );
@@ -100,7 +97,7 @@ export default async () => {
     //   .format();
 
     // set A/P form expiration date 7 days from the 1st
-    const expirationDate = moment()
+    const expirationDate = createDate()
       .add(1, "month")
       .startOf("month")
       .add(6, "days")
@@ -108,7 +105,7 @@ export default async () => {
       .format();
 
     // send A/P Form emails on the 1st of each month
-    const sendEmailNotificationsDate = moment()
+    const sendEmailNotificationsDate = createDate()
       .add(1, "month")
       .startOf("month")
       .format();

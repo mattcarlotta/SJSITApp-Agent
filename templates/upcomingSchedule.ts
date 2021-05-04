@@ -1,10 +1,8 @@
-import type { TEventMemberSchedule } from "~models/event";
+import type { TEventMemberSchedule } from "~types";
 
-const UpcomingSchedule = ({
-  events
-}: {
-  events: Array<TEventMemberSchedule>;
-}) => `<h1 style="text-align: center;font-size: 26px;color: #eeeeee;margin: 0;padding: 10px 0;background: linear-gradient(90deg, #1f1f23 0%, #145e6b 50%, #1f1f23 100%);">
+const UpcomingSchedule = (
+  events: Array<TEventMemberSchedule>
+): string => `<h1 style="text-align: center;font-size: 26px;color: #eeeeee;margin: 0;padding: 10px 0;background: linear-gradient(90deg, #1f1f23 0%, #145e6b 50%, #1f1f23 100%);">
     Upcoming Schedule
   </h1>
   <p style="font-size: 18px;text-align: center;margin: 0;padding: 0 10px 10px;color: #eeeeee;background: linear-gradient(90deg, #1f1f23 0%, #145e6b 50%, #1f1f23 100%);">

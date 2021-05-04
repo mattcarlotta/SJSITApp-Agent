@@ -1,22 +1,5 @@
-import { Document, Schema, model } from "mongoose";
-
-export interface IServiceDocument extends Document {
-  // _id?: Types.ObjectId;
-  automatedOnline: boolean;
-  emailOnline: boolean;
-  eventOnline: boolean;
-  eventDay: string;
-  eventMonth: string;
-  eventTime: string;
-  formReminderOnline: boolean;
-  formReminderDay: string;
-  formReminderMonth: string;
-  formReminderTime: string;
-  scheduleOnline: boolean;
-  scheduleDay: string;
-  scheduleMonth: string;
-  scheduleTime: string;
-}
+import { Schema, model } from "mongoose";
+import type { IServiceDocument } from "~types";
 
 // current season year
 const serviceSchema = new Schema<IServiceDocument>({
@@ -36,9 +19,6 @@ const serviceSchema = new Schema<IServiceDocument>({
   scheduleTime: { type: String, required: true }
 });
 
-const ServiceModel = model(
-  "Service",
-  serviceSchema
-);
+const ServiceModel = model<IServiceDocument>("Service", serviceSchema);
 
 export default ServiceModel;

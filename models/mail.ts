@@ -1,17 +1,8 @@
-import { Document, Schema, model } from "mongoose";
-
-export interface IMailDocument extends Document {
-  // _id?: Types.ObjectId;
-  message: string;
-  sendTo: Array<string>;
-  sendFrom: string;
-  sendDate: Date | string;
-  status: string;
-  subject: string;
-}
+import { Schema, model } from "mongoose";
+import type { TMailDocument } from "~types";
 
 // email
-const mailSchema = new Schema<IMailDocument>({
+const mailSchema = new Schema<TMailDocument>({
   message: { type: String, required: true },
   sendTo: [{ type: String, required: true }],
   sendFrom: { type: String, required: true },
@@ -23,7 +14,6 @@ const mailSchema = new Schema<IMailDocument>({
   subject: { type: String, required: true }
 });
 
-
-const MailModel = model("Mail", mailSchema);
+const MailModel = model<TMailDocument>("Mail", mailSchema);
 
 export default MailModel;

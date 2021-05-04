@@ -5,6 +5,7 @@ import { formLogger } from "~loggers";
 import { Form, Mail, User } from "~models";
 import { createDate, endOfDay } from "~helpers";
 import { apFormNotification } from "~templates";
+import { dateTimeFormat } from "~utils/dateFormats";
 
 const { CLIENT } = process.env;
 
@@ -75,9 +76,7 @@ describe("Poll Forms Service", () => {
           message: apFormNotification({
             _id,
             CLIENT,
-            expirationDate: createDate(expirationDate).format(
-              "MMMM Do YYYY @ hh:mm a"
-            ),
+            expirationDate: createDate(expirationDate).format(dateTimeFormat),
             endMonth: endOfMonth,
             startMonth: startOfMonth,
             notes
