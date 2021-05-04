@@ -1,6 +1,6 @@
-import chalk from "chalk";
 import { scheduleJob } from "node-schedule";
 import "~middlewares";
+import { createDate } from "~helpers";
 import {
   generateStaffSchedule,
   generateFormReminders,
@@ -10,7 +10,8 @@ import {
   pollNHLAPI,
   generateEmployeeSchedules
 } from "~libs";
-import { initiatedLogger } from "~loggers";
+import { infoMessage, warnMessage } from "~loggers";
+import { fullDateTimeFormat } from "~utils/dateFormats";
 
 //= ===========================================================//
 // CREATE POLLING SERVICES                                     //
@@ -18,7 +19,13 @@ import { initiatedLogger } from "~loggers";
 
 if (process.env.ONLINE) {
   scheduleJob("*/30 * * * * *", async () => {
-    console.log(initiatedLogger());
+    const currentDate = createDate();
+
+    infoMessage(
+      `Polling service was initiated on ${currentDate.format(
+        fullDateTimeFormat
+      )}.`
+    );
 
     await pollForms();
     await pollEvents();
@@ -46,9 +53,5 @@ if (process.env.ONLINE) {
   // on the 16th of every month @ 7:59am
   scheduleJob("59 7 16 * *", () => pollNHLAPI());
 } else {
-  console.log(
-    `\n${chalk.rgb(255, 255, 255).bgRgb(201, 162, 4)(" WARN ")} ${chalk.yellow(
-      `The emailing microservice is currently offline`
-    )}`
-  );
+  warnMessage("The emailing microservice is currently offline");
 }

@@ -1,6 +1,4 @@
 import chalk from "chalk";
-import { createDate } from "~helpers";
-import { fullDateTimeFormat } from "~utils/dateFormats";
 
 export const errorMessage = (error: string): void => {
   console.log(
@@ -18,10 +16,10 @@ export const infoMessage = (message: string): void => {
   );
 };
 
-export const initiatedLogger = (): void => {
-  infoMessage(
-    `Polling service was initiated on ${createDate().format(
-      fullDateTimeFormat
-    )}.`
+export const warnMessage = (message: string): void => {
+  console.log(
+    `\n${chalk.rgb(255, 255, 255).bgRgb(201, 162, 4)(" WARN ")} ${chalk.yellow(
+      `${message}`
+    )}`
   );
 };
