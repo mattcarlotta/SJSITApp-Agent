@@ -9,7 +9,7 @@ import {
 } from "~helpers";
 import nhlAPI from "~utils/axiosConfig";
 import { eventFormat } from "~utils/dateFormats";
-import { IEvent } from "~types";
+import { IEvent, TNHLResponseData } from "~types";
 
 /**
  * Creates Sharks events for next months schedule
@@ -43,14 +43,14 @@ const CreateSharksSchedule = async (): Promise<void> => {
     const { seasonId } = existingSeason;
 
     // fetch Sharks schedule for next month from stats.nhl.com
-    const res = await nhlAPI.get(
+    const res = (await nhlAPI.get(
       `schedule?teamId=28&startDate=${startMonth.format(
         eventFormat
       )}&endDate=${endMonth.format(eventFormat)}`
-    );
+    )) as { data: TNHLResponseData };
 
     const dates = get(res, ["data", "dates"]);
-    if (!dates) throw String("Unable to retrieve next month's game schedule.");
+    if (!dates) throw String("No Sharks home events were found. Aborted!");
 
     // build an array of events
     dates.forEach(({ games }) => {
@@ -70,7 +70,7 @@ const CreateSharksSchedule = async (): Promise<void> => {
         const date = createDate(gameDate).format("MMMM Do YYYY, hh:mm a");
 
         // generate callTimes based upon the date
-        const callTimes = [120, 90, 60, 30].map(time =>
+        const callTimes = [120, 105, 90, 30].map(time =>
           createDate(date, "MMMM Do YYYY, hh:mm a")
             .subtract(time, "minutes")
             .format()

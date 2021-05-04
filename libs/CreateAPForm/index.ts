@@ -59,7 +59,7 @@ const CreateAPForm = async (): Promise<void> => {
       notes: ""
     });
 
-    infoMessage(`Processed Forms... 1`);
+    infoMessage("Processed Forms... 1");
   } catch (err) {
     errorMessage(err.toString());
   }

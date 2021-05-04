@@ -3,7 +3,8 @@ import { infoMessage } from "~loggers";
 import { Form, Mail, User } from "~models";
 import { apFormReminder } from "~templates";
 import { createDate, getEndOfMonth } from "~helpers";
-import { dateTimeFormat } from "~utils/dateFormats";
+import { dateTimeFormat, calendarDateFormat } from "~utils/dateFormats";
+import { TEmail } from "~types";
 
 /**
  * Send out A/P form reminders to employees on the nth of every month @ time
@@ -30,7 +31,7 @@ const GenerateFormReminders = async (): Promise<void> => {
     { sort: { startMonth: 1 } }
   ).lean();
 
-  const formReminders = [];
+  const formReminders = [] as Array<TEmail>;
   /* istanbul ignore next */
   if (existingForm) {
     const members = await User.aggregate([
@@ -56,9 +57,8 @@ const GenerateFormReminders = async (): Promise<void> => {
     if (!isEmpty(members)) {
       const memberEmails = members.map(({ email }) => email);
       const { _id, startMonth, endMonth, expirationDate } = existingForm;
-      const format = "MM/DD/YYYY";
-      const endOfMonth = createDate(endMonth).format(format);
-      const startOfMonth = createDate(startMonth).format(format);
+      const endOfMonth = createDate(endMonth).format(calendarDateFormat);
+      const startOfMonth = createDate(startMonth).format(calendarDateFormat);
 
       formReminders.push({
         sendTo: memberEmails,

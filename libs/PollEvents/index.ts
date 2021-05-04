@@ -81,5 +81,7 @@ export default async () => {
   }
 
   /* istanbul ignore next */
-  infoMessage(`Processed Events... ${!isEmpty(emailReminders) ? emailReminders : events)}`);
+  infoMessage(
+    `Processed Events... ${!isEmpty(emailReminders) ? emailReminders : events}`
+  );
 };

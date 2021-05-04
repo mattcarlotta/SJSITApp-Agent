@@ -147,6 +147,15 @@ export type TEmail = {
   sendDate: Date | string;
   subject: string;
 };
+
+export type TEmailProps = {
+  _id: string;
+  expirationDate: string;
+  endMonth: string;
+  startMonth: string;
+  notes?: string;
+};
+
 export type TMailDocument = Document & TEmail & { status: string };
 ///
 
@@ -246,12 +255,75 @@ export interface IUserDocument extends Document {
 export type TUserModel = Model<IUserDocument>;
 ///
 
-export type TEmailProps = {
-  _id: string;
-  expirationDate: string;
-  endMonth: string;
-  startMonth: string;
-  notes?: string;
+/// API EVENTS ///
+export type TNHLResponseData = {
+  copyright: string;
+  totalItems: number;
+  totalEvents: number;
+  totalGames: number;
+  totalMatches: number;
+  wait: number;
+  dates: Array<{
+    date: string;
+    totalItems: number;
+    totalEvents: 0;
+    totalGames: 1;
+    totalMatches: 0;
+    games: Array<{
+      gamePk: number;
+      link: string;
+      gameType: string;
+      season: string;
+      gameDate: string;
+      status: {
+        abstractGameState: string;
+        codedGameState: string;
+        detailedState: string;
+        statusCode: string;
+        startTimeTBD: boolean;
+      };
+      teams: {
+        away: {
+          leagueRecord: {
+            wins: number;
+            losses: number;
+            ot: number;
+            type: string;
+          };
+          score: number;
+          team: {
+            id: number;
+            name: string;
+            link: string;
+          };
+        };
+        home: {
+          leagueRecord: {
+            wins: number;
+            losses: number;
+            ot: number;
+            type: string;
+          };
+          score: number;
+          team: {
+            id: number;
+            name: string;
+            link: string;
+          };
+        };
+      };
+      venue: {
+        id: number;
+        name: string;
+        link: string;
+      };
+      content: {
+        link: string;
+      };
+    }>;
+  }>;
+  events: Array<any>;
+  matches: Array<any>;
 };
 
 export { Moment };
