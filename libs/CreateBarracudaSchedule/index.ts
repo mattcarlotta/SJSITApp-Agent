@@ -1,4 +1,5 @@
 import cheerio from "cheerio";
+import isEmpty from "lodash.isempty";
 import {
   createDate,
   createSchedule,
@@ -45,7 +46,10 @@ const CreateBarracudaSchedule = async (): Promise<void> => {
     const $ = cheerio.load(res.data);
     const currentMonth = createDate().format(monthnameFormat);
     const currentYear = createDate().format(fullyearFormat);
-    const currentMonthSchedule = $(`#${currentMonth}`);
+
+    const currentMonthSchedule = $(`#${currentMonth}${currentYear}`);
+    if (isEmpty(currentMonthSchedule))
+      throw String("No Barracuda home events were found. Aborted!");
 
     currentMonthSchedule.find(".entry.clearfix").each((_i, row) => {
       const $row = $(row);
@@ -59,7 +63,7 @@ const CreateBarracudaSchedule = async (): Promise<void> => {
         const $eventDate = $row.find(".date-time");
         const $team = $row.find("team-info");
 
-        // DD, MMMM D
+        // MMMM D
         const date = toCapitalize(
           $eventDate
             .find(".date")
@@ -68,7 +72,7 @@ const CreateBarracudaSchedule = async (): Promise<void> => {
             .trim()
         );
 
-        // H:MMA
+        // h:mma
         const time = $eventDate.find(".time").text().trim().toLowerCase();
 
         const opponent = toCapitalize($team.find(".team-title").text().trim());

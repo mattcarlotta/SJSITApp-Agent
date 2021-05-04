@@ -110,6 +110,7 @@ export const fullDateTimeFormat = `${shortmonthFormat} ${fullyearFormat} @ ${hou
 /**
  * Formats moment dates as month name, followed by day, year and time.
  *
+ * `MMMM D YYYY h:mma`
  * @example ```April 21 2021 1:00pm```.
  */
 export const barracudaEventFormat = `${monthnameFormat} ${dayFormat} ${fullyearFormat} ${shortHourFormat}:${minuteFormat}${aFormat}`;
