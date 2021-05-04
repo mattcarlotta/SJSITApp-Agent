@@ -3,9 +3,8 @@ import { connectToDB } from "~database";
 import { pollEvents } from "~libs";
 import { eventLogger } from "~loggers";
 import { Event, Mail } from "~models";
-import { endOfTomorrow } from "~helpers";
+import { createDate, endOfTomorrow } from "~helpers";
 import { eventReminder } from "~templates";
-import moment from "~utils/momentWithTimeZone";
 
 describe("Poll Events Service", () => {
   beforeAll(async () => {
@@ -50,7 +49,7 @@ describe("Poll Events Service", () => {
     const { _id, eventDate, schedule, ...rest } = events[0];
     const { title } = schedule[0];
     const { firstName, lastName, email } = schedule[0].employeeIds[0];
-    const eventDateToString = moment(eventDate).format(
+    const eventDateToString = createDate(eventDate).format(
       "MMMM Do, YYYY @ h:mm a"
     );
 

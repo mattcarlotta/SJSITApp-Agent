@@ -1,9 +1,8 @@
 import isEmpty from "lodash.isempty";
-import { errorLogger, scheduleLogger } from "~loggers";
+import { errorMessage, infoMessage } from "~loggers";
 import { Event, Form, Mail } from "~models";
 import { upcomingSchedule } from "~templates";
 import { createDate, groupByEmail } from "~helpers";
-import moment from "~utils/momentWithTimeZone";
 import { calendarDateFormat } from "~utils/dateFormats";
 import type { TAggEvents, TEventMemberSchedule, TEventsSorted } from "~types";
 
@@ -11,7 +10,7 @@ export default async () => {
   let sortedSchedules = [] as TEventsSorted;
   const scheduledEvents = [] as Array<TEventMemberSchedule>;
   try {
-    const nextMonth = moment().add(1, "month").startOf("month").toDate();
+    const nextMonth = createDate().add(1, "month").startOf("month").toDate();
 
     // const nextMonth = moment()
     //   .startOf("month")
@@ -21,8 +20,8 @@ export default async () => {
     /* istanbul ignore next */
     if (!existingForm) throw String("Unable to locate a form for next month.");
 
-    const startMonth = moment(existingForm.startMonth);
-    const endMonth = moment(existingForm.endMonth);
+    const startMonth = createDate(existingForm.startMonth);
+    const endMonth = createDate(existingForm.endMonth);
 
     const existingEvents = (await Event.find(
       {
@@ -59,7 +58,7 @@ export default async () => {
             scheduledEvents.push({
               email: `${firstName} ${lastName} <${email}>`,
               callTime,
-              eventDate: moment(eventDate).format("MMMM Do YYYY, h:mm a"),
+              eventDate: createDate(eventDate).format("MMMM Do YYYY, h:mm a"),
               ...rest
             });
           });
@@ -86,8 +85,8 @@ export default async () => {
     await Mail.insertMany(emails);
   } catch (err) {
     /* istanbul ignore next */
-    console.log(errorLogger(err));
+    errorMessage(err);
   } finally {
-    console.log(scheduleLogger(sortedSchedules));
+    infoMessage(`Processed Schedules... ${sortedSchedules.length}`);
   }
 };

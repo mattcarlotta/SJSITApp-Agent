@@ -1,13 +1,11 @@
 import mongoose from "mongoose";
 import { connectToDB } from "~database";
 import { generateStaffSchedule } from "~libs";
-import { scheduleLogger } from "~loggers";
+import { infoMessage } from "~loggers";
 import { Event, Mail } from "~models";
-import { getEndOfNextMonth, getStartOfNextMonth } from "~helpers";
+import { createDate, getEndOfNextMonth, getStartOfNextMonth } from "~helpers";
 import { calendarDateFormat } from "~utils/dateFormats";
 import { masterSchedule } from "~templates";
-
-import moment from "~utils/momentWithTimeZone";
 
 describe("Generate Staff Schedule Service", () => {
   beforeAll(async () => {
@@ -57,18 +55,18 @@ describe("Generate Staff Schedule Service", () => {
         expect.objectContaining({
           sendTo: ["Ice Team Staff <staff@sjsiceteam.com>"],
           sendFrom: "San Jose Sharks Ice Team <noreply@sjsiceteam.com>",
-          subject: `Upcoming Schedule for ${moment(startMonth).format(
+          subject: `Upcoming Schedule for ${createDate(startMonth).format(
             calendarDateFormat
-          )} - ${moment(endMonth).format(calendarDateFormat)}`,
+          )} - ${createDate(endMonth).format(calendarDateFormat)}`,
           message: masterSchedule(
             existingEvents,
-            moment(startMonth).format(calendarDateFormat),
-            moment(endMonth).format(calendarDateFormat)
+            createDate(startMonth).format(calendarDateFormat),
+            createDate(endMonth).format(calendarDateFormat)
           )
         })
       ])
     );
 
-    expect(console.log).toHaveBeenCalledWith(scheduleLogger([1]));
+    expect(infoMessage).toHaveBeenCalledWith("Processed Schedules... 1");
   });
 });

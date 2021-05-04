@@ -1,6 +1,6 @@
-import type { TAggEvents } from "~models/event";
 import isEmpty from "lodash.isempty";
-import moment from "~utils/momentWithTimeZone";
+import { createDate } from "~helpers";
+import type { TAggEvents } from "~types";
 
 const MasterSchedule = (
   events: Array<TAggEvents>,
@@ -39,9 +39,9 @@ const MasterSchedule = (
         </li>
         <li style="color: #000000;margin: 5px 0px;">
           <span style="margin-right: 5px;">
-            <strong>Event Date</strong>:&nbsp;${moment(eventDate)
-              .tz("America/Los_Angeles")
-              .format("MMMM Do, YYYY @ h:mm a")}
+            <strong>Event Date</strong>:&nbsp;${createDate(eventDate).format(
+              "MMMM Do, YYYY @ h:mm a"
+            )}
           </span>
         </li>
         <li style="color: #000000;margin: 5px 0px;">

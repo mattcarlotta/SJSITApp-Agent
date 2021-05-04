@@ -1,5 +1,5 @@
 import isEmpty from "lodash.isempty";
-import { eventLogger } from "~loggers";
+import { infoMessage } from "~loggers";
 import { Event, Mail } from "~models";
 import { eventReminder } from "~templates";
 import { createDate, endOfTomorrow } from "~helpers";
@@ -81,5 +81,5 @@ export default async () => {
   }
 
   /* istanbul ignore next */
-  console.log(eventLogger(!isEmpty(emailReminders) ? emailReminders : events));
+  infoMessage(`Processed Events... ${!isEmpty(emailReminders) ? emailReminders : events)}`);
 };

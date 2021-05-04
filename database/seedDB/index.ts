@@ -2,7 +2,7 @@ import "snackables";
 import mongoose from "mongoose";
 import { createConnectionToDatabase, connectToDB } from "../index";
 import { Event, Form, Mail, Season, User } from "../../models";
-import { logErrorMessage, logInfoMessage } from "../../logger";
+import { errorMessage, infoMessage } from "../../loggers";
 import {
   createDate,
   getCurrentYear,
@@ -199,9 +199,7 @@ const seedDB = async () => {
 
     await db.close();
 
-    logInfoMessage(
-      `\x1b[2mutils/\x1b[0m\x1b[1mseedDB.js\x1b[0m (${DATABASE})\n`
-    );
+    infoMessage(`\x1b[2mutils/\x1b[0m\x1b[1mseedDB.js\x1b[0m (${DATABASE})\n`);
 
     await mongoose.connection.close();
 
@@ -209,7 +207,7 @@ const seedDB = async () => {
 
     return null;
   } catch (err) {
-    logErrorMessage(`seedDB.js\x1b[0m\x1b[31m\n${err.toString()}\x1b[0m\n`);
+    errorMessage(`seedDB.js\x1b[0m\x1b[31m\n${err.toString()}\x1b[0m\n`);
 
     mongoose.connection.close();
 

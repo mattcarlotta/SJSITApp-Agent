@@ -1,5 +1,5 @@
 import get from "lodash.get";
-import { errorLogger, eventLogger, formCountLogger } from "~loggers";
+import { errorMessage, infoMessage } from "~loggers";
 import { Event, Form, Season } from "~models";
 import {
   createDate,
@@ -122,9 +122,9 @@ export default async () => {
 
     createdForms = 1;
   } catch (err) {
-    console.log(errorLogger(err));
+    errorMessage(err);
   } finally {
-    console.log(eventLogger(events));
-    console.log(formCountLogger(createdForms));
+    infoMessage(`Processed Events... ${events.length}`);
+    infoMessage(`Processed Forms... ${createdForms}`);
   }
 };

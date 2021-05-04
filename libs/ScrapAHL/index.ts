@@ -1,12 +1,12 @@
 import cheerio from "cheerio";
-import moment from "~utils/momentWithTimeZone";
+import { createDate } from "~helpers";
 import { ahlAPI } from "~utils/axiosConfig";
 
 const ScrapAHL = async (): Promise<void> => {
   try {
     const res = await ahlAPI.get("games");
     const $ = cheerio.load(res.data);
-    const currentMonth = moment().format("MMMMYYYY");
+    const currentMonth = createDate().format("MMMMYYYY");
     const currentMonthSchedule = $(`#${currentMonth}`);
 
     currentMonthSchedule.find(".entry.clearfix").each((_i, row) => {

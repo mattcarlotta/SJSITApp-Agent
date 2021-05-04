@@ -10,7 +10,6 @@
     "~helpers": "<rootDir>/helpers",
     "~libs/(.*)$": "<rootDir>/libs/$1",
     "~libs": "<rootDir>/libs",
-    "~logger": "<rootDir>/logger",
     "~loggers/(.*)$": "<rootDir>/loggers/$1",
     "~loggers": "<rootDir>/loggers",
     "~middlewares": "<rootDir>/middlewares",
@@ -30,7 +29,6 @@
     "<rootDir>/@types",
     "<rootDir>/build",
     "<rootDir>/database",
-    "<rootDir>/logger",
     "<rootDir>/middlewares",
     "<rootDir>/node_modules",
     "<rootDir>/index.ts"

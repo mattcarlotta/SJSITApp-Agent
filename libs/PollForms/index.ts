@@ -1,5 +1,5 @@
 import isEmpty from "lodash/isEmpty";
-import { formLogger } from "~loggers";
+import { infoMessage } from "~loggers";
 import { Form, Mail, User } from "~models";
 import { apFormNotification } from "~templates";
 import { createDate, endOfDay } from "~helpers";
@@ -85,5 +85,7 @@ export default async () => {
   }
 
   /* istanbul ignore next */
-  console.log(formLogger(!isEmpty(formReminders) ? formReminders : forms));
+  infoMessage(
+    `Processed Forms... ${!isEmpty(formReminders) ? formReminders : forms}`
+  );
 };

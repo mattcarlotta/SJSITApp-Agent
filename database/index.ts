@@ -2,7 +2,7 @@
 
 import bluebird from "bluebird";
 import mongoose from "mongoose";
-import { logErrorMessage, logInfoMessage } from "../logger";
+import { errorMessage, infoMessage } from "../loggers";
 
 const { DATABASE, NODE_ENV } = process.env;
 const inTesting = NODE_ENV === "test";
@@ -27,22 +27,22 @@ export const connectToDB = (): Promise<typeof mongoose> =>
 if (!inTesting) {
   mongoose.connection.on(
     "connected",
-    () => logInfoMessage(`Connected to ${DATABASE}`) // log mongodb connection established
+    () => infoMessage(`Connected to ${DATABASE}`) // log mongodb connection established
   );
 
   mongoose.connection.on(
     "disconnected",
-    () => logInfoMessage(`Disconnected from ${DATABASE}`) // log mongodb connection disconnected
+    () => infoMessage(`Disconnected from ${DATABASE}`) // log mongodb connection disconnected
   );
 
   mongoose.connection.on(
     "error",
-    () => logErrorMessage(`Connection error to ${DATABASE}`) // log mongodb connection error
+    () => errorMessage(`Connection error to ${DATABASE}`) // log mongodb connection error
   );
 
   process.on("SIGINT", () => {
     mongoose.connection.close(() => {
-      logInfoMessage(`Connection was manually terminated from ${DATABASE}`);
+      infoMessage(`Connection was manually terminated from ${DATABASE}`);
       process.exit(0);
     });
   });

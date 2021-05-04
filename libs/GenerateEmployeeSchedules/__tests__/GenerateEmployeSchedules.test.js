@@ -1,12 +1,11 @@
 import mongoose from "mongoose";
 import { connectToDB } from "~database";
 import { generateEmployeeSchedules } from "~libs";
-import { scheduleLogger } from "~loggers";
+import { infoMessage } from "~loggers";
 import { Event, Mail } from "~models";
-import { getEndOfNextMonth, getStartOfNextMonth } from "~helpers";
+import { createDate, getEndOfNextMonth, getStartOfNextMonth } from "~helpers";
 import { upcomingSchedule } from "~templates";
 import { calendarDateFormat } from "~utils/dateFormats";
-import moment from "~utils/momentWithTimeZone";
 
 describe("Generate Employee Schedules Service", () => {
   beforeAll(async () => {
@@ -54,8 +53,8 @@ describe("Generate Employee Schedules Service", () => {
       {
         ...existingEvent,
         email: "Matt Carlotta <carlotta.matt@gmail.com>",
-        callTime: moment(existingEvent.callTimes[0]).format("hh:mm a"),
-        eventDate: moment(existingEvent.eventDate).format(
+        callTime: createDate(existingEvent.callTimes[0]).format("hh:mm a"),
+        eventDate: createDate(existingEvent.eventDate).format(
           "MMMM Do YYYY, h:mm a"
         )
       }
@@ -67,14 +66,16 @@ describe("Generate Employee Schedules Service", () => {
         expect.objectContaining({
           sendTo: ["Matt Carlotta <carlotta.matt@gmail.com>"],
           sendFrom: "San Jose Sharks Ice Team <noreply@sjsiceteam.com>",
-          subject: `Upcoming Schedule for ${moment(startMonth).format(
+          subject: `Upcoming Schedule for ${createDate(startMonth).format(
             calendarDateFormat
-          )} - ${moment(endMonth).format(calendarDateFormat)}`,
+          )} - ${createDate(endMonth).format(calendarDateFormat)}`,
           message: upcomingSchedule(events)
         })
       ])
     );
 
-    expect(console.log).toHaveBeenCalledWith(scheduleLogger([1]));
+    expect(console.log).toHaveBeenCalledWith(
+      infoMessage("Processed Schedules... 1")
+    );
   });
 });

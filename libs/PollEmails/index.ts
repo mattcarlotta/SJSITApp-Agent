@@ -1,6 +1,6 @@
 import mailer from "@sendgrid/mail";
 import isEmpty from "lodash/isEmpty";
-import { mailLogger } from "~loggers";
+import { infoMessage } from "~loggers";
 import { Mail } from "~models";
 import { officialTemplate } from "~templates";
 import { endOfDay } from "~helpers";
@@ -40,7 +40,7 @@ const PollEmails = async (): Promise<void> => {
     }
   }
 
-  console.log(mailLogger(emails));
+  infoMessage(`Processed Mail... ${emails.length}`);
 };
 
 export default PollEmails;

@@ -1,13 +1,15 @@
 import isEmpty from "lodash.isempty";
-import { formLogger } from "~loggers";
+import { infoMessage } from "~loggers";
 import { Form, Mail, User } from "~models";
 import { apFormReminder } from "~templates";
-import { getEndOfMonth, createDate } from "~helpers";
-import moment from "~utils/momentWithTimeZone";
+import { createDate, getEndOfMonth } from "~helpers";
 import { dateTimeFormat } from "~utils/dateFormats";
 
 const GenerateFormReminders = async (): Promise<void> => {
-  const startNextMonth = moment().add(1, "months").startOf("month").toDate();
+  const startNextMonth = createDate()
+    .add(1, "months")
+    .startOf("month")
+    .toDate();
   const endNextMonth = getEndOfMonth(startNextMonth).toDate();
 
   const existingForm = await Form.findOne(
@@ -72,7 +74,7 @@ const GenerateFormReminders = async (): Promise<void> => {
   }
 
   /* istanbul ignore next */
-  console.log(formLogger(formReminders));
+  infoMessage(`Processed Forms... ${formReminders.length}`);
 };
 
 export default GenerateFormReminders;

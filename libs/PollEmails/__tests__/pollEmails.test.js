@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import mailer from "@sendgrid/mail";
 import { connectToDB } from "~database";
 import { pollEmails } from "~libs";
-import { mailLogger } from "~loggers";
+import { infoMessage } from "~loggers";
 import { Mail } from "~models";
 import { endOfDay } from "~helpers";
 
@@ -51,6 +51,8 @@ describe("Poll Email Service", () => {
       status: { $regex: "failed", $options: "i" }
     });
     expect(failedEmail.status).toEqual("failed - Unauthorized");
-    expect(console.log.mock.calls[0]).toContain(mailLogger(emails));
+    expect(console.log.mock.calls[0]).toContain(
+      infoMessage(`Processed Mail... ${emails.length}`)
+    );
   });
 });

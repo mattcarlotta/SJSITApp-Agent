@@ -1,16 +1,15 @@
 import isEmpty from "lodash.isempty";
-import { errorLogger, scheduleLogger } from "~loggers";
+import { errorMessage, infoMessage } from "~loggers";
 import { Event, Form, Mail, User } from "~models";
 import { masterSchedule } from "~templates";
 import { createDate } from "~helpers";
 import { calendarDateFormat } from "~utils/dateFormats";
-import moment from "~utils/momentWithTimeZone";
-import type { TEmail } from "~types";
+import type { TAggEvents, TEmail } from "~types";
 
 const GenerateStaffSchedule = async (): Promise<void> => {
   const masterScheduleMail = [] as Array<TEmail>;
   try {
-    const nextMonth = moment().add(1, "months").startOf("month").toDate();
+    const nextMonth = createDate().add(1, "months").startOf("month").toDate();
 
     // const nextMonth = moment()
     //   .startOf("month")
@@ -20,10 +19,10 @@ const GenerateStaffSchedule = async (): Promise<void> => {
     /* istanbul ignore next */
     if (!existingForm) throw String("Unable to locate a form for next month.");
 
-    const startMonth = moment(existingForm.startMonth);
-    const endMonth = moment(existingForm.endMonth);
+    const startMonth = createDate(existingForm.startMonth);
+    const endMonth = createDate(existingForm.endMonth);
 
-    const events = await Event.find(
+    const events = (await Event.find(
       {
         eventDate: {
           $gte: startMonth.format(),
@@ -46,7 +45,7 @@ const GenerateStaffSchedule = async (): Promise<void> => {
         path: "schedule.employeeIds",
         select: "_id firstName lastName"
       })
-      .lean();
+      .lean()) as Array<TAggEvents>;
     /* istanbul ignore next */
     if (isEmpty(events)) throw String("No events were found for next month.");
 
@@ -87,9 +86,9 @@ const GenerateStaffSchedule = async (): Promise<void> => {
     await Mail.insertMany(masterScheduleMail);
   } catch (err) {
     /* istanbul ignore next */
-    console.log(errorLogger(err));
+    errorMessage(err);
   } finally {
-    console.log(scheduleLogger(masterScheduleMail));
+    infoMessage(`Processed Schedules... ${masterScheduleMail.length}`);
   }
 };
 

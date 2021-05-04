@@ -7,7 +7,6 @@ tsconfigpaths.register({
     "~helpers": ["helpers/index"],
     "~libs/*": ["libs/*"],
     "~libs": ["libs/index"],
-    "~logger": ["logger/index"],
     "~loggers/*": ["loggers/*"],
     "~loggers": ["loggers/index"],
     "~middlewares": ["middlewares/index"],

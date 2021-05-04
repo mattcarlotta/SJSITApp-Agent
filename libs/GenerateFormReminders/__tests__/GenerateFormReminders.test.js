@@ -1,11 +1,10 @@
 import mongoose from "mongoose";
 import { connectToDB } from "~database";
 import { generateFormReminders } from "~libs";
-import { formLogger } from "~loggers";
+import { infoMessage } from "~loggers";
 import { Form, Mail, User } from "~models";
 import { createDate, getEndOfMonth } from "~helpers";
 import { apFormReminder } from "~templates";
-import moment from "~utils/momentWithTimeZone";
 import { dateTimeFormat } from "~utils/dateFormats";
 
 describe("Generate A/P Form Reminders Service", () => {
@@ -19,7 +18,10 @@ describe("Generate A/P Form Reminders Service", () => {
 
   it("handles polling Form documents for reminders", async () => {
     const mailSpy = jest.spyOn(Mail, "create");
-    const startNextMonth = moment().add(1, "months").startOf("month").format();
+    const startNextMonth = createDate()
+      .add(1, "months")
+      .startOf("month")
+      .format();
 
     const endNextMonth = getEndOfMonth(startNextMonth);
 
@@ -83,6 +85,6 @@ describe("Generate A/P Form Reminders Service", () => {
       ])
     );
 
-    expect(console.log).toHaveBeenCalledWith(formLogger([1]));
+    expect(infoMessage).toHaveBeenCalledWith("Processed Forms... 1");
   });
 });

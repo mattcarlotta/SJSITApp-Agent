@@ -1,7 +1,7 @@
 import "snackables";
 import mongoose from "mongoose";
 import { connectToDB, createConnectionToDatabase } from "../index";
-import { logErrorMessage, logInfoMessage } from "../../logger";
+import { errorMessage, infoMessage } from "../../loggers";
 
 const { DATABASE, DROP, EXIT } = process.env;
 
@@ -22,7 +22,7 @@ const teardownDB = async (): Promise<any> => {
     await db.dropDatabase();
     await db.close();
 
-    logInfoMessage(
+    infoMessage(
       `\x1b[2mutils/\x1b[0m\x1b[1mteardownDB.js\x1b[0m (${DATABASE})\n`
     );
 
@@ -32,7 +32,7 @@ const teardownDB = async (): Promise<any> => {
 
     return null;
   } catch (err) {
-    logErrorMessage(`seedDB.js\x1b[0m\x1b[31m\n${err.toString()}\x1b[0m\n`);
+    errorMessage(`seedDB.js\x1b[0m\x1b[31m\n${err.toString()}\x1b[0m\n`);
 
     mongoose.connection.close();
 

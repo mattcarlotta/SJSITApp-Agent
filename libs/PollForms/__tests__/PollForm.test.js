@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { connectToDB } from "~database";
 import { pollForms } from "~libs";
-import { formLogger } from "~loggers";
+import { infoMessage } from "~loggers";
 import { Form, Mail, User } from "~models";
 import { createDate, endOfDay } from "~helpers";
 import { apFormNotification } from "~templates";
@@ -88,6 +88,6 @@ describe("Poll Forms Service", () => {
     const updatedForm = await Form.findOne({ _id });
     expect(updatedForm.sentEmails).toBeTruthy();
 
-    expect(console.log).toHaveBeenCalledWith(formLogger([1]));
+    expect(infoMessage).toHaveBeenCalledWith("Processed Forms... 1");
   });
 });
