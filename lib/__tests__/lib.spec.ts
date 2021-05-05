@@ -75,15 +75,15 @@ describe("Run Services", () => {
         eventOnline: false,
         eventDay: "1st",
         eventMonth: nextMonth,
-        eventTime: "1:00 am",
+        eventTime: "01:00 am",
         formReminderOnline: false,
         formReminderDay: "1st",
         formReminderMonth: nextMonth,
-        formReminderTime: "1:00 am",
+        formReminderTime: "01:00 am",
         scheduleOnline: false,
         scheduleDay: "1st",
         scheduleMonth: nextMonth,
-        scheduleTime: "1:00 am"
+        scheduleTime: "01:00 am"
       });
     });
 

@@ -113,10 +113,10 @@ export const shortmonthFormat = `${shortMonthNameFormat} ${daySuffix}`;
 /**
  * Formats moment dates as full month name, followed by day and suffix, 4 digit year and time.
  *
- * Format - ```MMMM Do YYYY @ h:mm a```
+ * Format - ```MMMM Do YYYY @ hh:mm a```
  * @example ```January 1st 2021 @ 12:00 pm```
  */
-export const serviceDateTimeFormat = `${monthnameFormat} ${daySuffix} ${fullyearFormat} @ ${shortHourFormat}:${minuteFormat} ${aFormat}`;
+export const serviceDateTimeFormat = `${monthnameFormat} ${daySuffix} ${fullyearFormat} @ ${timestampFormat}`;
 
 /**
  * Formats moment dates as 3 digits months, followed by day + suffix, 4 digit year, and time.
