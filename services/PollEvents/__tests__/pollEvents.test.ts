@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
 import { connectToDB } from "~database";
 import { pollEvents } from "~services";
-import { eventLogger } from "~loggers";
+import { infoMessage } from "~loggers";
 import { Event, Mail } from "~models";
 import { createDate, endOfTomorrow } from "~helpers";
 import { eventReminder } from "~templates";
+import type { IEventDocument, TAggEvents } from "~types";
 
 describe("Poll Events Service", () => {
   beforeAll(async () => {
@@ -19,7 +20,7 @@ describe("Poll Events Service", () => {
     const mailSpy = jest.spyOn(Mail, "insertMany");
     const endDay = endOfTomorrow();
 
-    const events = await Event.find(
+    const events = (await Event.find(
       {
         eventDate: {
           $lte: endDay
@@ -42,7 +43,7 @@ describe("Poll Events Service", () => {
         path: "schedule.employeeIds",
         select: "_id firstName lastName email"
       })
-      .lean();
+      .lean()) as Array<TAggEvents>;
 
     await pollEvents();
 
@@ -69,9 +70,9 @@ describe("Poll Events Service", () => {
       ])
     );
 
-    const updatedEvent = await Event.findOne({ _id });
+    const updatedEvent = (await Event.findOne({ _id })) as IEventDocument;
     expect(updatedEvent.sentEmailReminders).toBeTruthy();
 
-    expect(eventLogger).toHaveBeenCalledWith("Processed Events... 1");
+    expect(infoMessage).toHaveBeenCalledWith("Processed Events... 1");
   });
 });

@@ -34,7 +34,7 @@ const PollForms = async (): Promise<void> => {
     const members = await User.aggregate([
       {
         $match: {
-          role: { $eq: "employee" },
+          role: { $eq: "member" },
           status: "active",
           emailReminders: true
         }

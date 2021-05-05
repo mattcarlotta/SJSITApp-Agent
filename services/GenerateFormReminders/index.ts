@@ -7,7 +7,7 @@ import { dateTimeFormat, calendarDateFormat } from "~utils/dateFormats";
 import { TEmail } from "~types";
 
 /**
- * Send out A/P form reminders to employees on the nth of every month @ time
+ * Generate A/P form reminders for employees on the nth of every month @ time
  *
  * @function GenerateFormReminders
  */
@@ -37,7 +37,7 @@ const GenerateFormReminders = async (): Promise<void> => {
     const members = await User.aggregate([
       {
         $match: {
-          role: { $eq: "employee" },
+          role: { $eq: "member" },
           status: "active",
           emailReminders: true
         }

@@ -1,15 +1,13 @@
 import mongoose from "mongoose";
 import { connectToDB } from "~database";
-import { pollForms } from "~services";
+import { generateFormReminders } from "~services";
 import { infoMessage } from "~loggers";
 import { Form, Mail, User } from "~models";
-import { createDate, endOfDay } from "~helpers";
-import { apFormNotification } from "~templates";
+import { createDate, getEndOfMonth } from "~helpers";
+import { apFormReminder } from "~templates";
 import { dateTimeFormat } from "~utils/dateFormats";
 
-const { CLIENT } = process.env;
-
-describe("Poll Forms Service", () => {
+describe("Generate A/P Form Reminders Service", () => {
   beforeAll(async () => {
     await connectToDB();
   });
@@ -18,16 +16,16 @@ describe("Poll Forms Service", () => {
     await mongoose.connection.close();
   });
 
-  it("handles polling Form documents", async () => {
-    const mailSpy = jest.spyOn(Mail, "insertMany");
-    const endDay = endOfDay();
+  it("handles polling Form documents for reminders", async () => {
+    const mailSpy = jest.spyOn(Mail, "create");
+    const startNextMonth = createDate().add(1, "months").startOf("month");
+
+    const endNextMonth = getEndOfMonth(startNextMonth.format());
 
     const forms = await Form.find(
       {
-        sendEmailNotificationsDate: {
-          $lte: endDay
-        },
-        sentEmails: false
+        startMonth: { $gte: startNextMonth.toDate() },
+        endMonth: { $lte: endNextMonth.toDate() }
       },
       {
         startMonth: 1,
@@ -38,12 +36,12 @@ describe("Poll Forms Service", () => {
       { sort: { startMonth: 1 } }
     ).lean();
 
-    await pollForms();
+    await generateFormReminders();
 
     const members = await User.aggregate([
       {
         $match: {
-          role: { $eq: "employee" },
+          role: { $eq: "member" },
           status: "active",
           emailReminders: true
         }
@@ -72,10 +70,9 @@ describe("Poll Forms Service", () => {
         expect.objectContaining({
           sendTo: memberEmails,
           sendFrom: "San Jose Sharks Ice Team <noreply@sjsiceteam.com>",
-          subject: `Sharks & Barracuda A/P Form (${startOfMonth} - ${endOfMonth})`,
-          message: apFormNotification({
+          subject: `Sharks & Barracuda A/P Form Reminder (${startOfMonth} - ${endOfMonth})`,
+          message: apFormReminder({
             _id,
-            CLIENT,
             expirationDate: createDate(expirationDate).format(dateTimeFormat),
             endMonth: endOfMonth,
             startMonth: startOfMonth,
@@ -84,9 +81,6 @@ describe("Poll Forms Service", () => {
         })
       ])
     );
-
-    const updatedForm = await Form.findOne({ _id });
-    expect(updatedForm.sentEmails).toBeTruthy();
 
     expect(infoMessage).toHaveBeenCalledWith("Processed Forms... 1");
   });

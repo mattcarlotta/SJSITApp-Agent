@@ -1,13 +1,22 @@
 import mongoose from "mongoose";
-import mailer from "@sendgrid/mail";
 import { connectToDB } from "~database";
 import { pollEmails } from "~services";
 import { infoMessage } from "~loggers";
 import { Mail } from "~models";
 import { endOfDay } from "~helpers";
+import type { TMailDocument } from "~types";
 
-mailer.send.mockImplementationOnce(props => Promise.resolve(props));
-mailer.send.mockImplementationOnce(() =>
+const mockSend = jest.fn();
+
+jest.mock("@sendgrid/mail", () => ({
+  __esModule: true,
+  default: {
+    send: mockSend
+  }
+}));
+
+mockSend.mockImplementationOnce(props => Promise.resolve(props));
+mockSend.mockImplementationOnce(() =>
   Promise.reject(new Error("Unauthorized"))
 );
 
@@ -40,16 +49,17 @@ describe("Poll Email Service", () => {
     const sentEmail = await Mail.find({ status: "sent" }).limit(1);
     expect(sentEmail).toBeTruthy();
 
-    expect(mailer.send.mock.calls[0]).toContainEqual({
+    expect(mockSend).toHaveBeenCalledWith({
       to: expect.any(Array),
       from: expect.any(String),
       subject: expect.any(String),
       html: expect.any(String)
     });
 
-    const failedEmail = await Mail.findOne({
+    const failedEmail = (await Mail.findOne({
       status: { $regex: "failed", $options: "i" }
-    });
+    })) as TMailDocument;
+
     expect(failedEmail.status).toEqual("failed - Unauthorized");
     expect(infoMessage).toContain(`Processed Mail... ${emails.length}`);
   });

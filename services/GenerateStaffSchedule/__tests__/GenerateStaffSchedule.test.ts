@@ -6,6 +6,7 @@ import { Event, Mail } from "~models";
 import { createDate, getEndOfNextMonth, getStartOfNextMonth } from "~helpers";
 import { calendarDateFormat } from "~utils/dateFormats";
 import { masterSchedule } from "~templates";
+import type { TAggEvents } from "~types";
 
 describe("Generate Staff Schedule Service", () => {
   beforeAll(async () => {
@@ -18,10 +19,10 @@ describe("Generate Staff Schedule Service", () => {
 
   it("handles polling schedule events documents for staff members", async () => {
     const mailSpy = jest.spyOn(Mail, "insertMany");
-    const startMonth = getStartOfNextMonth().toDate();
-    const endMonth = getEndOfNextMonth().toDate();
+    const startMonth = getStartOfNextMonth().format();
+    const endMonth = getEndOfNextMonth().format();
 
-    const existingEvents = await Event.find(
+    const existingEvents = (await Event.find(
       {
         eventDate: {
           $gte: startMonth,
@@ -45,7 +46,7 @@ describe("Generate Staff Schedule Service", () => {
         path: "schedule.employeeIds",
         select: "_id firstName lastName email"
       })
-      .lean();
+      .lean()) as Array<TAggEvents>;
 
     await generateStaffSchedule();
 

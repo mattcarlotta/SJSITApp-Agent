@@ -1,19 +1,19 @@
 import mongoose from "mongoose";
 import { connectToDB } from "~database";
 import { createSharksSchedule } from "~services";
-import { errorLogger, infoMessage } from "~loggers";
+import { errorMessage, infoMessage } from "~loggers";
 import { Event, Form } from "~models";
 import { getEndOfMonth, getStartOfNextNextMonth } from "~helpers";
 import { eventFormat } from "~utils/dateFormats";
 import mockAxios from "~utils/mockAxios";
-import data from "./data.mocks";
+import data from "./fakedata";
 
 const eventSpy = jest.spyOn(Event, "insertMany");
 const formSpy = jest.spyOn(Form, "create");
 
 describe("Create Sharks Schedule Service", () => {
-  let startMonth;
-  let endMonth;
+  let startMonth: string;
+  let endMonth: string;
   beforeAll(async () => {
     await connectToDB();
     startMonth = getStartOfNextNextMonth().format(eventFormat);
@@ -48,7 +48,7 @@ describe("Create Sharks Schedule Service", () => {
     expect(eventSpy).toHaveBeenCalledTimes(0);
     expect(formSpy).toHaveBeenCalledTimes(0);
 
-    expect(errorLogger).toContain(
+    expect(errorMessage).toContain(
       "Unable to retrieve next month's game schedule."
     );
   });

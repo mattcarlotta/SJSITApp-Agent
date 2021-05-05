@@ -1,11 +1,12 @@
 import mongoose from "mongoose";
 import { connectToDB } from "~database";
-import { generateEmployeeSchedules } from "~services";
+import { generateMemberSchedules } from "~services";
 import { infoMessage } from "~loggers";
 import { Event, Mail } from "~models";
 import { createDate, getEndOfNextMonth, getStartOfNextMonth } from "~helpers";
 import { upcomingSchedule } from "~templates";
 import { calendarDateFormat } from "~utils/dateFormats";
+import type { TEventMemberSchedule } from "~types";
 
 describe("Generate Employee Schedules Service", () => {
   beforeAll(async () => {
@@ -18,10 +19,10 @@ describe("Generate Employee Schedules Service", () => {
 
   it("handles polling schedule events documents", async () => {
     const mailSpy = jest.spyOn(Mail, "insertMany");
-    const startMonth = getStartOfNextMonth().toDate();
-    const endMonth = getEndOfNextMonth().toDate();
+    const startMonth = getStartOfNextMonth().format();
+    const endMonth = getEndOfNextMonth().format();
 
-    const existingEvent = await Event.findOne(
+    const existingEvent = (await Event.findOne(
       {
         eventDate: {
           $gte: startMonth,
@@ -45,9 +46,9 @@ describe("Generate Employee Schedules Service", () => {
         path: "schedule.employeeIds",
         select: "_id firstName lastName email"
       })
-      .lean();
+      .lean()) as TEventMemberSchedule;
 
-    await generateEmployeeSchedules();
+    await generateMemberSchedules();
 
     const events = [
       {
