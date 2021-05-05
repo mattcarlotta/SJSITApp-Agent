@@ -1,5 +1,5 @@
 import moment from "../utils/momentWithTimeZone";
-import { shortDateTimeFormat } from "../utils/dateFormats";
+import { serviceDateTimeFormat, fullyearFormat } from "../utils/dateFormats";
 import type {
   Moment,
   TEventMemberSchedule,
@@ -101,13 +101,16 @@ const getNextYear = (): Moment => moment().add(1, "year").endOf("year");
  * Helper function to generate a service date.
  *
  * @function getServiceTime
- * @param time - string
- * @param day - string
- * @param month - string
- * @returns {Date} date
+ * @param time - string ex: ```12:00 pm```
+ * @param day - string ex: ```1st```
+ * @param month - string ex: ```January```
+ * @returns {Date} formatted date ```January 1st 2021 @ 12:00 pm```
  */
 const getServiceTime = (time: string, day: string, month: string): Date =>
-  createDate(`${month}-${day} @ ${time}`, shortDateTimeFormat).toDate();
+  createDate(
+    `${month} ${day} ${getCurrentYear().format(fullyearFormat)} @ ${time}`,
+    serviceDateTimeFormat
+  ).toDate();
 
 /**
  * Helper function to get a start month date from now.

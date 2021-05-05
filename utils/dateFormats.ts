@@ -71,22 +71,6 @@ export const daySuffix = "Do";
 export const fulldayFormat = "DD";
 
 /**
- * Formats moment dates with abbreviated weekday.
- *
- * Format - ```ddd```
- * @example ```Mon```
- */
-export const weekdayFormat = "ddd";
-
-/**
- * Formats moment dates with weekday.
- *
- * Format - ```dddd```
- * @example ```Monday```
- */
-export const fullweekdayFormat = "dddd";
-
-/**
  * Formats year dates as 4 digits.
  *
  * Format - ```YYYY```
@@ -127,12 +111,12 @@ export const monthnameFormat = "MMMM";
 export const shortmonthFormat = `${shortMonthNameFormat} ${daySuffix}`;
 
 /**
- * Formats moment dates as 3 digits months, followed by day and time.
+ * Formats moment dates as full month name, followed by day and suffix, 4 digit year and time.
  *
- * Format - ```MMM Do @ hh:mm a```
- * @example ```Jan 1st @ 12:00 pm```
+ * Format - ```MMMM Do YYYY @ hh:mm a```
+ * @example ```January 1st 2021 @ 12:00 pm```
  */
-export const shortDateTimeFormat = `${shortmonthFormat} @ ${timestampFormat}`;
+export const serviceDateTimeFormat = `${monthnameFormat} ${daySuffix} ${fullyearFormat} @ ${timestampFormat}`;
 
 /**
  * Formats moment dates as 3 digits months, followed by day + suffix, 4 digit year, and time.
@@ -159,28 +143,12 @@ export const fullDateTimeFormat = `${shortmonthFormat} ${fullyearFormat} @ ${hou
 export const barracudaEventFormat = `${monthnameFormat} ${dayFormat} ${fullyearFormat} ${shortHourFormat}:${minuteFormat}${aFormat}`;
 
 /**
- * Formats moment dates as 3 digit weekday, month name, followed by day, and time.
- *
- * Format - ```ddd, MMMM Do @ hh:mm a```
- * @example ```Sat, January 1st @ 12:00pm```
- */
-export const weekdateTimeFormat = `${weekdayFormat}, ${monthnameFormat} ${daySuffix} @ ${timestampFormat}`;
-
-/**
  * Formats moment dates as month, followed by day, and 4 digit year.
  *
  * Format - ```MMMM Do YYYY```
  * @example ```January 1st 2021```
  */
 export const calendarDateFormat = `${monthnameFormat} ${daySuffix} ${fullyearFormat}`;
-
-/**
- * Formats moment dates as month, followed by day, and 4 digit year.
- *
- * Format - ```MMM Do, YYYY```
- * @example ```Jan 1st 2021```
- */
-export const shortCalendarDateFormat = `${shortMonthNameFormat} ${daySuffix}, ${fullyearFormat}`;
 
 /**
  * Formats moment dates with 4 digit year, 2 digit month and 2 digit day.
