@@ -3,5 +3,5 @@
     "noEmit": false
   },
   "extends": "./tsconfig.json",
-  "exclude": ["utils", "__tests__", "**/__tests__"]
+  "exclude": ["__mocks__", "**/__mocks__", "__tests__", "**/__tests__"]
 }

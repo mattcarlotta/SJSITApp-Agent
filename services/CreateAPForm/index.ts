@@ -2,6 +2,11 @@ import { errorMessage, infoMessage } from "~loggers";
 import { Form, Season } from "~models";
 import { createDate, getEndOfMonth, getStartOfNextNextMonth } from "~helpers";
 
+/**
+ * Creates an AP Form for next months schedule.
+ *
+ * @function CreateAPForm
+ */
 const CreateAPForm = async (): Promise<void> => {
   try {
     // start of next month

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { connectToDB } from "~database";
-import { createSharksSchedule } from "~libs";
-import { errorLogger, eventLogger, formCountLogger } from "~loggers";
+import { createSharksSchedule } from "~services";
+import { errorLogger, infoMessage } from "~loggers";
 import { Event, Form } from "~models";
 import { getEndOfMonth, getStartOfNextNextMonth } from "~helpers";
 import mockAxios from "~utils/mockAxios";
@@ -49,8 +49,8 @@ describe("Create Sharks Schedule Service", () => {
     expect(eventSpy).toHaveBeenCalledTimes(0);
     expect(formSpy).toHaveBeenCalledTimes(0);
 
-    expect(console.log.mock.calls[0]).toContain(
-      errorLogger("Unable to retrieve next month's game schedule.")
+    expect(errorLogger).toContain(
+      "Unable to retrieve next month's game schedule."
     );
   });
 
@@ -96,7 +96,6 @@ describe("Create Sharks Schedule Service", () => {
       })
     );
 
-    expect(console.log.mock.calls[0]).toContain(eventLogger([1]));
-    expect(console.log.mock.calls[1]).toContain(formCountLogger(1));
+    expect(infoMessage).toContain(`Processed Sharks Events... 1`);
   });
 });

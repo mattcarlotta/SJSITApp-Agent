@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { connectToDB } from "~database";
-import { pollEvents } from "~libs";
+import { pollEvents } from "~services";
 import { eventLogger } from "~loggers";
 import { Event, Mail } from "~models";
 import { createDate, endOfTomorrow } from "~helpers";
@@ -72,6 +72,6 @@ describe("Poll Events Service", () => {
     const updatedEvent = await Event.findOne({ _id });
     expect(updatedEvent.sentEmailReminders).toBeTruthy();
 
-    expect(console.log).toHaveBeenCalledWith(eventLogger([1]));
+    expect(eventLogger).toHaveBeenCalledWith("Processed Events... 1");
   });
 });

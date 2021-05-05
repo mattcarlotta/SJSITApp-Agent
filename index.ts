@@ -1,30 +1,23 @@
 import isEmpty from "lodash.isempty";
+import mailer from "@sendgrid/mail";
 import { scheduleJob } from "node-schedule";
 import { connectToDB } from "~database";
 import { createDate, getServiceTime } from "~helpers";
-import {
-  createAPForm,
-  createBarracudaSchedule,
-  createSharksSchedule,
-  generateEmployeeSchedules,
-  generateFormReminders,
-  generateStaffSchedule,
-  pollEmails,
-  pollEvents,
-  pollForms
-} from "~libs";
 import { errorMessage, infoMessage } from "~loggers";
 import { Service } from "~models";
-import "~middlewares";
+import * as services from "services";
 import { fullDateTimeFormat, monthnameFormat } from "~utils/dateFormats";
 import { IServiceDocument } from "~types";
 
 //= ===========================================================//
 // CREATE POLLING SERVICES                                     //
 //= ===========================================================//
+const { NODE_ENV, SENDGRIDAPIKEY } = process.env;
+
+mailer.setApiKey(SENDGRIDAPIKEY as string);
 
 const pollRate =
-  process.env.NODE_ENV === "development" ? "*/5 * * * * *" : "*/30 * * * * *";
+  NODE_ENV === "development" ? "*/5 * * * * *" : "*/30 * * * * *";
 
 (async (): Promise<void> => {
   try {
@@ -70,9 +63,9 @@ const pollRate =
           eventOnline &&
           today > getServiceTime(eventTime, eventDay, eventMonth)
         ) {
-          await createSharksSchedule();
-          await createBarracudaSchedule();
-          await createAPForm();
+          await services.createSharksSchedule();
+          await services.createBarracudaSchedule();
+          await services.createAPForm();
           await existingService.updateOne({ eventMonth: nextMonth });
         }
 
@@ -81,7 +74,7 @@ const pollRate =
           today >
             getServiceTime(formReminderTime, formReminderDay, formReminderMonth)
         ) {
-          await generateFormReminders();
+          await services.generateFormReminders();
           await existingService.updateOne({ formReminderMonth: nextMonth });
         }
 
@@ -89,16 +82,16 @@ const pollRate =
           scheduleOnline &&
           today > getServiceTime(scheduleTime, scheduleDay, scheduleMonth)
         ) {
-          await generateEmployeeSchedules();
-          await generateStaffSchedule();
+          await services.generateMemberSchedules();
+          await services.generateStaffSchedule();
           await existingService.updateOne({ scheduleMonth: nextMonth });
         }
       }
 
       if (emailOnline) {
-        await pollForms();
-        await pollEvents();
-        await pollEmails();
+        await services.pollForms();
+        await services.pollEvents();
+        await services.pollEmails();
       }
     });
   } catch (err) {
@@ -106,25 +99,14 @@ const pollRate =
   }
 })();
 
-/*
- //= ===========================================================//
-  SCHEDULES                                                   
-  //= ===========================================================//
+process.on("exit", () => infoMessage("Email service has been stopped."));
 
-  send out individual schedules to employees on the 15th of every month @ 6pm
-  scheduleJob("0 18 15 * *", () => generateEmployeeSchedules());
+// catches ctrl+c event
+process.on("SIGINT", () =>
+  infoMessage("Email service was manully terminated.")
+);
 
-  send out a master schedule to the staff on the 15th of every month @ 7pm
-  scheduleJob("0 19 15 * *", () => generateStaffSchedule());
-
-  //= ===========================================================//
-   EVENTS & AP FORMS                                           
-  //= ===========================================================//
-
-  send out A/P form reminders to employees on the 5th of every month @ 6pm
-  scheduleJob("0 18 5 * *", () => generateFormReminders());
-
-  retrieve next month's events from API and generate next months A/P form
-  on the 16th of every month @ 7:59am
-  scheduleJob("59 7 16 * *", () => createSharksSchedule());
-*/
+// catches uncaught exceptions
+process.on("uncaughtException", e =>
+  errorMessage(`Email service has been stopped due to an error: ${e.stack}.`)
+);

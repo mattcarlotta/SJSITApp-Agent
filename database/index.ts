@@ -16,11 +16,23 @@ const options = {
 
 mongoose.Promise = bluebird;
 
+/**
+ * Helper function to manually create a connection to a mongo database.
+ *
+ * @function createConnectionToDatabase
+ * @returns {mongoose.Connection} Mongoose connection
+ */
 export const createConnectionToDatabase = (): mongoose.Connection & {
   then: Promise<mongoose.Connection>["then"];
   catch: Promise<mongoose.Connection>["catch"];
 } => mongoose.createConnection(`mongodb://localhost/${DATABASE}`, options);
 
+/**
+ * Helper function to establish a connection to a mongo database.
+ *
+ * @function connectToDB
+ * @returns {Promise<typeof mongoose>} Mongoose promise
+ */
 export const connectToDB = (): Promise<typeof mongoose> =>
   mongoose.connect(`mongodb://localhost/${DATABASE}`, options);
 

@@ -6,7 +6,12 @@ import { createDate, groupByEmail } from "~helpers";
 import { calendarDateFormat } from "~utils/dateFormats";
 import type { TAggEvents, TEventMemberSchedule, TEventsSorted } from "~types";
 
-export default async () => {
+/**
+ * Generates individual schedules for members.
+ *
+ * @function GenerateMemberSchedules
+ */
+const GenerateMemberSchedules = async () => {
   let sortedSchedules = [] as TEventsSorted;
   const scheduledEvents = [] as Array<TEventMemberSchedule>;
   try {
@@ -90,3 +95,5 @@ export default async () => {
     infoMessage(`Processed Schedules... ${sortedSchedules.length}`);
   }
 };
+
+export default GenerateMemberSchedules;

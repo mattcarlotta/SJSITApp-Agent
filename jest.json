@@ -8,10 +8,9 @@
     "~database": "<rootDir>/database",
     "~helpers/(.*)$": "<rootDir>/helpers/$1",
     "~helpers": "<rootDir>/helpers",
-    "~libs/(.*)$": "<rootDir>/libs/$1",
-    "~libs": "<rootDir>/libs",
+    "~services/(.*)$": "<rootDir>/services/$1",
+    "~services": "<rootDir>/services",
     "~loggers": "<rootDir>/loggers/index",
-    "~middlewares": "<rootDir>/middlewares",
     "~models": "<rootDir>/models",
     "~templates/(.*)$": "<rootDir>/templates/$1",
     "~templates": "<rootDir>/templates",
@@ -28,11 +27,9 @@
     "<rootDir>/@types",
     "<rootDir>/build",
     "<rootDir>/database",
-    "<rootDir>/middlewares",
     "<rootDir>/node_modules",
     "<rootDir>/index.ts"
   ],
   "globalSetup": "<rootDir>/database/seedDB/index.ts",
-  "globalTeardown": "<rootDir>/database/teardownDB/index.ts",
-  "setupFilesAfterEnv": ["<rootDir>/utils/setupTests.js"]
+  "globalTeardown": "<rootDir>/database/teardownDB/index.ts"
 }

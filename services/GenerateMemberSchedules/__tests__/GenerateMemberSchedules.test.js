@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
 import { connectToDB } from "~database";
-import { generateStaffSchedule } from "~libs";
+import { generateEmployeeSchedules } from "~services";
 import { infoMessage } from "~loggers";
 import { Event, Mail } from "~models";
 import { createDate, getEndOfNextMonth, getStartOfNextMonth } from "~helpers";
+import { upcomingSchedule } from "~templates";
 import { calendarDateFormat } from "~utils/dateFormats";
-import { masterSchedule } from "~templates";
 
-describe("Generate Staff Schedule Service", () => {
+describe("Generate Employee Schedules Service", () => {
   beforeAll(async () => {
     await connectToDB();
   });
@@ -16,12 +16,12 @@ describe("Generate Staff Schedule Service", () => {
     await mongoose.connection.close();
   });
 
-  it("handles polling schedule events documents for staff members", async () => {
+  it("handles polling schedule events documents", async () => {
     const mailSpy = jest.spyOn(Mail, "insertMany");
     const startMonth = getStartOfNextMonth().toDate();
     const endMonth = getEndOfNextMonth().toDate();
 
-    const existingEvents = await Event.find(
+    const existingEvent = await Event.findOne(
       {
         eventDate: {
           $gte: startMonth,
@@ -47,22 +47,29 @@ describe("Generate Staff Schedule Service", () => {
       })
       .lean();
 
-    await generateStaffSchedule();
+    await generateEmployeeSchedules();
+
+    const events = [
+      {
+        ...existingEvent,
+        email: "Matt Carlotta <carlotta.matt@gmail.com>",
+        callTime: createDate(existingEvent.callTimes[0]).format("hh:mm a"),
+        eventDate: createDate(existingEvent.eventDate).format(
+          "MMMM Do YYYY, h:mm a"
+        )
+      }
+    ];
 
     expect(mailSpy).toHaveBeenCalledTimes(1);
     expect(mailSpy).toHaveBeenCalledWith(
       expect.arrayContaining([
         expect.objectContaining({
-          sendTo: ["Ice Team Staff <staff@sjsiceteam.com>"],
+          sendTo: ["Matt Carlotta <carlotta.matt@gmail.com>"],
           sendFrom: "San Jose Sharks Ice Team <noreply@sjsiceteam.com>",
           subject: `Upcoming Schedule for ${createDate(startMonth).format(
             calendarDateFormat
           )} - ${createDate(endMonth).format(calendarDateFormat)}`,
-          message: masterSchedule(
-            existingEvents,
-            createDate(startMonth).format(calendarDateFormat),
-            createDate(endMonth).format(calendarDateFormat)
-          )
+          message: upcomingSchedule(events)
         })
       ])
     );
