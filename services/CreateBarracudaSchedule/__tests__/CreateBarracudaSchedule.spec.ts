@@ -5,6 +5,7 @@ import { errorMessage, infoMessage } from "~loggers";
 import { Event } from "~models";
 import { mockAHLAPI } from "~utils/mockAxios";
 import data from "./fakedata";
+import nohomegamesdata from "./nohomegamesdata";
 
 const eventSpy = jest.spyOn(Event, "insertMany");
 
@@ -12,7 +13,7 @@ mockAHLAPI
   .onGet("games")
   .replyOnce(404)
   .onGet("games")
-  .replyOnce(200, "")
+  .replyOnce(200, nohomegamesdata)
   .onGet("games")
   .reply(200, data);
 
@@ -45,9 +46,7 @@ describe("Create Barracuda Schedule Service", () => {
 
     expect(eventSpy).toHaveBeenCalledTimes(0);
 
-    expect(errorMessage).toHaveBeenCalledWith(
-      "No Barracuda home events were found."
-    );
+    expect(infoMessage).toHaveBeenCalledWith("Processed Barracuda Events... 0");
   });
 
   it("handles successful scrapeing Barracuda home page with games", async () => {

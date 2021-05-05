@@ -52,8 +52,6 @@ const CreateBarracudaSchedule = async (): Promise<void> => {
     const currentYear = getCurrentYear().format(fullyearFormat);
 
     const currentMonthSchedule = $(`#${nextNextMonth}${currentYear}`);
-    if (isEmpty(currentMonthSchedule))
-      throw String("No Barracuda home events were found.");
 
     currentMonthSchedule.find(".entry.clearfix").each((_i, row) => {
       const $row = $(row);
@@ -104,7 +102,7 @@ const CreateBarracudaSchedule = async (): Promise<void> => {
       }
     });
 
-    await Event.insertMany(events);
+    if (!isEmpty(events)) await Event.insertMany(events);
 
     infoMessage(`Processed Barracuda Events... ${events.length}`);
   } catch (err) {
