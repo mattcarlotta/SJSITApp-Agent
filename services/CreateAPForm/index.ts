@@ -1,6 +1,6 @@
 import { errorMessage, infoMessage } from "~loggers";
 import { Form, Season } from "~models";
-import { createDate, getEndOfMonth, getStartOfNextNextMonth } from "~helpers";
+import { createDate, getEndOfMonth, getStartOfMonth } from "~helpers";
 
 /**
  * Creates an AP Form for next months schedule.
@@ -10,7 +10,7 @@ import { createDate, getEndOfMonth, getStartOfNextNextMonth } from "~helpers";
 const CreateAPForm = async (): Promise<void> => {
   try {
     // start of next month
-    const startMonth = getStartOfNextNextMonth();
+    const startMonth = getStartOfMonth();
 
     // testing current month
     // const startMonth = moment().startOf("month");
@@ -30,8 +30,6 @@ const CreateAPForm = async (): Promise<void> => {
     if (!existingSeason)
       throw String("Unable to locate a seasonId associated with that month.");
 
-    const { seasonId } = existingSeason;
-
     // testing current month dates
     // const sendEmailNotificationsDate = moment().format();
     // const expirationDate = moment()
@@ -48,24 +46,19 @@ const CreateAPForm = async (): Promise<void> => {
       .endOf("day")
       .format();
 
-    // send A/P Form emails on the 1st of each month
-    const sendEmailNotificationsDate = createDate()
-      .add(1, "month")
-      .startOf("month")
-      .format();
-
     // create an A/P form
     await Form.create({
-      seasonId,
+      seasonId: existingSeason.seasonId,
       startMonth: startMonth.format(),
       endMonth: endMonth.format(),
       expirationDate,
-      sendEmailNotificationsDate,
+      sendEmailNotificationsDate: startMonth.format(),
       notes: ""
     });
 
-    infoMessage("Processed Forms... 1");
+    infoMessage("Processed AP Forms... 1");
   } catch (err) {
+    /* istanbul ignore next */
     errorMessage(err.toString());
   }
 };

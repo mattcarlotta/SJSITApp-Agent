@@ -78,8 +78,7 @@ const GenerateFormReminders = async (): Promise<void> => {
     }
   }
 
-  /* istanbul ignore next */
-  infoMessage(`Processed Forms... ${formReminders.length}`);
+  infoMessage(`Processed Form Reminders... ${formReminders.length}`);
 };
 
 export default GenerateFormReminders;

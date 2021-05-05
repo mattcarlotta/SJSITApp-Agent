@@ -1,22 +1,16 @@
 import mongoose from "mongoose";
+import mailer from "@sendgrid/mail";
 import { connectToDB } from "~database";
 import { pollEmails } from "~services";
 import { infoMessage } from "~loggers";
 import { Mail } from "~models";
-import { endOfDay } from "~helpers";
 import type { TMailDocument } from "~types";
 
-const mockSend = jest.fn();
+const mailService = mailer.send as jest.Mock;
 
-jest.mock("@sendgrid/mail", () => ({
-  __esModule: true,
-  default: {
-    send: mockSend
-  }
-}));
+mailService.mockImplementationOnce(props => Promise.resolve(props));
 
-mockSend.mockImplementationOnce(props => Promise.resolve(props));
-mockSend.mockImplementationOnce(() =>
+mailService.mockImplementationOnce(() =>
   Promise.reject(new Error("Unauthorized"))
 );
 
@@ -30,26 +24,13 @@ describe("Poll Email Service", () => {
   });
 
   it("handles polling Mail documents", async () => {
-    const endDay = endOfDay();
-
-    const emails = await Mail.aggregate([
-      {
-        $match: {
-          sendDate: {
-            $lte: endDay
-          },
-          status: "unsent"
-        }
-      },
-      { $sort: { sendDate: -1 } }
-    ]);
-
     await pollEmails();
 
     const sentEmail = await Mail.find({ status: "sent" }).limit(1);
+
     expect(sentEmail).toBeTruthy();
 
-    expect(mockSend).toHaveBeenCalledWith({
+    expect(mailService).toHaveBeenCalledWith({
       to: expect.any(Array),
       from: expect.any(String),
       subject: expect.any(String),
@@ -61,6 +42,6 @@ describe("Poll Email Service", () => {
     })) as TMailDocument;
 
     expect(failedEmail.status).toEqual("failed - Unauthorized");
-    expect(infoMessage).toContain(`Processed Mail... ${emails.length}`);
+    expect(infoMessage).toHaveBeenCalledTimes(1);
   });
 });

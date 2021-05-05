@@ -1,5 +1,6 @@
 import isEmpty from "lodash.isempty";
 import { createDate } from "~helpers";
+import { serviceDateTimeFormat } from "~utils/dateFormats";
 import type { TAggEvents } from "~types";
 
 /**
@@ -49,7 +50,7 @@ const MasterSchedule = (
         <li style="color: #000000;margin: 5px 0px;">
           <span style="margin-right: 5px;">
             <strong>Event Date</strong>:&nbsp;${createDate(eventDate).format(
-              "MMMM Do, YYYY @ h:mm a"
+              serviceDateTimeFormat
             )}
           </span>
         </li>

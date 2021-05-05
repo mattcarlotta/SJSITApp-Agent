@@ -3,6 +3,7 @@ import { infoMessage } from "~loggers";
 import { Event, Mail } from "~models";
 import { eventReminder } from "~templates";
 import { createDate, endOfTomorrow } from "~helpers";
+import { serviceDateTimeFormat } from "~utils/dateFormats";
 import type { TAggEvents, TEmail } from "~types";
 
 /**
@@ -53,7 +54,7 @@ const PollEvents = async (): Promise<void> => {
             }) => {
               if (sendMemberReminders) {
                 const eventDateToString = createDate(eventDate).format(
-                  "MMMM Do, YYYY @ h:mm a"
+                  serviceDateTimeFormat
                 );
 
                 emailReminders.push({
@@ -86,9 +87,7 @@ const PollEvents = async (): Promise<void> => {
   }
 
   /* istanbul ignore next */
-  infoMessage(
-    `Processed Events... ${!isEmpty(emailReminders) ? emailReminders : events}`
-  );
+  infoMessage(`Processed Events... ${emailReminders.length}`);
 };
 
 export default PollEvents;

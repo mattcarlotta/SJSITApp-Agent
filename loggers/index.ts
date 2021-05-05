@@ -1,6 +1,5 @@
+/* eslint-disable no-console */
 import chalk from "chalk";
-
-const { log } = console;
 
 /**
  * Helper function to log an error to console.
@@ -9,7 +8,7 @@ const { log } = console;
  * @param error - string;
  */
 export const errorMessage = (error: string): void => {
-  log(
+  console.log(
     `\n${chalk.rgb(255, 255, 255).bgRgb(255, 17, 0)(" ERROR ")} ${chalk.red(
       `${error}`
     )}\n`
@@ -23,7 +22,7 @@ export const errorMessage = (error: string): void => {
  * @param message - string;
  */
 export const infoMessage = (message: string): void => {
-  log(
+  console.log(
     `\n${chalk.rgb(7, 54, 66).bgRgb(38, 139, 210)(" INFO ")} ${chalk.blue(
       `${message}`
     )}`
@@ -37,7 +36,7 @@ export const infoMessage = (message: string): void => {
  * @param message - string;
  */
 export const warnMessage = (message: string): void => {
-  log(
+  console.log(
     `\n${chalk.rgb(255, 255, 255).bgRgb(201, 162, 4)(" WARN ")} ${chalk.yellow(
       `${message}`
     )}`

@@ -37,6 +37,7 @@
     "mongoose": "^5.12.7",
     "node-schedule": "^2.0.0",
     "nodemon": "^2.0.7",
+    "snackables": "^2.1.0",
     "tsconfig-paths": "^3.9.0",
     "typescript": "^4.2.4"
   },

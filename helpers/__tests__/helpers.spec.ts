@@ -4,10 +4,13 @@ import {
   getCurrentYear,
   getMonthDateRange,
   getNextYear,
+  getServiceTime,
   getStartOfMonth,
   groupByEmail
 } from "~helpers";
 import moment from "~utils/momentWithTimeZone";
+import type { TEventMemberSchedule } from "~types";
+import { fullyearFormat } from "~utils/dateFormats";
 
 const scheduledEvents = [
   {
@@ -32,7 +35,7 @@ const scheduledEvents = [
     opponent: "Anaheim Ducks",
     notes: ""
   }
-];
+] as Array<TEventMemberSchedule>;
 
 describe("Helper Functions", () => {
   it("returns a current date or specified date", () => {
@@ -54,15 +57,14 @@ describe("Helper Functions", () => {
       expect.arrayContaining([
         expect.objectContaining({
           _id: expect.any(String),
-          employeeIds: expect.any(Array),
-          title: expect.any(String)
+          employeeIds: expect.any(Array)
         })
       ])
     );
   });
 
   it("returns a current year Date", () => {
-    const currentYear = getCurrentYear().format("YYYY");
+    const currentYear = getCurrentYear().format(fullyearFormat);
 
     expect(currentYear).toEqual(expect.any(String));
   });
@@ -81,10 +83,10 @@ describe("Helper Functions", () => {
       endOfMonth: selectedEndMonth
     } = getMonthDateRange(selectedDate);
 
-    expect(selectedStartMonth).toEqual(
+    expect(selectedStartMonth.toDate()).toEqual(
       moment("2019-09-01T07:00:00.000Z").toDate()
     );
-    expect(selectedEndMonth).toEqual(
+    expect(selectedEndMonth.toDate()).toEqual(
       moment("2019-10-01T06:59:59.999Z").toDate()
     );
 
@@ -94,18 +96,24 @@ describe("Helper Functions", () => {
       endOfMonth: currentEndMonth
     } = getMonthDateRange();
 
-    expect(currentStartMonth).toEqual(
+    expect(currentStartMonth.toDate()).toEqual(
       moment(currentDate).startOf("month").toDate()
     );
-    expect(currentEndMonth).toEqual(
+    expect(currentEndMonth.toDate()).toEqual(
       moment(currentDate).endOf("month").toDate()
     );
   });
 
   it("returns a next year Date", () => {
-    const nextYear = getNextYear().format("YYYY");
+    const nextYear = getNextYear().format(fullyearFormat);
 
     expect(nextYear).toEqual(expect.any(String));
+  });
+
+  it("returns a date with current day, month and year", () => {
+    const serviceDate = getServiceTime("12:00 pm", "1st", "January");
+
+    expect(serviceDate).toEqual(expect.any(Date));
   });
 
   it("groups all objects by email", () => {

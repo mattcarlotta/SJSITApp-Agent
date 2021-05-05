@@ -2,14 +2,13 @@ import mongoose from "mongoose";
 import { connectToDB } from "~database";
 import { createSharksSchedule } from "~services";
 import { errorMessage, infoMessage } from "~loggers";
-import { Event, Form } from "~models";
+import { Event } from "~models";
 import { getEndOfMonth, getStartOfNextNextMonth } from "~helpers";
 import { eventFormat } from "~utils/dateFormats";
 import mockAxios from "~utils/mockAxios";
 import data from "./fakedata";
 
 const eventSpy = jest.spyOn(Event, "insertMany");
-const formSpy = jest.spyOn(Form, "create");
 
 describe("Create Sharks Schedule Service", () => {
   let startMonth: string;
@@ -26,14 +25,11 @@ describe("Create Sharks Schedule Service", () => {
 
   afterEach(() => {
     eventSpy.mockClear();
-    formSpy.mockClear();
   });
 
   afterAll(async () => {
     await mongoose.connection.close();
     eventSpy.mockRestore();
-    formSpy.mockRestore();
-    mockAxios.restore();
   });
 
   it("handles unsuccessful polling NHL API", async () => {
@@ -46,10 +42,9 @@ describe("Create Sharks Schedule Service", () => {
     await createSharksSchedule();
 
     expect(eventSpy).toHaveBeenCalledTimes(0);
-    expect(formSpy).toHaveBeenCalledTimes(0);
 
-    expect(errorMessage).toContain(
-      "Unable to retrieve next month's game schedule."
+    expect(errorMessage).toHaveBeenCalledWith(
+      "No Sharks home events were found. Aborted!"
     );
   });
 
@@ -72,8 +67,7 @@ describe("Create Sharks Schedule Service", () => {
           schedule: expect.arrayContaining([
             expect.objectContaining({
               _id: expect.any(String),
-              employeeIds: expect.any(Array),
-              title: expect.any(String)
+              employeeIds: expect.any(Array)
             })
           ]),
           seasonId: expect.any(String),
@@ -83,18 +77,6 @@ describe("Create Sharks Schedule Service", () => {
       ])
     );
 
-    expect(formSpy).toHaveBeenCalledTimes(1);
-    expect(formSpy).toHaveBeenCalledWith(
-      expect.objectContaining({
-        seasonId: expect.any(String),
-        startMonth: expect.any(String),
-        endMonth: expect.any(String),
-        expirationDate: expect.any(String),
-        sendEmailNotificationsDate: expect.any(String),
-        notes: expect.any(String)
-      })
-    );
-
-    expect(infoMessage).toContain(`Processed Sharks Events... 1`);
+    expect(infoMessage).toHaveBeenCalledWith(`Processed Sharks Events... 1`);
   });
 });

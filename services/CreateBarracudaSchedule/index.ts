@@ -1,8 +1,10 @@
 import cheerio from "cheerio";
+import get from "lodash.get";
 import isEmpty from "lodash.isempty";
 import {
   createDate,
   createSchedule,
+  getCurrentYear,
   getStartOfNextNextMonth,
   toCapitalize
 } from "~helpers";
@@ -17,7 +19,7 @@ import {
 import { IEvent } from "~types";
 
 /**
- * Creates Barracuda events for next months schedule
+ * Creates Barracuda events that are 2 months from now for next months schedule.
  *
  * @function CreateBarracudaSchedule
  */
@@ -43,11 +45,13 @@ const CreateBarracudaSchedule = async (): Promise<void> => {
     const { seasonId } = existingSeason;
 
     const res = await ahlAPI.get("games");
-    const $ = cheerio.load(res.data);
-    const nextMonth = createDate().add(1, "month").format(monthnameFormat);
-    const currentYear = createDate().format(fullyearFormat);
 
-    const currentMonthSchedule = $(`#${nextMonth}${currentYear}`);
+    const data = get(res, ["data"]);
+    const $ = cheerio.load(data);
+    const nextNextMonth = getStartOfNextNextMonth().format(monthnameFormat);
+    const currentYear = getCurrentYear().format(fullyearFormat);
+
+    const currentMonthSchedule = $(`#${nextNextMonth}${currentYear}`);
     if (isEmpty(currentMonthSchedule))
       throw String("No Barracuda home events were found. Aborted!");
 

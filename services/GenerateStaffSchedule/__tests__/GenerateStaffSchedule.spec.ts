@@ -1,14 +1,14 @@
 import mongoose from "mongoose";
 import { connectToDB } from "~database";
-import { generateMemberSchedules } from "~services";
+import { generateStaffSchedule } from "~services";
 import { infoMessage } from "~loggers";
 import { Event, Mail } from "~models";
 import { createDate, getEndOfNextMonth, getStartOfNextMonth } from "~helpers";
-import { upcomingSchedule } from "~templates";
 import { calendarDateFormat } from "~utils/dateFormats";
-import type { TEventMemberSchedule } from "~types";
+import { masterSchedule } from "~templates";
+import type { TAggEvents } from "~types";
 
-describe("Generate Employee Schedules Service", () => {
+describe("Generate Staff Schedule Service", () => {
   beforeAll(async () => {
     await connectToDB();
   });
@@ -17,12 +17,12 @@ describe("Generate Employee Schedules Service", () => {
     await mongoose.connection.close();
   });
 
-  it("handles polling schedule events documents", async () => {
+  it("handles polling schedule events documents for staff members", async () => {
     const mailSpy = jest.spyOn(Mail, "insertMany");
     const startMonth = getStartOfNextMonth().format();
     const endMonth = getEndOfNextMonth().format();
 
-    const existingEvent = (await Event.findOne(
+    const existingEvents = (await Event.find(
       {
         eventDate: {
           $gte: startMonth,
@@ -46,35 +46,28 @@ describe("Generate Employee Schedules Service", () => {
         path: "schedule.employeeIds",
         select: "_id firstName lastName email"
       })
-      .lean()) as TEventMemberSchedule;
+      .lean()) as Array<TAggEvents>;
 
-    await generateMemberSchedules();
-
-    const events = [
-      {
-        ...existingEvent,
-        email: "Matt Carlotta <carlotta.matt@gmail.com>",
-        callTime: createDate(existingEvent.callTimes[0]).format("hh:mm a"),
-        eventDate: createDate(existingEvent.eventDate).format(
-          "MMMM Do YYYY, h:mm a"
-        )
-      }
-    ];
+    await generateStaffSchedule();
 
     expect(mailSpy).toHaveBeenCalledTimes(1);
     expect(mailSpy).toHaveBeenCalledWith(
       expect.arrayContaining([
         expect.objectContaining({
-          sendTo: ["Matt Carlotta <carlotta.matt@gmail.com>"],
+          sendTo: ["Ice Team Staff <staffmember@test.com>"],
           sendFrom: "San Jose Sharks Ice Team <noreply@sjsiceteam.com>",
           subject: `Upcoming Schedule for ${createDate(startMonth).format(
             calendarDateFormat
           )} - ${createDate(endMonth).format(calendarDateFormat)}`,
-          message: upcomingSchedule(events)
+          message: masterSchedule(
+            existingEvents,
+            createDate(startMonth).format(calendarDateFormat),
+            createDate(endMonth).format(calendarDateFormat)
+          )
         })
       ])
     );
 
-    expect(infoMessage).toHaveBeenCalledWith("Processed Schedules... 1");
+    expect(infoMessage).toHaveBeenCalledWith("Processed Staff Schedules... 1");
   });
 });

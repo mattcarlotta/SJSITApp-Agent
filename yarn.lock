@@ -5081,6 +5081,11 @@ sliced@1.0.1:
   resolved "https://registry.yarnpkg.com/sliced/-/sliced-1.0.1.tgz#0b3a662b5d04c3177b1926bea82b03f837a2ef41"
   integrity sha1-CzpmK10Ewxd7GSa+qCsD+Dei70E=
 
+snackables@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/snackables/-/snackables-2.1.0.tgz#ce6e8f58e9806820a2afa448872a53f9bedc024c"
+  integrity sha512-FVlU7n9+BED77N2D5C2LG711PVb9LaEMiTq9acE13c3s3OQ+i1nL10XfSfkQYC7vJJBmG5+XgCJ7w7l5ulNgIg==
+
 snapdragon-node@^2.0.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/snapdragon-node/-/snapdragon-node-2.1.1.tgz#6c175f86ff14bdb0724563e8f3c1b021a286853b"

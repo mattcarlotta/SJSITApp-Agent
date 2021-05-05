@@ -1,14 +1,14 @@
 import mongoose from "mongoose";
 import { connectToDB } from "~database";
-import { generateStaffSchedule } from "~services";
+import { generateMemberSchedules } from "~services";
 import { infoMessage } from "~loggers";
 import { Event, Mail } from "~models";
 import { createDate, getEndOfNextMonth, getStartOfNextMonth } from "~helpers";
-import { calendarDateFormat } from "~utils/dateFormats";
-import { masterSchedule } from "~templates";
-import type { TAggEvents } from "~types";
+import { upcomingSchedule } from "~templates";
+import { calendarDateFormat, serviceDateTimeFormat } from "~utils/dateFormats";
+import type { TEventMemberSchedule } from "~types";
 
-describe("Generate Staff Schedule Service", () => {
+describe("Generate Employee Schedules Service", () => {
   beforeAll(async () => {
     await connectToDB();
   });
@@ -17,12 +17,12 @@ describe("Generate Staff Schedule Service", () => {
     await mongoose.connection.close();
   });
 
-  it("handles polling schedule events documents for staff members", async () => {
+  it("handles polling schedule events documents", async () => {
     const mailSpy = jest.spyOn(Mail, "insertMany");
     const startMonth = getStartOfNextMonth().format();
     const endMonth = getEndOfNextMonth().format();
 
-    const existingEvents = (await Event.find(
+    const existingEvent = (await Event.findOne(
       {
         eventDate: {
           $gte: startMonth,
@@ -46,28 +46,35 @@ describe("Generate Staff Schedule Service", () => {
         path: "schedule.employeeIds",
         select: "_id firstName lastName email"
       })
-      .lean()) as Array<TAggEvents>;
+      .lean()) as TEventMemberSchedule;
 
-    await generateStaffSchedule();
+    await generateMemberSchedules();
+
+    const events = [
+      {
+        ...existingEvent,
+        email: "Scheduled Member <scheduledmember@test.com>",
+        callTime: createDate(existingEvent.callTimes[0]).format("hh:mm a"),
+        eventDate: createDate(existingEvent.eventDate).format(
+          serviceDateTimeFormat
+        )
+      }
+    ];
 
     expect(mailSpy).toHaveBeenCalledTimes(1);
     expect(mailSpy).toHaveBeenCalledWith(
       expect.arrayContaining([
         expect.objectContaining({
-          sendTo: ["Ice Team Staff <staff@sjsiceteam.com>"],
+          sendTo: ["Scheduled Member <scheduledmember@test.com>"],
           sendFrom: "San Jose Sharks Ice Team <noreply@sjsiceteam.com>",
           subject: `Upcoming Schedule for ${createDate(startMonth).format(
             calendarDateFormat
           )} - ${createDate(endMonth).format(calendarDateFormat)}`,
-          message: masterSchedule(
-            existingEvents,
-            createDate(startMonth).format(calendarDateFormat),
-            createDate(endMonth).format(calendarDateFormat)
-          )
+          message: upcomingSchedule(events)
         })
       ])
     );
 
-    expect(infoMessage).toHaveBeenCalledWith("Processed Schedules... 1");
+    expect(infoMessage).toHaveBeenCalledWith("Processed Member Schedules... 1");
   });
 });

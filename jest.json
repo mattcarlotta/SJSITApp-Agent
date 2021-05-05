@@ -20,6 +20,7 @@
   "transform": {
     "^.+\\.ts?$": "ts-jest"
   },
+  "testMatch": ["**/*.spec.ts"],
   "moduleFileExtensions": ["ts", "js", "json"],
   "transformIgnorePatterns": ["^.+\\.js$"],
   "collectCoverageFrom": ["**/*.ts", "!**/*d.ts"],

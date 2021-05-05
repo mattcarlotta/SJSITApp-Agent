@@ -89,10 +89,7 @@ const PollForms = async (): Promise<void> => {
     );
   }
 
-  /* istanbul ignore next */
-  infoMessage(
-    `Processed Forms... ${!isEmpty(formReminders) ? formReminders : forms}`
-  );
+  infoMessage(`Processed Forms... ${formReminders.length}`);
 };
 
 export default PollForms;

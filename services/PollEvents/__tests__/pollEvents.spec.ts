@@ -5,6 +5,7 @@ import { infoMessage } from "~loggers";
 import { Event, Mail } from "~models";
 import { createDate, endOfTomorrow } from "~helpers";
 import { eventReminder } from "~templates";
+import { serviceDateTimeFormat } from "~utils/dateFormats";
 import type { IEventDocument, TAggEvents } from "~types";
 
 describe("Poll Events Service", () => {
@@ -51,14 +52,13 @@ describe("Poll Events Service", () => {
     const { title } = schedule[0];
     const { firstName, lastName, email } = schedule[0].employeeIds[0];
     const eventDateToString = createDate(eventDate).format(
-      "MMMM Do, YYYY @ h:mm a"
+      serviceDateTimeFormat
     );
 
-    expect(mailSpy).toHaveBeenCalledTimes(1);
     expect(mailSpy).toHaveBeenCalledWith(
       expect.arrayContaining([
         expect.objectContaining({
-          sendTo: `${firstName} ${lastName} <${email}>`,
+          sendTo: [`${firstName} ${lastName} <${email}>`],
           sendFrom: "San Jose Sharks Ice Team <noreply@sjsiceteam.com>",
           subject: `Event Reminder for ${eventDateToString}`,
           message: eventReminder({
@@ -73,6 +73,6 @@ describe("Poll Events Service", () => {
     const updatedEvent = (await Event.findOne({ _id })) as IEventDocument;
     expect(updatedEvent.sentEmailReminders).toBeTruthy();
 
-    expect(infoMessage).toHaveBeenCalledWith("Processed Events... 1");
+    expect(infoMessage).toHaveBeenCalledTimes(1);
   });
 });

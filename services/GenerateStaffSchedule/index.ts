@@ -90,7 +90,7 @@ const GenerateStaffSchedule = async (): Promise<void> => {
 
     await Mail.insertMany(masterScheduleMail);
 
-    infoMessage(`Processed Schedules... ${masterScheduleMail.length}`);
+    infoMessage(`Processed Staff Schedules... ${masterScheduleMail.length}`);
   } catch (err) {
     /* istanbul ignore next */
     errorMessage(err);

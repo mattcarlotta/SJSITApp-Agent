@@ -12,23 +12,23 @@ import { eventFormat } from "~utils/dateFormats";
 import { IEvent, TNHLResponseData } from "~types";
 
 /**
- * Creates Sharks events for next months schedule
+ * Creates Sharks events that are 2 months from now for next months schedule.
  *
  * @function CreateSharksSchedule
  */
 const CreateSharksSchedule = async (): Promise<void> => {
   const events = [] as Array<IEvent>;
   try {
-    // start of next month
+    // start of 2 months from now
     const startMonth = getStartOfNextNextMonth();
 
     // testing current month
     // const startMonth = moment().startOf("month");
 
-    // end of next month
+    // end of 2 months from now
     const endMonth = getEndOfMonth(startMonth.toDate());
 
-    // locate season that encapulates next month
+    // locate season that encapulates 2 months from now
     const existingSeason = await Season.findOne(
       {
         startDate: { $lte: startMonth.toDate() },
@@ -42,7 +42,7 @@ const CreateSharksSchedule = async (): Promise<void> => {
 
     const { seasonId } = existingSeason;
 
-    // fetch Sharks schedule for next month from stats.nhl.com
+    // fetch Sharks schedule 2 months from now from stats.nhl.com
     const res = (await nhlAPI.get(
       `schedule?teamId=28&startDate=${startMonth.format(
         eventFormat
@@ -70,6 +70,7 @@ const CreateSharksSchedule = async (): Promise<void> => {
         const date = createDate(gameDate).format("MMMM Do YYYY, hh:mm a");
 
         // generate callTimes based upon the date
+        // 7:30 pm => 5:00 pm, 5:15PM, 5:30PM, 7:00
         const callTimes = [120, 105, 90, 30].map(time =>
           createDate(date, "MMMM Do YYYY, hh:mm a")
             .subtract(time, "minutes")

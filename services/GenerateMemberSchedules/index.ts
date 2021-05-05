@@ -3,7 +3,7 @@ import { errorMessage, infoMessage } from "~loggers";
 import { Event, Form, Mail } from "~models";
 import { upcomingSchedule } from "~templates";
 import { createDate, groupByEmail } from "~helpers";
-import { calendarDateFormat } from "~utils/dateFormats";
+import { calendarDateFormat, serviceDateTimeFormat } from "~utils/dateFormats";
 import type { TAggEvents, TEventMemberSchedule, TEventsSorted } from "~types";
 
 /**
@@ -63,7 +63,7 @@ const GenerateMemberSchedules = async (): Promise<void> => {
             scheduledEvents.push({
               email: `${firstName} ${lastName} <${email}>`,
               callTime,
-              eventDate: createDate(eventDate).format("MMMM Do YYYY, h:mm a"),
+              eventDate: createDate(eventDate).format(serviceDateTimeFormat),
               ...rest
             });
           });
@@ -89,7 +89,7 @@ const GenerateMemberSchedules = async (): Promise<void> => {
 
     await Mail.insertMany(emails);
 
-    infoMessage(`Processed Schedules... ${sortedSchedules.length}`);
+    infoMessage(`Processed Member Schedules... ${sortedSchedules.length}`);
   } catch (err) {
     /* istanbul ignore next */
     errorMessage(err);

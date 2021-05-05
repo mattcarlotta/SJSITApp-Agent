@@ -1,13 +1,14 @@
 import mongoose from "mongoose";
 import { connectToDB } from "~database";
-import { generateFormReminders } from "~services";
+import { pollForms } from "~services";
 import { infoMessage } from "~loggers";
 import { Form, Mail, User } from "~models";
-import { createDate, getEndOfMonth } from "~helpers";
-import { apFormReminder } from "~templates";
-import { dateTimeFormat } from "~utils/dateFormats";
+import { createDate, endOfDay } from "~helpers";
+import { apFormNotification } from "~templates";
+import { dateTimeFormat, calendarDateFormat } from "~utils/dateFormats";
+import type { IFormDocument } from "~types";
 
-describe("Generate A/P Form Reminders Service", () => {
+describe("Poll Forms Service", () => {
   beforeAll(async () => {
     await connectToDB();
   });
@@ -16,16 +17,16 @@ describe("Generate A/P Form Reminders Service", () => {
     await mongoose.connection.close();
   });
 
-  it("handles polling Form documents for reminders", async () => {
-    const mailSpy = jest.spyOn(Mail, "create");
-    const startNextMonth = createDate().add(1, "months").startOf("month");
-
-    const endNextMonth = getEndOfMonth(startNextMonth.format());
+  it("handles polling Form documents", async () => {
+    const mailSpy = jest.spyOn(Mail, "insertMany");
+    const endDay = endOfDay();
 
     const forms = await Form.find(
       {
-        startMonth: { $gte: startNextMonth.toDate() },
-        endMonth: { $lte: endNextMonth.toDate() }
+        sendEmailNotificationsDate: {
+          $lte: endDay
+        },
+        sentEmails: false
       },
       {
         startMonth: 1,
@@ -36,7 +37,7 @@ describe("Generate A/P Form Reminders Service", () => {
       { sort: { startMonth: 1 } }
     ).lean();
 
-    await generateFormReminders();
+    await pollForms();
 
     const members = await User.aggregate([
       {
@@ -60,18 +61,16 @@ describe("Generate A/P Form Reminders Service", () => {
     const memberEmails = members.map(({ email }) => email);
 
     const { _id, endMonth, expirationDate, startMonth, notes } = forms[0];
-    const format = "MM/DD/YYYY";
-    const endOfMonth = createDate(endMonth).format(format);
-    const startOfMonth = createDate(startMonth).format(format);
+    const endOfMonth = createDate(endMonth).format(calendarDateFormat);
+    const startOfMonth = createDate(startMonth).format(calendarDateFormat);
 
-    expect(mailSpy).toHaveBeenCalledTimes(1);
     expect(mailSpy).toHaveBeenCalledWith(
       expect.arrayContaining([
         expect.objectContaining({
           sendTo: memberEmails,
           sendFrom: "San Jose Sharks Ice Team <noreply@sjsiceteam.com>",
-          subject: `Sharks & Barracuda A/P Form Reminder (${startOfMonth} - ${endOfMonth})`,
-          message: apFormReminder({
+          subject: `Sharks & Barracuda A/P Form (${startOfMonth} - ${endOfMonth})`,
+          message: apFormNotification({
             _id,
             expirationDate: createDate(expirationDate).format(dateTimeFormat),
             endMonth: endOfMonth,
@@ -82,6 +81,9 @@ describe("Generate A/P Form Reminders Service", () => {
       ])
     );
 
-    expect(infoMessage).toHaveBeenCalledWith("Processed Forms... 1");
+    const updatedForm = (await Form.findOne({ _id })) as IFormDocument;
+    expect(updatedForm.sentEmails).toBeTruthy();
+
+    expect(infoMessage).toHaveBeenCalledTimes(1);
   });
 });
