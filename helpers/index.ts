@@ -8,6 +8,15 @@ import type {
 } from "../types";
 
 /**
+ * Helper function to check if the current day exceeds another date.
+ *
+ * @function checkIfDatePassed
+ * @param date - date
+ * @returns {Date}
+ */
+const checkIfDatePassed = (date: Date): Boolean => moment().toDate() < date;
+
+/**
  * Helper function to create a current date.
  *
  * @function createDate
@@ -100,13 +109,13 @@ const getNextYear = (): Moment => moment().add(1, "year").endOf("year");
 /**
  * Helper function to generate a service date.
  *
- * @function getServiceTime
+ * @function createServiceDate
  * @param time - string ex: ```12:00 pm```
  * @param day - string ex: ```1st```
  * @param month - string ex: ```January```
  * @returns {Date} formatted date ```January 1st 2021 @ 12:00 pm```
  */
-const getServiceTime = (time: string, day: string, month: string): Date =>
+const createServiceDate = (time: string, day: string, month: string): Date =>
   createDate(
     `${month} ${day} ${getCurrentYear().format(fullyearFormat)} @ ${time}`,
     serviceDateTimeFormat
@@ -170,7 +179,9 @@ const toCapitalize = (text: string): string =>
   );
 
 export {
+  checkIfDatePassed,
   createDate,
+  createServiceDate,
   createSchedule,
   endOfDay,
   endOfTomorrow,
@@ -179,7 +190,6 @@ export {
   getEndOfNextMonth,
   getMonthDateRange,
   getNextYear,
-  getServiceTime,
   getStartOfMonth,
   getStartOfNextMonth,
   getStartOfNextNextMonth,

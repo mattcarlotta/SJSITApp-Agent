@@ -7,6 +7,7 @@
     "~database": "<rootDir>/database",
     "~helpers/(.*)$": "<rootDir>/helpers/$1",
     "~helpers": "<rootDir>/helpers",
+    "~lib": "<rootDir>/lib/index",
     "~loggers": "<rootDir>/loggers/index",
     "~models/(.*)$": "<rootDir>/models/$1",
     "~models": "<rootDir>/models",
