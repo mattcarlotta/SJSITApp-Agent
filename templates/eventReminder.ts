@@ -1,5 +1,19 @@
 import type { TEventMemberSchedule } from "~types";
 
+/**
+ * An HTML template for Event reminder emails.
+ *
+ * @function EventReminder
+ * @param callTime - string
+ * @param eventType - string
+ * @param eventDate - string
+ * @param location - string
+ * @param notes - string;
+ * @param opponent - string;
+ * @param team - string;
+ * @param uniform - string;
+ * @returns {string} - HTML email template
+ */
 const EventReminder = ({
   callTime,
   eventType,

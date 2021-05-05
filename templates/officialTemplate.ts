@@ -1,5 +1,12 @@
 const { IMAGEAPI } = process.env;
 
+/**
+ * A wrapper HTML template for all emails.
+ *
+ * @function OfficialTemplate
+ * @param message - string
+ * @returns {string} - HTML email template
+ */
 const OfficialTemplate = (message: string): string => `<html>
     <body>
       <div style="overflow: hidden;">

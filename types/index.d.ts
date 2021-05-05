@@ -1,42 +1,12 @@
 import type { Moment } from "moment-timezone";
-import type { Model, Document, Types } from "mongoose";
+import type { Document, Types } from "mongoose";
 
 /// EVENTS ///
 type TId = Types.ObjectId | string;
 
-export type TEventAccResponses = Array<{
-  id: string;
-  value: number;
-}>;
-
-export type TEventAggResponses = Array<{
-  // _id: TId;
-  responses: Array<string>;
-}>;
-
 export type TEventEmptySchedule = Array<{
   _id: string;
   employeeIds: Array<never>;
-}>;
-
-export type TEventCountForMember = Array<{
-  name: string;
-  "Event Count": number;
-}>;
-
-export type TEventMemberAvailability = Array<{
-  _id: TId;
-  availability: number;
-}>;
-
-export type TEventMemberAvailabilityAvg = Array<{
-  id: string;
-  value: number;
-}>;
-
-export type TEventMemberAvailabilityAvgs = Array<{
-  id: string;
-  availability: number;
 }>;
 
 export type TEventMemberSchedule = Omit<IEvent, "schedule"> & {
@@ -44,27 +14,14 @@ export type TEventMemberSchedule = Omit<IEvent, "schedule"> & {
   callTime: string;
 };
 
-export type TEventScheduleIds = Array<{
-  _id: string;
-  title?: string;
-  employeeIds: Array<string>;
-}>;
-
 export type TEventSchedule = Array<{
   _id: string;
   title?: string;
-  employeeIds: Array<Types.ObjectId>;
+  employeeIds: Array<TId>;
 }>;
 
-export type TEventResponse = {
-  id: string;
-  value: string;
-  notes?: string;
-  updateEvent: boolean;
-};
-
 export type TEventResponses = Array<{
-  _id: Types.ObjectId;
+  _id: TId;
   response: string;
   notes?: string;
 }>;
@@ -75,7 +32,7 @@ export type TEventsSorted = Array<{
 }>;
 
 export interface IEvent {
-  // _id?: Types.ObjectId;
+  // _id?: TId;
   eventType: string;
   eventDate: string;
   location?: string;
@@ -109,7 +66,7 @@ export type TEventMemberSchedule = IEvent & {
 };
 
 export interface IEventDocument extends Document {
-  // _id?: Types.ObjectId;
+  // _id?: TId;
   eventType: string;
   eventDate: string;
   location?: string;
@@ -128,7 +85,7 @@ export interface IEventDocument extends Document {
 
 /// FORMS ///
 export interface IFormDocument extends Document {
-  // _id?: Types.ObjectId;
+  // _id?: TId;
   startMonth: Date;
   endMonth: Date;
   expirationDate: Date;
@@ -161,7 +118,7 @@ export type TMailDocument = Document & TEmail & { status: string };
 
 /// SEASON ///
 export interface ISeasonDocument extends Document {
-  // _id?: Types.ObjectId;
+  // _id?: TId;
   seasonId: string;
   startDate: Date;
   endDate: Date;
@@ -170,7 +127,7 @@ export interface ISeasonDocument extends Document {
 
 /// SERVICE ///
 export interface IServiceDocument extends Document {
-  // _id?: Types.ObjectId;
+  // _id?: TId;
   automatedOnline: boolean;
   emailOnline: boolean;
   eventOnline: boolean;
@@ -190,7 +147,7 @@ export interface IServiceDocument extends Document {
 
 /// TEAM ///
 export interface ITeamDocument extends Document {
-  // _id?: Types.ObjectId;
+  // _id?: TId;
   league: string;
   team: string;
   name: string;
@@ -199,7 +156,7 @@ export interface ITeamDocument extends Document {
 
 /// TOKEN ///
 export interface ITokenDocument extends Document {
-  // _id?: Types.ObjectId;
+  // _id?: TId;
   token: string;
   authorizedEmail: string;
   email?: string;
@@ -209,18 +166,8 @@ export interface ITokenDocument extends Document {
 ///
 
 /// USER ///
-export type TActiveMembers = Array<{
-  _id: Types.ObjectId;
-  name: string;
-}>;
-
-export type TScheduledEventsForMember = Array<{
-  _id: Types.ObjectId;
-  eventCount: number;
-}>;
-
 export interface IUser {
-  // _id?: Types.ObjectId;
+  // _id?: TId;
   avatar?: string;
   email: string;
   role?: string;
@@ -231,15 +178,10 @@ export interface IUser {
   registered?: Date;
   token: string;
   emailReminders?: boolean;
-}
-
-export interface UserSchedule extends IUser {
-  response: string;
-  notes?: string;
 }
 
 export interface IUserDocument extends Document {
-  // _id?: Types.ObjectId;
+  // _id?: TId;
   avatar?: string;
   email: string;
   role?: string;
@@ -251,8 +193,6 @@ export interface IUserDocument extends Document {
   token: string;
   emailReminders?: boolean;
 }
-
-export type TUserModel = Model<IUserDocument>;
 ///
 
 /// API EVENTS ///

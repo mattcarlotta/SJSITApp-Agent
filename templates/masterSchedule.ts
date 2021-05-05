@@ -2,6 +2,15 @@ import isEmpty from "lodash.isempty";
 import { createDate } from "~helpers";
 import type { TAggEvents } from "~types";
 
+/**
+ * An HTML template for master staff schedule emails.
+ *
+ * @function MasterSchedule
+ * @param events - Array of events
+ * @param startMonth - string
+ * @param endMonth - string
+ * @returns {string} - HTML email template
+ */
 const MasterSchedule = (
   events: Array<TAggEvents>,
   startMonth: string,

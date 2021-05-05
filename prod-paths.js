@@ -5,11 +5,11 @@ tsconfigpaths.register({
   paths: {
     "~database": ["database/index"],
     "~helpers": ["helpers/index"],
-    "~services/*": ["services/*"],
-    "~services": ["services/index"],
     "~loggers": ["loggers/index"],
     "~models/*": ["models/*"],
     "~models": ["models/index"],
+    "~services/*": ["services/*"],
+    "~services": ["services/index"],
     "~templates/*": ["templates/*"],
     "~templates": ["templates/index"],
     "~types": ["types/index"],

@@ -2,6 +2,17 @@ import { TEmailProps } from "~types";
 
 const { CLIENT } = process.env;
 
+/**
+ * An HTML template for AP Form notification emails.
+ *
+ * @function APFormNotification
+ * @param _id - string
+ * @param expirationDate - string
+ * @param endMonth - string
+ * @param startMonth - string
+ * @param notes - string
+ * @returns {string} - HTML email template
+ */
 const APFormNotification = ({
   _id,
   expirationDate,

@@ -9,9 +9,6 @@ import * as services from "services";
 import { fullDateTimeFormat, monthnameFormat } from "~utils/dateFormats";
 import { IServiceDocument } from "~types";
 
-//= ===========================================================//
-// CREATE POLLING SERVICES                                     //
-//= ===========================================================//
 const { NODE_ENV, SENDGRIDAPIKEY } = process.env;
 
 mailer.setApiKey(SENDGRIDAPIKEY as string);
@@ -19,6 +16,9 @@ mailer.setApiKey(SENDGRIDAPIKEY as string);
 const pollRate =
   NODE_ENV === "development" ? "*/5 * * * * *" : "*/30 * * * * *";
 
+/**
+ * An IFFE to start up automated services.
+ */
 (async (): Promise<void> => {
   try {
     await connectToDB();

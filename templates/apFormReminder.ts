@@ -2,6 +2,16 @@ import { TEmailProps } from "~types";
 
 const { CLIENT } = process.env;
 
+/**
+ * An HTML template for AP Form reminder emails.
+ *
+ * @function APFormReminder
+ * @param _id - string
+ * @param expirationDate - string
+ * @param endMonth - string
+ * @param startMonth - string
+ * @returns {string} - HTML email template
+ */
 const APFormReminder = ({
   _id,
   expirationDate,
