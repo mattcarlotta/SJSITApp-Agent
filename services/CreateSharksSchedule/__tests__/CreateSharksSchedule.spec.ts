@@ -44,7 +44,7 @@ describe("Create Sharks Schedule Service", () => {
     expect(eventSpy).toHaveBeenCalledTimes(0);
 
     expect(errorMessage).toHaveBeenCalledWith(
-      "No Sharks home events were found. Aborted!"
+      "No Sharks home events were found."
     );
   });
 

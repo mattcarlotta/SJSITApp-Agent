@@ -11,7 +11,7 @@ export const errorMessage = (error: string): void => {
   console.log(
     `\n${chalk.rgb(255, 255, 255).bgRgb(255, 17, 0)(" ERROR ")} ${chalk.red(
       `${error}`
-    )}\n`
+    )}`
   );
 };
 

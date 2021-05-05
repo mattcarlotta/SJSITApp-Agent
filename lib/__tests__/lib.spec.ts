@@ -62,7 +62,7 @@ describe("Run Services", () => {
 
     expect(createServiceSpy).toHaveBeenCalledTimes(1);
     expect(stripText(mockErrorMessage.mock.calls[0][0])).toContain(
-      "The services haven't been created yet. Aborted!"
+      "The services haven't been created yet."
     );
   });
 
@@ -91,10 +91,10 @@ describe("Run Services", () => {
       await runServices();
 
       expect(stripText(mockWarnMessage.mock.calls[0][0])).toContain(
-        "All automated services are deactivated. Aborted!"
+        "All automated services are deactivated."
       );
       expect(stripText(mockWarnMessage.mock.calls[1][0])).toContain(
-        "Email services are deactivated. Aborted!"
+        "Email services are deactivated."
       );
     });
 
@@ -118,15 +118,15 @@ describe("Run Services", () => {
       await runServices();
 
       expect(stripText(mockWarnMessage.mock.calls[0][0])).toContain(
-        "The event creation service is deactivated. Aborted!"
+        "The event creation service is deactivated."
       );
 
       expect(stripText(mockWarnMessage.mock.calls[1][0])).toContain(
-        "The AP form reminders service is deactivated. Aborted!"
+        "The AP form reminders service is deactivated."
       );
 
       expect(stripText(mockWarnMessage.mock.calls[2][0])).toContain(
-        "The schedule creation service is deactivated. Aborted!"
+        "The schedule creation service is deactivated."
       );
     });
 
@@ -137,7 +137,7 @@ describe("Run Services", () => {
       await runServices();
 
       expect(stripText(mockWarnMessage.mock.calls[0][0])).toContain(
-        "The event creation service date hasn't passed yet. Aborted!"
+        "The event creation service date hasn't passed yet."
       );
     });
 
@@ -160,7 +160,7 @@ describe("Run Services", () => {
       await runServices();
 
       expect(stripText(mockWarnMessage.mock.calls[1][0])).toContain(
-        "The AP form reminders service date hasn't passed yet. Aborted!"
+        "The AP form reminders service date hasn't passed yet."
       );
     });
 
@@ -181,7 +181,7 @@ describe("Run Services", () => {
       await runServices();
 
       expect(stripText(mockWarnMessage.mock.calls[2][0])).toContain(
-        "The schedule creation service date hasn't passed yet. Aborted!"
+        "The schedule creation service date hasn't passed yet."
       );
     });
 

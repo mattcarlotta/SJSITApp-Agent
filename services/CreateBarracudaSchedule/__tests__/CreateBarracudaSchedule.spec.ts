@@ -46,7 +46,7 @@ describe("Create Barracuda Schedule Service", () => {
     expect(eventSpy).toHaveBeenCalledTimes(0);
 
     expect(errorMessage).toHaveBeenCalledWith(
-      "No Barracuda home events were found. Aborted!"
+      "No Barracuda home events were found."
     );
   });
 

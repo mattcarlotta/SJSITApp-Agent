@@ -50,7 +50,7 @@ const CreateSharksSchedule = async (): Promise<void> => {
     )) as { data: TNHLResponseData };
 
     const dates = get(res, ["data", "dates"]);
-    if (!dates) throw String("No Sharks home events were found. Aborted!");
+    if (!dates) throw String("No Sharks home events were found.");
 
     // build an array of events
     dates.forEach(({ games }) => {

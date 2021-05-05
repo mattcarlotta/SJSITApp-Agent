@@ -53,7 +53,7 @@ const CreateBarracudaSchedule = async (): Promise<void> => {
 
     const currentMonthSchedule = $(`#${nextNextMonth}${currentYear}`);
     if (isEmpty(currentMonthSchedule))
-      throw String("No Barracuda home events were found. Aborted!");
+      throw String("No Barracuda home events were found.");
 
     currentMonthSchedule.find(".entry.clearfix").each((_i, row) => {
       const $row = $(row);

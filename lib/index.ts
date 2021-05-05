@@ -29,7 +29,7 @@ const RunServices = async (): Promise<void> => {
       .lean()) as IServiceDocument;
 
     if (isEmpty(existingService))
-      throw String("The services haven't been created yet. Aborted!");
+      throw String("The services haven't been created yet.");
 
     const {
       _id,
@@ -68,12 +68,10 @@ const RunServices = async (): Promise<void> => {
             eventMonth: nextMonth
           });
         } else {
-          warnMessage(
-            "The event creation service date hasn't passed yet. Aborted!"
-          );
+          warnMessage("The event creation service date hasn't passed yet.");
         }
       } else {
-        warnMessage("The event creation service is deactivated. Aborted!");
+        warnMessage("The event creation service is deactivated.");
       }
 
       if (formReminderOnline) {
@@ -90,12 +88,10 @@ const RunServices = async (): Promise<void> => {
             formReminderMonth: nextMonth
           });
         } else {
-          warnMessage(
-            "The AP form reminders service date hasn't passed yet. Aborted!"
-          );
+          warnMessage("The AP form reminders service date hasn't passed yet.");
         }
       } else {
-        warnMessage("The AP form reminders service is deactivated. Aborted!");
+        warnMessage("The AP form reminders service is deactivated.");
       }
 
       if (scheduleOnline) {
@@ -113,15 +109,13 @@ const RunServices = async (): Promise<void> => {
             scheduleMonth: nextMonth
           });
         } else {
-          warnMessage(
-            "The schedule creation service date hasn't passed yet. Aborted!"
-          );
+          warnMessage("The schedule creation service date hasn't passed yet.");
         }
       } else {
-        warnMessage("The schedule creation service is deactivated. Aborted!");
+        warnMessage("The schedule creation service is deactivated.");
       }
     } else {
-      warnMessage("All automated services are deactivated. Aborted!");
+      warnMessage("All automated services are deactivated.");
     }
 
     if (emailOnline) {
@@ -129,7 +123,7 @@ const RunServices = async (): Promise<void> => {
       await services.pollEvents();
       await services.pollEmails();
     } else {
-      warnMessage("Email services are deactivated. Aborted!");
+      warnMessage("Email services are deactivated.");
     }
   } catch (err) {
     errorMessage(err.toString());
