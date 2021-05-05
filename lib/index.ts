@@ -29,9 +29,10 @@ const RunServices = async (): Promise<void> => {
       .lean()) as IServiceDocument;
 
     if (isEmpty(existingService))
-      throw String("Services haven't been created yet. Aborted!");
+      throw String("The services haven't been created yet. Aborted!");
 
     const {
+      _id,
       automatedOnline,
       emailOnline,
       eventOnline,
@@ -50,7 +51,7 @@ const RunServices = async (): Promise<void> => {
 
     const nextMonth = getStartOfNextMonth().format(monthnameFormat);
 
-    if (!automatedOnline) {
+    if (automatedOnline) {
       const eventServiceDate = createServiceDate(
         eventTime,
         eventDay,
@@ -62,14 +63,17 @@ const RunServices = async (): Promise<void> => {
           await services.createSharksSchedule();
           await services.createBarracudaSchedule();
           await services.createAPForm();
-          await existingService.updateOne({ eventMonth: nextMonth });
+          await Service.updateOne({
+            _id,
+            eventMonth: nextMonth
+          });
         } else {
           warnMessage(
-            "The Event creation service date hasn't passed yet. Aborted!"
+            "The event creation service date hasn't passed yet. Aborted!"
           );
         }
       } else {
-        warnMessage("The Event creation service is deactivated. Aborted!");
+        warnMessage("The event creation service is deactivated. Aborted!");
       }
 
       if (formReminderOnline) {
@@ -81,14 +85,17 @@ const RunServices = async (): Promise<void> => {
 
         if (checkIfDatePassed(formReminderServiceDate)) {
           await services.generateFormReminders();
-          await existingService.updateOne({ formReminderMonth: nextMonth });
+          await Service.updateOne({
+            _id,
+            formReminderMonth: nextMonth
+          });
         } else {
           warnMessage(
-            "The AP Form reminders service date hasn't passed yet. Aborted!"
+            "The AP form reminders service date hasn't passed yet. Aborted!"
           );
         }
       } else {
-        warnMessage("The AP Form reminders service is deactivated. Aborted!");
+        warnMessage("The AP form reminders service is deactivated. Aborted!");
       }
 
       if (scheduleOnline) {
@@ -101,7 +108,10 @@ const RunServices = async (): Promise<void> => {
         if (checkIfDatePassed(scheduleServiceDate)) {
           await services.generateMemberSchedules();
           await services.generateStaffSchedule();
-          await existingService.updateOne({ scheduleMonth: nextMonth });
+          await Service.updateOne({
+            _id,
+            scheduleMonth: nextMonth
+          });
         } else {
           warnMessage(
             "The schedule creation service date hasn't passed yet. Aborted!"
@@ -125,5 +135,20 @@ const RunServices = async (): Promise<void> => {
     errorMessage(err.toString());
   }
 };
+
+/* istanbul ignore next */
+process.on("exit", () => infoMessage("Email service has been stopped."));
+
+// catches ctrl+c event
+/* istanbul ignore next */
+process.on("SIGINT", () =>
+  infoMessage("Email service was manully terminated.")
+);
+
+// catches uncaught exceptions
+/* istanbul ignore next */
+process.on("uncaughtException", e =>
+  errorMessage(`Email service has been stopped due to an error: ${e.stack}.`)
+);
 
 export default RunServices;

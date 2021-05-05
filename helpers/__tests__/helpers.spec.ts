@@ -1,10 +1,10 @@
 import {
   createDate,
   createSchedule,
+  createServiceDate,
   getCurrentYear,
   getMonthDateRange,
   getNextYear,
-  getServiceTime,
   getStartOfMonth,
   groupByEmail
 } from "~helpers";
@@ -111,7 +111,7 @@ describe("Helper Functions", () => {
   });
 
   it("returns a date with current day, month and year", () => {
-    const serviceDate = getServiceTime("12:00 pm", "1st", "January");
+    const serviceDate = createServiceDate("12:00 pm", "1st", "January");
 
     expect(serviceDate).toEqual(expect.any(Date));
   });

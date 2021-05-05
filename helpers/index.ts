@@ -1,3 +1,4 @@
+/* eslint-disable no-control-regex */
 import moment from "../utils/momentWithTimeZone";
 import { serviceDateTimeFormat, fullyearFormat } from "../utils/dateFormats";
 import type {
@@ -12,9 +13,9 @@ import type {
  *
  * @function checkIfDatePassed
  * @param date - date
- * @returns {Date}
+ * @returns {boolean}
  */
-const checkIfDatePassed = (date: Date): Boolean => moment().toDate() < date;
+const checkIfDatePassed = (date: Date): boolean => moment().toDate() > date;
 
 /**
  * Helper function to create a current date.
@@ -117,7 +118,7 @@ const getNextYear = (): Moment => moment().add(1, "year").endOf("year");
  */
 const createServiceDate = (time: string, day: string, month: string): Date =>
   createDate(
-    `${month} ${day} ${getCurrentYear().format(fullyearFormat)} @ ${time}`,
+    `${month} ${day} ${moment().format(fullyearFormat)} @ ${time}`,
     serviceDateTimeFormat
   ).toDate();
 
@@ -136,7 +137,7 @@ const getStartOfMonth = (): Moment => moment().startOf("month");
  * @returns {string}
  */
 const getStartOfNextMonth = (): Moment =>
-  moment().add(1, "months").startOf("month");
+  moment().add(1, "month").startOf("month");
 
 /**
  * Helper function to get a start month Date 2 months from now.
@@ -168,6 +169,13 @@ const groupByEmail = (data: Array<TEventMemberSchedule>): TEventsSorted =>
     }));
 
 /**
+ * Strips text with ANSI to plain text.
+ *
+ */
+const stripText = (text: string): string =>
+  text.trim().replace(/\u001b\[.*?m/g, "");
+
+/**
  * Transforms UPPERCASE text to Capital case.
  *
  * @example ```EXAMPLE => Example```
@@ -194,5 +202,6 @@ export {
   getStartOfNextMonth,
   getStartOfNextNextMonth,
   groupByEmail,
+  stripText,
   toCapitalize
 };
