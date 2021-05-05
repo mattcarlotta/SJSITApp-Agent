@@ -6,7 +6,12 @@ import { createDate, endOfDay } from "~helpers";
 import { dateTimeFormat, calendarDateFormat } from "~utils/dateFormats";
 import type { TEmail } from "~types";
 
-export default async () => {
+/**
+ * Polls Forms documents to create form reminders.
+ *
+ * @function PollForms
+ */
+const PollForms = async (): Promise<void> => {
   const forms = await Form.find(
     {
       sendEmailNotificationsDate: {
@@ -89,3 +94,5 @@ export default async () => {
     `Processed Forms... ${!isEmpty(formReminders) ? formReminders : forms}`
   );
 };
+
+export default PollForms;

@@ -9,11 +9,6 @@ export type TEventEmptySchedule = Array<{
   employeeIds: Array<never>;
 }>;
 
-export type TEventMemberSchedule = Omit<IEvent, "schedule"> & {
-  email: string;
-  callTime: string;
-};
-
 export type TEventSchedule = Array<{
   _id: string;
   title?: string;
@@ -24,11 +19,6 @@ export type TEventResponses = Array<{
   _id: TId;
   response: string;
   notes?: string;
-}>;
-
-export type TEventsSorted = Array<{
-  email: string;
-  events: Array<TEventMemberSchedule>;
 }>;
 
 export interface IEvent {
@@ -48,6 +38,16 @@ export interface IEvent {
   sentEmailReminders?: boolean;
 }
 
+export type TEventMemberSchedule = Omit<IEvent, "schedule"> & {
+  email: string;
+  callTime: string;
+};
+
+export type TEventsSorted = Array<{
+  email: string;
+  events: Array<TEventMemberSchedule>;
+}>;
+
 export type TAggEvents = Omit<IEvent, "schedule"> & {
   _id: string;
   schedule: Array<{
@@ -61,7 +61,7 @@ export type TAggEvents = Omit<IEvent, "schedule"> & {
   }>;
 };
 
-export type TEventMemberSchedule = IEvent & {
+export type TEventReminder = Omit<IEvent, "schedule"> & {
   callTime: string;
 };
 
@@ -262,8 +262,6 @@ export type TNHLResponseData = {
       };
     }>;
   }>;
-  events: Array<any>;
-  matches: Array<any>;
 };
 
 export { Moment };

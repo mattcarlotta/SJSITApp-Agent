@@ -5,6 +5,11 @@ import { Mail } from "~models";
 import { officialTemplate } from "~templates";
 import { endOfDay } from "~helpers";
 
+/**
+ * Polls Mail documents to hand off to sendgrid.
+ *
+ * @function PollEmails
+ */
 const PollEmails = async (): Promise<void> => {
   const emails = await Mail.aggregate([
     {

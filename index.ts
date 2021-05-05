@@ -5,7 +5,7 @@ import { connectToDB } from "~database";
 import { createDate, getServiceTime } from "~helpers";
 import { errorMessage, infoMessage } from "~loggers";
 import { Service } from "~models";
-import * as services from "services";
+import * as services from "~services";
 import { fullDateTimeFormat, monthnameFormat } from "~utils/dateFormats";
 import { IServiceDocument } from "~types";
 

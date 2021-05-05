@@ -11,7 +11,7 @@ import type { TAggEvents, TEventMemberSchedule, TEventsSorted } from "~types";
  *
  * @function GenerateMemberSchedules
  */
-const GenerateMemberSchedules = async () => {
+const GenerateMemberSchedules = async (): Promise<void> => {
   let sortedSchedules = [] as TEventsSorted;
   const scheduledEvents = [] as Array<TEventMemberSchedule>;
   try {
@@ -56,7 +56,7 @@ const GenerateMemberSchedules = async () => {
     if (isEmpty(existingEvents))
       throw String("No events were found for next month.");
 
-    existingEvents.forEach(({ _id, schedule, eventDate, ...rest }) => {
+    existingEvents.forEach(({ schedule, eventDate, ...rest }) => {
       schedule.forEach(({ employeeIds, title: callTime }) => {
         if (!isEmpty(employeeIds)) {
           employeeIds.forEach(({ firstName, lastName, email }) => {
@@ -88,11 +88,11 @@ const GenerateMemberSchedules = async () => {
     }));
 
     await Mail.insertMany(emails);
+
+    infoMessage(`Processed Schedules... ${sortedSchedules.length}`);
   } catch (err) {
     /* istanbul ignore next */
     errorMessage(err);
-  } finally {
-    infoMessage(`Processed Schedules... ${sortedSchedules.length}`);
   }
 };
 

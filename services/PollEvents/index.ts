@@ -5,7 +5,12 @@ import { eventReminder } from "~templates";
 import { createDate, endOfTomorrow } from "~helpers";
 import type { TAggEvents, TEmail } from "~types";
 
-export default async () => {
+/**
+ * Polls Events documents to create email reminders.
+ *
+ * @function PollEvents
+ */
+const PollEvents = async (): Promise<void> => {
   const events = (await Event.find(
     {
       eventDate: {
@@ -36,7 +41,7 @@ export default async () => {
   if (!isEmpty(events)) {
     const eventIds = events.map(({ _id }) => _id);
 
-    events.forEach(({ _id, schedule, eventDate, ...rest }) => {
+    events.forEach(({ schedule, eventDate, ...rest }) => {
       schedule.forEach(({ employeeIds, title }) => {
         if (!isEmpty(employeeIds)) {
           employeeIds.forEach(
@@ -85,3 +90,5 @@ export default async () => {
     `Processed Events... ${!isEmpty(emailReminders) ? emailReminders : events}`
   );
 };
+
+export default PollEvents;

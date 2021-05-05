@@ -6,6 +6,11 @@ import { createDate } from "~helpers";
 import { calendarDateFormat } from "~utils/dateFormats";
 import type { TAggEvents, TEmail } from "~types";
 
+/**
+ * Generates individual schedules for staff.
+ *
+ * @function GenerateStaffSchedule
+ */
 const GenerateStaffSchedule = async (): Promise<void> => {
   const masterScheduleMail = [] as Array<TEmail>;
   try {

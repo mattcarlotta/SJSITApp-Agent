@@ -4,10 +4,9 @@ import { createSharksSchedule } from "~services";
 import { errorLogger, infoMessage } from "~loggers";
 import { Event, Form } from "~models";
 import { getEndOfMonth, getStartOfNextNextMonth } from "~helpers";
+import { eventFormat } from "~utils/dateFormats";
 import mockAxios from "~utils/mockAxios";
 import data from "./data.mocks";
-
-const format = "YYYY-MM-DD";
 
 const eventSpy = jest.spyOn(Event, "insertMany");
 const formSpy = jest.spyOn(Form, "create");
@@ -17,8 +16,8 @@ describe("Create Sharks Schedule Service", () => {
   let endMonth;
   beforeAll(async () => {
     await connectToDB();
-    startMonth = getStartOfNextNextMonth().format(format);
-    endMonth = getEndOfMonth(startMonth).format(format);
+    startMonth = getStartOfNextNextMonth().format(eventFormat);
+    endMonth = getEndOfMonth(startMonth).format(eventFormat);
   });
 
   beforeEach(() => {

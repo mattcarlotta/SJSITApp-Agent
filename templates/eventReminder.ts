@@ -1,4 +1,4 @@
-import type { TEventMemberSchedule } from "~types";
+import type { TEventReminder } from "~types";
 
 /**
  * An HTML template for Event reminder emails.
@@ -23,10 +23,7 @@ const EventReminder = ({
   opponent,
   team,
   uniform
-}: Omit<
-  TEventMemberSchedule,
-  "email"
->): string => `<h1 style="text-align: center;font-size: 26px;color: #eeeeee;margin: 0;padding: 10px 0;background: linear-gradient(90deg, #1f1f23 0%, #145e6b 50%, #1f1f23 100%);">
+}: TEventReminder): string => `<h1 style="text-align: center;font-size: 26px;color: #eeeeee;margin: 0;padding: 10px 0;background: linear-gradient(90deg, #1f1f23 0%, #145e6b 50%, #1f1f23 100%);">
     Event Reminder
   </h1>
   <p style="font-size: 18px;text-align: center;margin: 0;padding: 0 10px 10px;color: #eeeeee;background: linear-gradient(90deg, #1f1f23 0%, #145e6b 50%, #1f1f23 100%);">

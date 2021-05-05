@@ -22,7 +22,7 @@ const { DATABASE, EXIT, SEED } = process.env;
  * @returns {string} - displays a:  PASS  utils/seedDB.js message to console.
  * @throws {error} - displays a:  FAIL  utils/seedDB.js message to console with the error.
  */
-const seedDB = async () => {
+const seedDB = async (): Promise<any> => {
   try {
     await connectToDB();
     const db = await createConnectionToDatabase();
