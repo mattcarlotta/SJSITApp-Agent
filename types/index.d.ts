@@ -51,6 +51,7 @@ export type TEventsSorted = Array<{
 export type TAggEvents = Omit<IEvent, "schedule"> & {
   _id: string;
   schedule: Array<{
+    _id: string;
     title: string;
     employeeIds: Array<{
       email: string;

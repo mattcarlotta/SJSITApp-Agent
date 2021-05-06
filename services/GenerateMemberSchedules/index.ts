@@ -3,7 +3,11 @@ import { errorMessage, infoMessage } from "~loggers";
 import { Event, Form, Mail } from "~models";
 import { upcomingSchedule } from "~templates";
 import { createDate, groupByEmail } from "~helpers";
-import { calendarDateFormat, serviceDateTimeFormat } from "~utils/dateFormats";
+import {
+  calendarDateFormat,
+  serviceDateTimeFormat,
+  timestampFormat
+} from "~utils/dateFormats";
 import type { TAggEvents, TEventMemberSchedule, TEventsSorted } from "~types";
 
 /**
@@ -57,12 +61,12 @@ const GenerateMemberSchedules = async (): Promise<void> => {
       throw String("No events were found for next month.");
 
     existingEvents.forEach(({ schedule, eventDate, ...rest }) => {
-      schedule.forEach(({ employeeIds, title: callTime }) => {
+      schedule.forEach(({ employeeIds, _id: callTime }) => {
         if (!isEmpty(employeeIds)) {
           employeeIds.forEach(({ firstName, lastName, email }) => {
             scheduledEvents.push({
               email: `${firstName} ${lastName} <${email}>`,
-              callTime,
+              callTime: createDate(callTime).format(timestampFormat),
               eventDate: createDate(eventDate).format(serviceDateTimeFormat),
               ...rest
             });

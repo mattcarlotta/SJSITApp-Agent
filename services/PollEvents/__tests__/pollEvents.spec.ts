@@ -49,7 +49,7 @@ describe("Poll Events Service", () => {
     await pollEvents();
 
     const { _id, eventDate, schedule, ...rest } = events[0];
-    const { title } = schedule[0];
+    const { _id: callTime } = schedule[0];
     const { firstName, lastName, email } = schedule[0].employeeIds[0];
     const eventDateToString = createDate(eventDate).format(
       serviceDateTimeFormat
@@ -62,7 +62,7 @@ describe("Poll Events Service", () => {
           sendFrom: "San Jose Sharks Ice Team <noreply@sjsiceteam.com>",
           subject: `Event Reminder for ${eventDateToString}`,
           message: eventReminder({
-            callTime: title,
+            callTime,
             eventDate: eventDateToString,
             ...rest
           })

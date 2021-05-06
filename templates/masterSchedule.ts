@@ -1,6 +1,6 @@
 import isEmpty from "lodash.isempty";
 import { createDate } from "~helpers";
-import { serviceDateTimeFormat } from "~utils/dateFormats";
+import { serviceDateTimeFormat, timestampFormat } from "~utils/dateFormats";
 import type { TAggEvents } from "~types";
 
 /**
@@ -17,10 +17,10 @@ const MasterSchedule = (
   startMonth: string,
   endMonth: string
 ): string => `
-  <h1 style="text-align: center;font-size: 26px;color: #eeeeee;margin: 0;padding: 10px 0;background: linear-gradient(90deg, #1f1f23 0%, #145e6b 50%, #1f1f23 100%);">
+  <h1 style="text-align: center;font-size: 26px;color: #eeeeee;margin: 0;padding: 10px 0;background: #0d6472;">
     Upcoming Employee Schedule
   </h1>
-  <p style="font-size: 18px;text-align: center;margin: 0;padding-bottom: 10px;color: #eeeeee;background: linear-gradient(90deg, #1f1f23 0%, #145e6b 50%, #1f1f23 100%);">
+  <p style="font-size: 18px;text-align: center;margin: 0;padding-bottom: 10px;color: #eeeeee;background: #0d6472;">
     ${startMonth} - ${endMonth}
   </p>
   ${events
@@ -79,10 +79,12 @@ const MasterSchedule = (
           ${schedule
             .map(
               ({
-                title,
+                _id,
                 employeeIds
               }) => `<ul style="list-style-type: none;margin: 0px;padding: 0px;">
-                  <span style="padding-left: 10px;">${title}</span>
+                  <span style="padding-left: 10px;">${createDate(_id).format(
+                    timestampFormat
+                  )}</span>
                   <li style="margin-left: 15px;padding-left: 10px;font-weight: normal;">
                     ${
                       !isEmpty(employeeIds)

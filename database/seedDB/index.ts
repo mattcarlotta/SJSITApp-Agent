@@ -101,7 +101,6 @@ const seedDB = async (): Promise<any> => {
       schedule: [
         {
           _id: currentTime.format(),
-          title: currentTime.format("hh:mm a"),
           employeeIds: [scheduledMemberAcct!._id]
         }
       ]
@@ -123,7 +122,6 @@ const seedDB = async (): Promise<any> => {
       schedule: [
         {
           _id: nextMonthDate.format(),
-          title: nextMonthDate.format("hh:mm a"),
           employeeIds: [scheduledMemberAcct!._id]
         }
       ]
@@ -145,7 +143,6 @@ const seedDB = async (): Promise<any> => {
       schedule: [
         {
           _id: nextMonthDate1.format(),
-          title: nextMonthDate1.format("hh:mm a"),
           employeeIds: []
         }
       ]

@@ -5,7 +5,11 @@ import { infoMessage } from "~loggers";
 import { Event, Mail } from "~models";
 import { createDate, getEndOfNextMonth, getStartOfNextMonth } from "~helpers";
 import { upcomingSchedule } from "~templates";
-import { calendarDateFormat, serviceDateTimeFormat } from "~utils/dateFormats";
+import {
+  calendarDateFormat,
+  serviceDateTimeFormat,
+  timestampFormat
+} from "~utils/dateFormats";
 import type { TEventMemberSchedule } from "~types";
 
 describe("Generate Employee Schedules Service", () => {
@@ -54,7 +58,9 @@ describe("Generate Employee Schedules Service", () => {
       {
         ...existingEvent,
         email: "Scheduled Member <scheduledmember@test.com>",
-        callTime: createDate(existingEvent.callTimes[0]).format("hh:mm a"),
+        callTime: createDate(existingEvent.callTimes[0]).format(
+          timestampFormat
+        ),
         eventDate: createDate(existingEvent.eventDate).format(
           serviceDateTimeFormat
         )

@@ -1,4 +1,6 @@
 import type { TEventReminder } from "~types";
+import { createDate } from "~helpers";
+import { timestampFormat } from "~utils/dateFormats";
 
 /**
  * An HTML template for Event reminder emails.
@@ -23,10 +25,10 @@ const EventReminder = ({
   opponent,
   team,
   uniform
-}: TEventReminder): string => `<h1 style="text-align: center;font-size: 26px;color: #eeeeee;margin: 0;padding: 10px 0;background: linear-gradient(90deg, #1f1f23 0%, #145e6b 50%, #1f1f23 100%);">
+}: TEventReminder): string => `<h1 style="text-align: center;font-size: 26px;color: #eeeeee;margin: 0;padding: 10px 0;background: #0d6472;">
     Event Reminder
   </h1>
-  <p style="font-size: 18px;text-align: center;margin: 0;padding: 0 10px 10px;color: #eeeeee;background: linear-gradient(90deg, #1f1f23 0%, #145e6b 50%, #1f1f23 100%);">
+  <p style="font-size: 18px;text-align: center;margin: 0;padding: 0 10px 10px;color: #eeeeee;background: #0d6472;">
     You're scheduled to work an upcoming event.
   </p>
   <ul style="border: 1px solid #9e9e9e;background-color: #ebebeb;color: #000000;list-style: none;margin: 0;overflow: auto;font-size: 16px;padding: 10px 10px 15px 10px;">
@@ -57,7 +59,9 @@ const EventReminder = ({
     </li>
     <li style="color: #000000;margin: 5px 0px;">
       <span style=";">
-        <strong>Call Time</strong>:&nbsp;${callTime}
+        <strong>Call Time</strong>:&nbsp;${createDate(callTime).format(
+          timestampFormat
+        )}
       </span>
     </li>
     <li style="color: #000000;margin: 5px 0px;">

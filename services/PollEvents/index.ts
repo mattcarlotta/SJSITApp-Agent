@@ -43,7 +43,7 @@ const PollEvents = async (): Promise<void> => {
     const eventIds = events.map(({ _id }) => _id);
 
     events.forEach(({ schedule, eventDate, ...rest }) => {
-      schedule.forEach(({ employeeIds, title }) => {
+      schedule.forEach(({ employeeIds, _id: callTime }) => {
         if (!isEmpty(employeeIds)) {
           employeeIds.forEach(
             ({
@@ -63,7 +63,7 @@ const PollEvents = async (): Promise<void> => {
                   sendDate: createDate().toDate(),
                   subject: `Event Reminder for ${eventDateToString}`,
                   message: eventReminder({
-                    callTime: title,
+                    callTime,
                     eventDate: eventDateToString,
                     ...rest
                   })
