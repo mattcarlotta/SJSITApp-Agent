@@ -29,7 +29,7 @@ const RunServices = async (): Promise<void> => {
       .lean()) as IServiceDocument;
 
     if (isEmpty(existingService))
-      throw String("The services haven't been created yet.");
+      throw String("The services haven't been initialized yet.");
 
     const {
       _id,
@@ -131,18 +131,19 @@ const RunServices = async (): Promise<void> => {
 };
 
 /* istanbul ignore next */
-process.on("exit", () => infoMessage("Email service has been stopped."));
+process.on("exit", () => infoMessage("Automated service has been stopped."));
 
 // catches ctrl+c event
 /* istanbul ignore next */
 process.on("SIGINT", () =>
-  infoMessage("Email service was manully terminated.")
+  infoMessage("Automated service was manually terminated.")
 );
 
 // catches uncaught exceptions
 /* istanbul ignore next */
-process.on("uncaughtException", e =>
-  errorMessage(`Email service has been stopped due to an error: ${e.stack}.`)
-);
+process.on("uncaughtException", e => {
+  errorMessage(`Automated service ran into an error: ${e.stack}.`);
+  process.exit(1);
+});
 
 export default RunServices;

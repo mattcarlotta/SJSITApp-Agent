@@ -62,7 +62,7 @@ describe("Run Services", () => {
 
     expect(createServiceSpy).toHaveBeenCalledTimes(1);
     expect(stripText(mockErrorMessage.mock.calls[0][0])).toContain(
-      "The services haven't been created yet."
+      "The services haven't been initialized yet."
     );
   });
 
