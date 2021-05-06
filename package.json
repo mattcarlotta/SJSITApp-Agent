@@ -6,7 +6,6 @@
   "repository": "https://github.com/mattcarlotta/SJSITApp-Agent",
   "author": "Matt Carlotta",
   "license": "MIT",
-  "private": true,
   "engines": {
     "node": ">=14",
     "npm": ">=6"
