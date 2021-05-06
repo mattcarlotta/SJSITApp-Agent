@@ -8,13 +8,12 @@ const { NODE_ENV, SENDGRIDAPIKEY } = process.env;
 
 mailer.setApiKey(SENDGRIDAPIKEY as string);
 
-const pollRate =
-  NODE_ENV === "development" ? "*/5 * * * * *" : "*/30 * * * * *";
+const pollSeconds = NODE_ENV === "development" ? "*/5" : "*/30";
 
 (async (): Promise<void> => {
   try {
     await connectToDB();
-    scheduleJob(pollRate, () => runServices());
+    scheduleJob(`${pollSeconds} * * * * *`, () => runServices());
   } catch (err) {
     errorMessage(err.toString());
   }
