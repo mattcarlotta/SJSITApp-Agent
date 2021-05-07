@@ -18,18 +18,18 @@ describe("Loggers", () => {
   it("logs an error message to the console", () => {
     errorMessage("Example error.");
 
-    expect(getConsoleMessage()).toEqual(" ERROR  Example error.");
+    expect(getConsoleMessage()).toContain("ERROR  Example error.");
   });
 
   it("logs an info message to the console", () => {
     infoMessage("Example message.");
 
-    expect(getConsoleMessage()).toEqual(" INFO  Example message.");
+    expect(getConsoleMessage()).toContain("INFO  Example message.");
   });
 
   it("logs a warning message to the console", () => {
     warnMessage("Example warning.");
 
-    expect(getConsoleMessage()).toEqual(" WARN  Example warning.");
+    expect(getConsoleMessage()).toContain("WARN  Example warning.");
   });
 });
