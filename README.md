@@ -1,4 +1,4 @@
-## SJ Ice Team App Automated Microservice ![Deployment](https://github.com/mattcarlotta/SJSITAPP-Agent/workflows/Deployment/badge.svg)
+## SJ Ice Team Automated Microservice ![Deployment](https://github.com/mattcarlotta/SJSITAPP-Agent/workflows/Deployment/badge.svg)
 
 An automated microservice to help manage the San Jose Sharks Ice Team scheduling.
 
