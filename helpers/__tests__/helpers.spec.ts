@@ -78,10 +78,8 @@ describe("Helper Functions", () => {
   it("returns a current month range or specified month range", () => {
     const selectedDate = "2019-09-08T03:30:15.000+00:00";
 
-    const {
-      startOfMonth: selectedStartMonth,
-      endOfMonth: selectedEndMonth
-    } = getMonthDateRange(selectedDate);
+    const { startOfMonth: selectedStartMonth, endOfMonth: selectedEndMonth } =
+      getMonthDateRange(selectedDate);
 
     expect(selectedStartMonth.toDate()).toEqual(
       moment("2019-09-01T07:00:00.000Z").toDate()
@@ -91,10 +89,8 @@ describe("Helper Functions", () => {
     );
 
     const currentDate = Date.now();
-    const {
-      startOfMonth: currentStartMonth,
-      endOfMonth: currentEndMonth
-    } = getMonthDateRange();
+    const { startOfMonth: currentStartMonth, endOfMonth: currentEndMonth } =
+      getMonthDateRange();
 
     expect(currentStartMonth.toDate()).toEqual(
       moment(currentDate).startOf("month").toDate()
