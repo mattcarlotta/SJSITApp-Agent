@@ -57,9 +57,8 @@ const PollForms = async (): Promise<void> => {
       formReminders = forms.map(
         ({ _id, expirationDate, endMonth, startMonth, notes }) => {
           const endOfMonth = createDate(endMonth).format(calendarDateFormat);
-          const startOfMonth = createDate(startMonth).format(
-            calendarDateFormat
-          );
+          const startOfMonth =
+            createDate(startMonth).format(calendarDateFormat);
 
           return {
             sendTo: memberEmails,
