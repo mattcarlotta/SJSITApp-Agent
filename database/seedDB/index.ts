@@ -26,9 +26,7 @@ const seedDB = async (): Promise<any> => {
   try {
     await connectToDB();
     const db = await createConnectionToDatabase();
-
-    const databaseExists = User.findOne({ email: "staffmember@test.com" });
-    if (databaseExists) await db.dropDatabase();
+    await db.dropDatabase();
 
     const password = "password";
     const registered = createDate().toDate();

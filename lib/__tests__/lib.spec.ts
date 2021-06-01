@@ -98,7 +98,7 @@ describe("Run Services", () => {
       );
     });
 
-    it("should run the email services", async done => {
+    it("should run the email services", async () => {
       await service.updateOne({
         emailOnline: true
       });
@@ -107,8 +107,6 @@ describe("Run Services", () => {
       expect(mockPollForms).toHaveBeenCalledTimes(1);
       expect(mockPollEvents).toHaveBeenCalledTimes(1);
       expect(mockPollEmails).toHaveBeenCalledTimes(1);
-
-      done();
     });
 
     it("displays that all individual automated services are currently deactivated", async () => {
