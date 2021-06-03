@@ -1,4 +1,4 @@
-import "snackables";
+import "@noshot/env";
 import mongoose from "mongoose";
 import { createConnectionToDatabase, connectToDB } from "../index";
 import { Event, Form, Mail, Season, User } from "../../models";
