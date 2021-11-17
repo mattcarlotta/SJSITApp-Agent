@@ -14,7 +14,7 @@ const pollSeconds = NODE_ENV === "development" ? "*/5" : "*/30";
   try {
     await connectToDB();
     scheduleJob(`${pollSeconds} * * * * *`, () => runServices());
-  } catch (err) {
+  } catch (err: any) {
     errorMessage(err.toString());
   }
 })();

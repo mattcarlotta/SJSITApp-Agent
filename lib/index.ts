@@ -125,7 +125,7 @@ const RunServices = async (): Promise<void> => {
     } else {
       warnMessage("Email services are deactivated.");
     }
-  } catch (err) {
+  } catch (err: any) {
     errorMessage(err.toString());
   }
 };

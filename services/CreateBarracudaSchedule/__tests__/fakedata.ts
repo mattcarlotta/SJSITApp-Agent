@@ -1,9 +1,9 @@
-import { getCurrentYear, getStartOfNextNextMonth } from "~helpers";
+import { getStartOfNextNextMonth } from "~helpers";
 import { fullyearFormat, monthnameFormat } from "~utils/dateFormats";
 
 const nextMonth = getStartOfNextNextMonth();
 const nextMonthName = nextMonth.format(monthnameFormat);
-const currentYear = getCurrentYear().format(fullyearFormat);
+const currentYear = nextMonth.format(fullyearFormat);
 
 const data = `
 <html lang="en">

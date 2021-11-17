@@ -4,7 +4,6 @@ import isEmpty from "lodash.isempty";
 import {
   createDate,
   createSchedule,
-  getCurrentYear,
   getStartOfNextNextMonth,
   toCapitalize
 } from "~helpers";
@@ -48,10 +47,11 @@ const CreateBarracudaSchedule = async (): Promise<void> => {
 
     const data = get(res, ["data"]);
     const $ = cheerio.load(data);
-    const nextNextMonth = getStartOfNextNextMonth().format(monthnameFormat);
-    const currentYear = getCurrentYear().format(fullyearFormat);
+    const nextNextMonth = getStartOfNextNextMonth();
+    const nextNextMonthName = nextNextMonth.format(monthnameFormat);
+    const currentYear = nextNextMonth.format(fullyearFormat);
 
-    const currentMonthSchedule = $(`#${nextNextMonth}${currentYear}`);
+    const currentMonthSchedule = $(`#${nextNextMonthName}${currentYear}`);
 
     currentMonthSchedule.find(".entry.clearfix").each((_i, row) => {
       const $row = $(row);
@@ -63,7 +63,7 @@ const CreateBarracudaSchedule = async (): Promise<void> => {
 
       if (location === "Home") {
         const $eventDate = $row.find(".date-time");
-        const $team = $row.find("team-info");
+        const $team = $row.find(".team-info");
 
         // MMMM D
         const date = toCapitalize(
@@ -105,7 +105,7 @@ const CreateBarracudaSchedule = async (): Promise<void> => {
     if (!isEmpty(events)) await Event.insertMany(events);
 
     infoMessage(`Processed Barracuda Events... ${events.length}`);
-  } catch (err) {
+  } catch (err: any) {
     errorMessage(err.toString());
   }
 };
