@@ -1,6 +1,6 @@
 {
   "name": "sjsitapp-agent",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "main": "index.js",
   "description": "An automated microservice to help manage the San Jose Sharks Ice Team scheduling.",
   "repository": "https://github.com/mattcarlotta/SJSITApp-Agent",

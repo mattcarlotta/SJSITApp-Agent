@@ -90,7 +90,7 @@ const CreateBarracudaSchedule = async (): Promise<void> => {
 
         events.push({
           eventType: "Game",
-          location: "Solar4America Ice at San Jose",
+          location: "SAP Center at San Jose",
           callTimes,
           eventDate,
           opponent,
