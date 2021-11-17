@@ -1,6 +1,6 @@
 import { errorMessage, infoMessage } from "~loggers";
 import { Form, Season } from "~models";
-import { createDate, getEndOfMonth, getStartOfMonth } from "~helpers";
+import { createDate, getEndOfMonth, getStartOfNextMonth } from "~helpers";
 
 /**
  * Creates an AP Form for next months schedule.
@@ -10,7 +10,7 @@ import { createDate, getEndOfMonth, getStartOfMonth } from "~helpers";
 const CreateAPForm = async (): Promise<void> => {
   try {
     // start of next month
-    const startMonth = getStartOfMonth();
+    const startMonth = getStartOfNextMonth();
 
     // testing current month
     // const startMonth = moment().startOf("month");
@@ -57,7 +57,7 @@ const CreateAPForm = async (): Promise<void> => {
     });
 
     infoMessage("Processed AP Forms... 1");
-  } catch (err) {
+  } catch (err: any) {
     /* istanbul ignore next */
     errorMessage(err.toString());
   }

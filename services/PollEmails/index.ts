@@ -39,7 +39,7 @@ const PollEmails = async (): Promise<void> => {
         });
 
         await Mail.updateOne({ _id }, { status: "sent" });
-      } catch (err) {
+      } catch (err: any) {
         await Mail.updateOne({ _id }, { status: `failed - ${err.message}` });
       }
     }

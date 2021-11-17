@@ -94,9 +94,9 @@ const GenerateMemberSchedules = async (): Promise<void> => {
     await Mail.insertMany(emails);
 
     infoMessage(`Processed Member Schedules... ${sortedSchedules.length}`);
-  } catch (err) {
+  } catch (err: any) {
     /* istanbul ignore next */
-    errorMessage(err);
+    errorMessage(err.toString());
   }
 };
 

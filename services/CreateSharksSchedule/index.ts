@@ -95,7 +95,7 @@ const CreateSharksSchedule = async (): Promise<void> => {
     await Event.insertMany(events);
 
     infoMessage(`Processed Sharks Events... ${events.length}`);
-  } catch (err) {
+  } catch (err: any) {
     errorMessage(err);
   }
 };
