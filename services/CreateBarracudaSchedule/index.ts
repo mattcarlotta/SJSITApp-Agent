@@ -96,6 +96,7 @@ const CreateBarracudaSchedule = async (): Promise<void> => {
           opponent,
           schedule: createSchedule(callTimes),
           seasonId,
+          uniform: "Barracuda Jacket",
           team: "San Jose Barracuda",
           notes: ""
         });

@@ -67,6 +67,7 @@ describe("Create Barracuda Schedule Service", () => {
               employeeIds: expect.any(Array)
             })
           ]),
+          uniform: expect.any(String),
           seasonId: expect.any(String),
           team: expect.any(String),
           notes: expect.any(String)
