@@ -1,43 +1,85 @@
 /* eslint-disable import/first */
-const mockCreateAPForm = jest.fn(() => Promise.resolve());
-const mockCreateBarracudaSchedule = jest.fn(() => Promise.resolve());
-const mockCreateSharksSchedule = jest.fn(() => Promise.resolve());
-const mockGenerateFormReminders = jest.fn(() => Promise.resolve());
-const mockGenerateMemberSchedules = jest.fn(() => Promise.resolve());
-const mockGenerateStaffSchedule = jest.fn(() => Promise.resolve());
-const mockPollEmails = jest.fn(() => Promise.resolve());
-const mockPollEvents = jest.fn(() => Promise.resolve());
-const mockPollForms = jest.fn(() => Promise.resolve());
+// const mockCreateAPForm = jest.fn(() => Promise.resolve());
+// const mockCreateBarracudaSchedule = jest.fn(() => Promise.resolve());
+// const mockCreateSharksSchedule = jest.fn(() => Promise.resolve());
+// const mockGenerateFormReminders = jest.fn(() => Promise.resolve());
+// const mockGenerateMemberSchedules = jest.fn(() => Promise.resolve());
+// const mockGenerateStaffSchedule = jest.fn(() => Promise.resolve());
+// const mockPollEmails = jest.fn(() => Promise.resolve());
+// const mockPollEvents = jest.fn(() => Promise.resolve());
+// const mockPollForms = jest.fn(() => Promise.resolve());
 
-jest.mock("~services", () => ({
-  __esModule: true,
-  createAPForm: mockCreateAPForm,
-  createBarracudaSchedule: mockCreateBarracudaSchedule,
-  createSharksSchedule: mockCreateSharksSchedule,
-  generateFormReminders: mockGenerateFormReminders,
-  generateMemberSchedules: mockGenerateMemberSchedules,
-  generateStaffSchedule: mockGenerateStaffSchedule,
-  pollEmails: mockPollEmails,
-  pollEvents: mockPollEvents,
-  pollForms: mockPollForms
-}));
+// jest.mock("~services", () => ({
+//   __esModule: true,
+//   createAPForm: mockCreateAPForm,
+//   createBarracudaSchedule: mockCreateBarracudaSchedule,
+//   createSharksSchedule: mockCreateSharksSchedule,
+//   generateFormReminders: mockGenerateFormReminders,
+//   generateMemberSchedules: mockGenerateMemberSchedules,
+//   generateStaffSchedule: mockGenerateStaffSchedule,
+//   pollEmails: mockPollEmails,
+//   pollEvents: mockPollEvents,
+//   pollForms: mockPollForms
+// }));
 
 import mongoose from "mongoose";
+import moment from "moment";
 import { connectToDB } from "~database";
-import { createDate, getStartOfNextMonth, stripText } from "~helpers";
+import { getStartOfNextMonth, stripText } from "~helpers";
 import { errorMessage, infoMessage, warnMessage } from "~loggers";
 import runServices from "~lib";
 import { Service } from "~models";
 import { monthnameFormat } from "~utils/dateFormats";
 import { IServiceDocument } from "~types";
+import {
+  createAPForm,
+  createBarracudaSchedule,
+  createSharksSchedule,
+  generateFormReminders,
+  generateMemberSchedules,
+  generateStaffSchedule,
+  pollEmails,
+  pollEvents,
+  pollForms
+} from "~services";
+
+jest.mock("~services", () => ({
+  __esModule: true,
+  createAPForm: jest.fn(() => Promise.resolve()),
+  createBarracudaSchedule: jest.fn(() => Promise.resolve()),
+  createSharksSchedule: jest.fn(() => Promise.resolve()),
+  generateFormReminders: jest.fn(() => Promise.resolve()),
+  generateMemberSchedules: jest.fn(() => Promise.resolve()),
+  generateStaffSchedule: jest.fn(() => Promise.resolve()),
+  pollEmails: jest.fn(() => Promise.resolve()),
+  pollEvents: jest.fn(() => Promise.resolve()),
+  pollForms: jest.fn(() => Promise.resolve())
+}));
+
+jest.mock("~loggers", () => ({
+  __esModule: true,
+  errorMessage: jest.fn(),
+  infoMessage: jest.fn(),
+  warnMessage: jest.fn()
+}));
 
 const mockErrorMessage = errorMessage as jest.Mock;
 const mockInfoMessage = infoMessage as jest.Mock;
 const mockWarnMessage = warnMessage as jest.Mock;
+
+const mockPollEmails = pollEmails as jest.Mock;
+const mockPollEvents = pollEvents as jest.Mock;
+const mockPollForms = pollForms as jest.Mock;
+const mockCreateSharksSchedule = createSharksSchedule as jest.Mock;
+const mockCreateBarracudaSchedule = createBarracudaSchedule as jest.Mock;
+const mockCreateAPForm = createAPForm as jest.Mock;
+const mockGenerateFormReminders = generateFormReminders as jest.Mock;
+const mockGenerateMemberSchedules = generateMemberSchedules as jest.Mock;
+const mockGenerateStaffSchedule = generateStaffSchedule as jest.Mock;
 const createServiceSpy = jest.spyOn(Service, "findOne");
 
 // const currentMonth = getStartOfMonth().format(monthnameFormat);
-const prevMonth = createDate().subtract(1, "month").format(monthnameFormat);
+const prevMonth = moment().subtract(1, "month").format(monthnameFormat);
 const nextMonth = getStartOfNextMonth().format(monthnameFormat);
 
 describe("Run Services", () => {
@@ -132,6 +174,7 @@ describe("Run Services", () => {
       await service.updateOne({
         eventOnline: true
       });
+
       await runServices();
 
       expect(stripText(mockWarnMessage.mock.calls[0][0])).toContain(

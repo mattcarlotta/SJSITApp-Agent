@@ -1,6 +1,6 @@
 {
   "name": "sjsitapp-agent",
-  "version": "2.0.5",
+  "version": "3.0.0",
   "main": "index.js",
   "description": "An automated microservice to help manage the San Jose Sharks Ice Team scheduling.",
   "repository": "https://github.com/mattcarlotta/SJSITApp-Agent",
@@ -18,10 +18,10 @@
     "seed": "LOAD_CONFIG=seed ts-node --project ./tsconfig.json -r tsconfig-paths/register ./database/seedDB/index.ts",
     "dev": "nodemon --config ./nodemon.json",
     "stage": "LOAD_CONFIG=stage node -r ./prod-paths.js -r @noshot/env build/index.js",
-    "test": "LOAD_CONFIG=test jest --config ./jest.json --passWithNoTests",
-    "test:cov": "LOAD_CONFIG=test jest --config ./jest.json --coverage",
-    "test:failed": "LOAD_CONFIG=test jest --config ./jest.json --watch --onlyFailures",
-    "test:watch": "LOAD_CONFIG=test jest --config ./jest.json --watch",
+    "test": "LOAD_CONFIG=test jest --passWithNoTests",
+    "test:cov": "LOAD_CONFIG=test jest --coverage",
+    "test:failed": "LOAD_CONFIG=test jest --watch --onlyFailures",
+    "test:watch": "LOAD_CONFIG=test jest --watch",
     "tsc": "tsc --p ./tsconfig.json"
   },
   "dependencies": {

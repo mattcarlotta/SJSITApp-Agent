@@ -1,6 +1,7 @@
+import moment from "moment";
 import { errorMessage, infoMessage } from "~loggers";
 import { Form, Season } from "~models";
-import { createDate, getEndOfMonth, getStartOfNextMonth } from "~helpers";
+import { getEndOfMonth, getStartOfNextMonth } from "~helpers";
 
 /**
  * Creates an AP Form for next months schedule.
@@ -39,7 +40,7 @@ const CreateAPForm = async (): Promise<void> => {
     //   .format();
 
     // set A/P form expiration date 7 days from the 1st
-    const expirationDate = createDate()
+    const expirationDate = moment()
       .add(1, "month")
       .startOf("month")
       .add(6, "days")

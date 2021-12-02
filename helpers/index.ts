@@ -116,11 +116,17 @@ const getNextYear = (): Moment => moment().add(1, "year").endOf("year");
  * @param month - string ex: ```January```
  * @returns {Date} formatted date ```January 1st 2021 @ 12:00 pm```
  */
-const createServiceDate = (time: string, day: string, month: string): Date =>
-  createDate(
-    `${month} ${day} ${moment().format(fullyearFormat)} @ ${time}`,
+const createServiceDate = (time: string, day: string, month: string): Date => {
+  const year =
+    month === "January"
+      ? moment().add(1, "month").format(fullyearFormat)
+      : moment().format(fullyearFormat);
+
+  return createDate(
+    `${month} ${day} ${year} @ ${time}`,
     serviceDateTimeFormat
   ).toDate();
+};
 
 /**
  * Helper function to get a start month date from now.
