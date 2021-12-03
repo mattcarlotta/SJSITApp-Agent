@@ -1,7 +1,7 @@
 import { errorMessage, infoMessage } from "~loggers";
 import { Form, Season } from "~models";
 import { getEndOfMonth, getStartOfNextMonth } from "~helpers";
-import moment from "../../utils/momentWithTimeZone";
+import moment from "~utils/momentWithTimeZone";
 
 /**
  * Creates an AP Form for next months schedule.
