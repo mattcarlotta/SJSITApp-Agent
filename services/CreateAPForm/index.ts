@@ -1,6 +1,6 @@
 import { errorMessage, infoMessage } from "~loggers";
 import { Form, Season } from "~models";
-import { getEndOfMonth, getStartOfNextMonth } from "~helpers";
+import { getEndOfMonth, getStartOfNextNextMonth } from "~helpers";
 import moment from "~utils/momentWithTimeZone";
 
 /**
@@ -11,7 +11,7 @@ import moment from "~utils/momentWithTimeZone";
 const CreateAPForm = async (): Promise<void> => {
   try {
     // start of next month
-    const startMonth = getStartOfNextMonth();
+    const startMonth = getStartOfNextNextMonth();
 
     // testing current month
     // const startMonth = moment().startOf("month");

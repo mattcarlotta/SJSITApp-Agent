@@ -8,7 +8,7 @@ import {
   getCurrentYear,
   getEndOfMonth,
   getNextYear,
-  getStartOfNextMonth
+  getStartOfNextNextMonth
 } from "~helpers";
 import mockAxios from "~utils/mockAxios";
 import { fullyearFormat } from "~utils/dateFormats";
@@ -34,7 +34,7 @@ describe("Create AP Form Service", () => {
   });
 
   it("creates an AP form", async () => {
-    const startMonth = getStartOfNextMonth();
+    const startMonth = getStartOfNextNextMonth();
     const currentYear = getCurrentYear().format(fullyearFormat);
     const nextYear = getNextYear().format(fullyearFormat);
     const endMonth = getEndOfMonth(startMonth.toDate());
