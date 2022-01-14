@@ -79,7 +79,8 @@ const mockGenerateStaffSchedule = generateStaffSchedule as jest.Mock;
 const createServiceSpy = jest.spyOn(Service, "findOne");
 
 // const currentMonth = getStartOfMonth().format(monthnameFormat);
-const prevMonth = moment().subtract(1, "month").format(monthnameFormat);
+let prevMonth = moment().subtract(1, "month").format(monthnameFormat);
+prevMonth = prevMonth === "December" ? "January" : prevMonth;
 const nextMonth = getStartOfNextMonth().format(monthnameFormat);
 
 describe("Run Services", () => {
